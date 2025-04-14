@@ -1,0 +1,17 @@
+<h2>Setting</h2>
+
+<h3>Status</h3>
+
+ <button
+      type="button"
+      class="btn"
+      ngIf="!bluetoothEnabled"
+      (click)="requestBluetoothDevices()"
+    >
+      Enable Bluetooth
+    </button>
+
+<h3>Status</h3>
+
+<p>Bluetooth enabled: {{bluetoothEnabled}}</p>
+
