@@ -8,9 +8,16 @@ import { Injectable } from '@angular/core';
 export class BluetoothService {
 
   hrDevice: BluetoothDevice | null = null;
+  devices: BluetoothDevice[] = [];
 
-  constructor() { }
+  constructor() {
+    this.requestBluetoothDevices();
+  }
 
+  async requestBluetoothDevices() {
+    this.devices = await navigator.bluetooth.getDevices();
+    console.log(this.devices);
+  }
 
   // Function to check if Bluetooth is enabled
   async isBluetoothEnabled() {
@@ -19,14 +26,19 @@ export class BluetoothService {
     return btPermission.state !== "denied";
   }
 
-  async requestBluetoothDevices() {
-    navigator.bluetooth.requestDevice({
+  async requestHeartRateDevice() {
+    this.hrDevice = await navigator.bluetooth.requestDevice({
       filters: [
         { services: ["heart_rate"] },
       ],
       optionalServices: ['battery_service'] // Required to access service later.
-    })
-      .then(device => { this.hrDevice = device; })
-      .catch(error => { console.error(error); });
+    });
+
+    const server = await this.hrDevice.gatt?.connect();
+    server?.getPrimaryServices().then(services => {
+      services.forEach(service => {
+        console.log('Service:', service);
+      });
+    });
   }
 }

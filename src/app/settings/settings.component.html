@@ -1,17 +1,17 @@
 <h2>Setting</h2>
 
-<h3>Status</h3>
+<h3>HR sensor</h3>
 
- <button
-      type="button"
-      class="btn"
-      ngIf="!bluetoothEnabled"
-      (click)="requestBluetoothDevices()"
-    >
-      Enable Bluetooth
-    </button>
-
-<h3>Status</h3>
-
-<p>Bluetooth enabled: {{bluetoothEnabled}}</p>
-
+<div *ngIf="heartRateSensor.deviceSelected">
+    Devicename: {{heartRateSensor.deviceName}}<br>
+    Connected: {{heartRateSensor.isConnected}}<br>
+    Last heartrate: {{heartRateSensor.heartRate?.heartRate}}<br>
+</div>
+<button type="button" class="btn btn-primary" *ngIf="!heartRateSensor.deviceSelected"
+    (click)="requestHeartRateDevice()">
+    Request heart rate device
+</button>
+<button type="button" class="btn btn-success" *ngIf="!heartRateSensor.deviceSelected"
+    (click)="reconnectToLastConnected()">
+    Reconnect to last connected device
+</button>
