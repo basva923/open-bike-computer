@@ -112,12 +112,6 @@ export class HeartRateSensorService {
     }
   }
 
-  removeListener() {
-    if (this.charateristic) {
-      this.charateristic.removeEventListener('characteristicvaluechanged', this.parseHeartRate);
-    }
-  }
-
   protected storeHeartRate(value: HeartReateData) {
     console.log('Heart Rate:', value);
     this.heartRates.push(value);

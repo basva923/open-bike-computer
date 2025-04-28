@@ -11,6 +11,7 @@ import {
 } from 'leaflet';
 import { LocationService } from '../services/location.service';
 import { NgIf } from '@angular/common';
+import { ServiceFactory } from '../services/ServiceFactory';
 
 @Component({
   selector: 'app-map',
@@ -20,6 +21,7 @@ import { NgIf } from '@angular/common';
   styleUrl: './map.component.css',
 })
 export class MapComponent {
+  private locationService: LocationService
   options = {
     layers: [
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -36,7 +38,8 @@ export class MapComponent {
   map: Map | null = null;
   isProgramaticMove = false;
 
-  constructor(private locationService: LocationService) {
+  constructor() {
+    this.locationService = ServiceFactory.getLocationService();
     const self = this;
     if (this.locationService.curLatitude && this.locationService.curLongitude) {
       this.center = latLng(
@@ -44,7 +47,7 @@ export class MapComponent {
         this.locationService.curLongitude
       );
     }
-    locationService.subscribeForLocation((location) => {
+    this.locationService.subscribeForLocation((location) => {
       if (!self.moved) {
         self.isProgramaticMove = true;
         self.center = latLng(

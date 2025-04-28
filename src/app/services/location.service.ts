@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-class LocationEvent extends Event {
+export class LocationEvent extends Event {
   location: GeolocationPosition;
   constructor(location: GeolocationPosition) {
     super('newLocation');
@@ -12,7 +12,7 @@ class LocationEvent extends Event {
   providedIn: 'root',
 })
 export class LocationService {
-  private locations: GeolocationPosition[] = [];
+  protected locations: GeolocationPosition[] = [];
   public currentLocationEvent = new EventTarget();
   private absolute = false;
   private alpha: number = 0;
