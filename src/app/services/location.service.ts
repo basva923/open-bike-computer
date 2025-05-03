@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 
-export class LocationEvent extends Event {
+export class LocationServiceEvent extends Event {
   location: GeolocationPosition;
+
   constructor(location: GeolocationPosition) {
     super('newLocation');
     this.location = location;
@@ -27,7 +28,7 @@ export class LocationService {
     navigator.geolocation.watchPosition(
       (position) => {
         self.locations.push(position);
-        self.currentLocationEvent.dispatchEvent(new LocationEvent(position));
+        self.currentLocationEvent.dispatchEvent(new LocationServiceEvent(position));
       },
       (error) => {
         console.error(error);
@@ -87,11 +88,13 @@ export class LocationService {
   }
 
   public subscribeForLocation(
-    callback: (location: GeolocationPosition) => void
+    callback: (event: LocationServiceEvent) => void
   ) {
-    this.currentLocationEvent.addEventListener('newLocation', (event) => {
-      callback((event as LocationEvent).location);
-    });
+    this.currentLocationEvent.addEventListener('newLocation', callback as any);
+  }
+
+  public unsubscribeForLocation(callback: (event: LocationServiceEvent) => void) {
+    this.currentLocationEvent.removeEventListener('newLocation', callback as any);
   }
 
   set phoneIsPointingForward(pointingForward: boolean) {

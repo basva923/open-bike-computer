@@ -60,13 +60,4 @@ export class LocationMockService extends LocationService {
       }
     }, 1000); // Simulate one location update per second
   }
-
-
-  public override subscribeForLocation(
-    callback: (location: GeolocationPosition) => void
-  ) {
-    this.currentLocationEvent.addEventListener('newLocation', (event) => {
-      callback((event as LocationEvent).location);
-    });
-  }
 }

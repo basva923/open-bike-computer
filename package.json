@@ -25,6 +25,7 @@
     "@popperjs/core": "^2.11.8",
     "apexcharts": "^3.53.0",
     "bootstrap": "^5.3.3",
+    "convert-units": "^2.3.4",
     "leaflet": "^1.9.4",
     "ng-apexcharts": "^1.12.0",
     "rxjs": "~7.8.0",

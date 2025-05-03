@@ -1,29 +1,18 @@
 import { Injectable } from '@angular/core';
-import { HeartRateSensorService, HeartReateData } from './heart-rate-sensor.service';
+import { HeartRateSensorService, HeartRateSensorServiceEvent, HeartReateData } from './heart-rate-sensor.service';
 
-
-class HREvent extends Event {
-  hr: HeartReateData;
-  constructor(hr: HeartReateData) {
-    super('newLocation');
-    this.hr = hr;
-  }
-}
 
 @Injectable({
   providedIn: 'root'
 })
 export class HeartRateSensorMockService extends HeartRateSensorService {
-  eventTarget: EventTarget;
 
   constructor() {
     super();
 
-    this.eventTarget = new EventTarget()
     setInterval(() => {
       const heartRate = new HeartReateData(new Date(), Math.floor(Math.random() * 100) + 50);
-      this.eventTarget.dispatchEvent(new HREvent(heartRate));
-      this.storeHeartRate(heartRate);
+      this.heartRateEvent.dispatchEvent(new HeartRateSensorServiceEvent(heartRate));
     }, 1000)
   }
 
@@ -55,11 +44,4 @@ export class HeartRateSensorMockService extends HeartRateSensorService {
     return true;
   }
 
-
-  override addListener(callback: (heartRate: HeartReateData) => void) {
-    this.eventTarget.addEventListener('heartRate', (event) => {
-      const heartRate = (event as HREvent).hr;
-      callback(heartRate);
-    });
-  }
 }

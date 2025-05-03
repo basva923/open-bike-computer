@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 
 
+export class HeartRateSensorServiceEvent extends Event {
+  constructor(public heartRate: HeartReateData) {
+    super('heartRateSensorServiceEvent');
+  }
+}
+
 export class HeartReateData {
   timestamp: Date;
   heartRate: number;
@@ -26,7 +32,8 @@ export class HeartRateSensorService {
   private server: BluetoothRemoteGATTServer | null = null;
   private service: BluetoothRemoteGATTService | null = null;
   private charateristic: BluetoothRemoteGATTCharacteristic | null = null;
-  private heartRates: HeartReateData[] = [];
+
+  protected heartRateEvent = new EventTarget();
 
 
   constructor() { }
@@ -46,7 +53,13 @@ export class HeartRateSensorService {
     await this.charateristic.startNotifications();
     console.log('Notifications started for characteristic:', this.charateristic);
 
-    this.addListener(this.storeHeartRate.bind(this));
+    this.charateristic.addEventListener('characteristicvaluechanged', (event: Event) => {
+      const value = (event.target as BluetoothRemoteGATTCharacteristic).value;
+      if (value) {
+        const heartRate = this.parseHeartRate(value);
+        this.heartRateEvent.dispatchEvent(new HeartRateSensorServiceEvent(heartRate));
+      }
+    });
   }
 
   async disconnect() {
@@ -96,28 +109,12 @@ export class HeartRateSensorService {
     return this.device?.gatt?.connected || false;
   }
 
-  get heartRate(): HeartReateData | null {
-    return this.heartRates.length > 0 ? this.heartRates[this.heartRates.length - 1] : null;
+  substribeForHeartRate(callback: (event: HeartRateSensorServiceEvent) => void) {
+    this.heartRateEvent.addEventListener('heartRateSensorServiceEvent', callback as any);
   }
 
-  addListener(callback: (heartRate: HeartReateData) => void) {
-    if (this.charateristic) {
-      this.charateristic.addEventListener('characteristicvaluechanged', (event: Event) => {
-        const value = (event.target as BluetoothRemoteGATTCharacteristic).value;
-        if (value) {
-          const heartRate = this.parseHeartRate(value);
-          callback(heartRate);
-        }
-      });
-    }
-  }
-
-  protected storeHeartRate(value: HeartReateData) {
-    console.log('Heart Rate:', value);
-    this.heartRates.push(value);
-    if (this.heartRates.length > 100) {
-      this.heartRates.shift();
-    }
+  unsubscribeForHeartRate(callback: (event: HeartRateSensorServiceEvent) => void) {
+    this.heartRateEvent.removeEventListener('heartRateSensorServiceEvent', callback as any);
   }
 
   protected parseHeartRate(value: any) {
