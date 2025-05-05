@@ -3,16 +3,18 @@ import { MetricService } from "../services/metric.service";
 import { Metric } from "./Metric";
 
 export class LongitudeMetric extends Metric {
+    private handler = this.locationEventHandler.bind(this);
+
     constructor(metricService: MetricService) {
         super('Longitude', '°', metricService, '°', 5);
     }
 
     startLogging(): void {
-        this.metricService.getLocationService().subscribeForLocation(this.locationEventHandler.bind(this));
+        this.metricService.getLocationService().subscribeForLocation(this.handler);
     }
 
     stopLogging(): void {
-        this.metricService.getLocationService().unsubscribeForLocation(this.locationEventHandler.bind(this));
+        this.metricService.getLocationService().unsubscribeForLocation(this.handler);
     }
 
     locationEventHandler(event: LocationServiceEvent): void {

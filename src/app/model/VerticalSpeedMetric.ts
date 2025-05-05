@@ -5,17 +5,18 @@ import { Metric } from "./Metric";
 export class VerticalSpeedMetric extends Metric {
 
     protected lastLocation: GeolocationPosition | null = null;
+    private handler = this.locationEventHandler.bind(this);
 
     constructor(metricService: MetricService) {
         super('Vertical Speed', 'm/s', metricService);
     }
 
     startLogging(): void {
-        this.metricService.getLocationService().subscribeForLocation(this.locationEventHandler.bind(this));
+        this.metricService.getLocationService().subscribeForLocation(this.handler);
     }
 
     stopLogging(): void {
-        this.metricService.getLocationService().unsubscribeForLocation(this.locationEventHandler.bind(this));
+        this.metricService.getLocationService().unsubscribeForLocation(this.handler);
     }
 
     locationEventHandler(event: LocationServiceEvent): void {

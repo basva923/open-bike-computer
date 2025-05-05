@@ -6,16 +6,17 @@ import { Metric } from "./Metric";
 export class DistanceMetric extends Metric {
     private lastLocation: GeolocationPosition | null = null;
     totalDistance: number = 0;
+    private handler = this.locationEventHandler.bind(this);
 
     constructor(metricService: MetricService) {
         super('Distance', 'm', metricService, 'km');
     }
     startLogging(): void {
-        this.metricService.getLocationService().subscribeForLocation(this.locationEventHandler.bind(this));
+        this.metricService.getLocationService().subscribeForLocation(this.handler);
     }
 
     stopLogging(): void {
-        this.metricService.getLocationService().unsubscribeForLocation(this.locationEventHandler.bind(this));
+        this.metricService.getLocationService().unsubscribeForLocation(this.handler);
     }
 
     locationEventHandler(event: LocationServiceEvent): void {
