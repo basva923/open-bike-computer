@@ -4,7 +4,7 @@ import { Metric } from "./Metric";
 
 export class LatitudeMetric extends Metric {
     constructor(metricService: MetricService) {
-        super('Latitude', '°', metricService);
+        super('Latitude', '°', metricService, '°', 5);
     }
 
 
