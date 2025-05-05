@@ -20,7 +20,20 @@
     Request heart rate device
 </button>
 <button type="button" class="btn btn-success" *ngIf="!heartRateSensor.deviceSelected"
-    (click)="reconnectToLastConnected()">
+    (click)="reconnectToLastConnectedHeartRateSensor()">
+    Reconnect to last connected device
+</button>
+
+<h3>Power meter</h3>
+<div *ngIf="powerMeter.deviceSelected">
+    Devicename: {{powerMeter.deviceName}}<br>
+    Connected: {{powerMeter.isConnected}}<br>
+</div>
+<button type="button" class="btn btn-primary" *ngIf="!powerMeter.deviceSelected" (click)="requestPowerMeterDevice()">
+    Request power meter device
+</button>
+<button type="button" class="btn btn-success" *ngIf="!powerMeter.deviceSelected"
+    (click)="reconnectToLastConnectedPowerMeter()">
     Reconnect to last connected device
 </button>
 
@@ -34,4 +47,4 @@
         <td>{{metricName}}</td>
         <td>{{metricService.getByName(metricName)!.displayLastValue()}}</td>
     </tr>
-</table>>
+</table>

@@ -15,6 +15,8 @@ import { GradeMetric } from '../model/GradeMetric';
 import { DistanceMetric } from '../model/DistanceMetric';
 import { CadenceMetric } from '../model/CadenceMetric';
 import { IMetricService } from './IMetricService';
+import { PowerMeterService } from './power-meter.service';
+import { PowerBalenceMetric } from '../model/PowerBalenceMetric';
 
 @Injectable({
   providedIn: 'root'
@@ -22,11 +24,13 @@ import { IMetricService } from './IMetricService';
 export class MetricService implements IMetricService {
   private locationService: LocationService;
   private heartRateSensorService: HeartRateSensorService;
+  private powerMeterService: PowerMeterService;
   private metrics: Metric[] = [];
 
   constructor() {
     this.locationService = ServiceFactory.getLocationService();
     this.heartRateSensorService = ServiceFactory.getHeartRateSensorService();
+    this.powerMeterService = ServiceFactory.getPowerMeterService();
 
     this.metrics.push(
       new AltitudeMetric(this),
@@ -40,6 +44,7 @@ export class MetricService implements IMetricService {
       new GradeMetric(this),
       new DistanceMetric(this),
       new CadenceMetric(this),
+      new PowerBalenceMetric(this)
     );
   }
 
@@ -61,6 +66,10 @@ export class MetricService implements IMetricService {
 
   getHeartRateSensorService(): HeartRateSensorService {
     return this.heartRateSensorService;
+  }
+
+  getPowerMeterService(): PowerMeterService {
+    return this.powerMeterService;
   }
 
   getByName(name: string): Metric | null {

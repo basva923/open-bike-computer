@@ -2,11 +2,11 @@ import { MetricService } from "../services/metric.service";
 import { Metric } from "./Metric";
 import { PowerMeterServiceEvent } from "./PowerMeterServiceEvent";
 
-export class PowerMetric extends Metric {
+export class PowerBalenceMetric extends Metric {
     private handler = this.handlePowerMeterEvent.bind(this);
 
     constructor(metricService: MetricService) {
-        super('Power', 'W', metricService);
+        super('Power Balence', '%', metricService, '%', 2);
     }
 
     startLogging(): void {
@@ -19,6 +19,8 @@ export class PowerMetric extends Metric {
     }
 
     handlePowerMeterEvent(event: PowerMeterServiceEvent): void {
-        this.addValue(event.powermeterDate.power, new Date(event.powermeterDate.timestamp));
+        if (event.powermeterDate.balence) {
+            this.addValue(event.powermeterDate.balence, new Date(event.powermeterDate.timestamp));
+        }
     }
 }

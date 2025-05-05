@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { HeartRateSensorService } from '../services/heart-rate-sensor.service';
 import { ServiceFactory } from '../services/ServiceFactory';
 import { MetricService } from '../services/metric.service';
+import { PowerMeterService } from '../services/power-meter.service';
 
 @Component({
   selector: 'app-settings',
@@ -18,10 +19,12 @@ export class SettingsComponent {
   bluetoothEnabled: boolean = false;
   devices: BluetoothDevice[] = [];
   protected heartRateSensor: HeartRateSensorService;
+  protected powerMeter: PowerMeterService;
 
 
   constructor(protected metricService: MetricService) {
     this.heartRateSensor = ServiceFactory.getHeartRateSensorService();
+    this.powerMeter = ServiceFactory.getPowerMeterService();
   }
 
   async startActivity() {
@@ -33,14 +36,22 @@ export class SettingsComponent {
   }
 
   async ngOnInit() {
-    this.reconnectToLastConnected();
+    this.reconnectToLastConnectedHeartRateSensor();
+    this.reconnectToLastConnectedPowerMeter();
   }
 
   async requestHeartRateDevice() {
     await this.heartRateSensor.selectNewDevice();
   }
 
-  async reconnectToLastConnected() {
+  async reconnectToLastConnectedHeartRateSensor() {
     await this.heartRateSensor.reconnectToLastConnected();
+  }
+
+  async requestPowerMeterDevice() {
+    await this.powerMeter.selectNewDevice();
+  }
+  async reconnectToLastConnectedPowerMeter() {
+    await this.powerMeter.reconnectToLastConnected();
   }
 }
