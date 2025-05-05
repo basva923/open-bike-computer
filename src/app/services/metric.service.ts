@@ -14,11 +14,12 @@ import { HeartRateMetric } from '../model/HeartRateMetric';
 import { GradeMetric } from '../model/GradeMetric';
 import { DistanceMetric } from '../model/DistanceMetric';
 import { CadenceMetric } from '../model/CadenceMetric';
+import { IMetricService } from './IMetricService';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MetricService {
+export class MetricService implements IMetricService {
   private locationService: LocationService;
   private heartRateSensorService: HeartRateSensorService;
   private metrics: Metric[] = [];
@@ -40,6 +41,18 @@ export class MetricService {
       new DistanceMetric(this),
       new CadenceMetric(this),
     );
+  }
+
+  startLogging(): void {
+    for (let i = 0; i < this.metrics.length; i++) {
+      this.metrics[i].startLogging();
+    }
+  }
+
+  stopLogging(): void {
+    for (let i = 0; i < this.metrics.length; i++) {
+      this.metrics[i].stopLogging();
+    }
   }
 
   getLocationService(): LocationService {

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { LocationEvent, LocationService } from './location.service';
+import { LocationService } from './location.service';
+import { LocationServiceEvent } from '../model/LocationServiceEvent';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,7 @@ export class LocationMockService extends LocationService {
         coords: {
           latitude: currentLat,
           longitude: currentLong,
-          altitude: this.curAltitude,
+          altitude: currentAltitude,
           accuracy: 5,
           altitudeAccuracy: 5,
           heading: Math.random() * 360,
@@ -52,7 +53,7 @@ export class LocationMockService extends LocationService {
         const mockPosition = this.route[this.currentIndex];
         this.locations.push(mockPosition);
         this.currentLocationEvent.dispatchEvent(
-          new LocationEvent(mockPosition)
+          new LocationServiceEvent(mockPosition)
         );
         this.currentIndex++;
       } else {

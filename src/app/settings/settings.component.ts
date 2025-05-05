@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { HeartRateSensorService } from '../services/heart-rate-sensor.service';
 import { ServiceFactory } from '../services/ServiceFactory';
+import { MetricService } from '../services/metric.service';
 
 @Component({
   selector: 'app-settings',
@@ -18,8 +19,17 @@ export class SettingsComponent {
   devices: BluetoothDevice[] = [];
   protected heartRateSensor: HeartRateSensorService;
 
-  constructor() {
+
+  constructor(protected metricService: MetricService) {
     this.heartRateSensor = ServiceFactory.getHeartRateSensorService();
+  }
+
+  async startActivity() {
+    this.metricService.startLogging();
+  }
+
+  async stopActivity() {
+    this.metricService.stopLogging();
   }
 
   async ngOnInit() {

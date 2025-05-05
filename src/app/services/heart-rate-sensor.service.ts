@@ -1,32 +1,13 @@
 import { Injectable } from '@angular/core';
+import { IHeartRateSensorService } from './IHeartRateSensorService';
+import { HeartRateSensorServiceEvent } from '../model/HeartRateSensorServiceEvent';
+import { HeartReateData } from '../model/HeartReateData';
 
-
-export class HeartRateSensorServiceEvent extends Event {
-  constructor(public heartRate: HeartReateData) {
-    super('heartRateSensorServiceEvent');
-  }
-}
-
-export class HeartReateData {
-  timestamp: Date;
-  heartRate: number;
-  contactDetected?: boolean;
-  energyExpended?: number;
-  rrIntervals?: number[];
-
-  constructor(timestamp: Date, heartRate: number, contactDetected?: boolean, energyExpended?: number, rrIntervals?: number[]) {
-    this.timestamp = timestamp;
-    this.heartRate = heartRate;
-    this.contactDetected = contactDetected;
-    this.energyExpended = energyExpended;
-    this.rrIntervals = rrIntervals;
-  }
-}
 
 @Injectable({
   providedIn: 'root'
 })
-export class HeartRateSensorService {
+export class HeartRateSensorService implements IHeartRateSensorService {
 
   private device: BluetoothDevice | null = null;
   private server: BluetoothRemoteGATTServer | null = null;
@@ -101,8 +82,8 @@ export class HeartRateSensorService {
     return this.device !== null;
   }
 
-  get deviceName() {
-    return this.device ? this.device.name : 'No device selected';
+  get deviceName(): string {
+    return this.device?.name ?? 'No device selected';
   }
 
   get isConnected() {

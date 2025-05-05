@@ -1,5 +1,5 @@
-import { HeartRateSensorServiceEvent } from "../services/heart-rate-sensor.service";
 import { MetricService } from "../services/metric.service";
+import { HeartRateSensorServiceEvent } from "./HeartRateSensorServiceEvent";
 import { Metric } from "./Metric";
 
 export class HeartRateMetric extends Metric {

@@ -1,5 +1,4 @@
-import { last } from "rxjs";
-import { LocationServiceEvent } from "../services/location.service";
+import { LocationServiceEvent } from './LocationServiceEvent';
 import { MetricService } from "../services/metric.service";
 import { Metric } from "./Metric";
 

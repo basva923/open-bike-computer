@@ -10,6 +10,7 @@ import {
   Map,
 } from 'leaflet';
 import { LocationService } from '../services/location.service';
+import { LocationServiceEvent } from '../model/LocationServiceEvent';
 import { NgIf } from '@angular/common';
 import { ServiceFactory } from '../services/ServiceFactory';
 
@@ -47,12 +48,12 @@ export class MapComponent {
         this.locationService.curLongitude
       );
     }
-    this.locationService.subscribeForLocation((location) => {
+    this.locationService.subscribeForLocation((locationEvent: LocationServiceEvent) => {
       if (!self.moved) {
         self.isProgramaticMove = true;
         self.center = latLng(
-          location.coords.latitude,
-          location.coords.longitude
+          locationEvent.location.coords.latitude,
+          locationEvent.location.coords.longitude
         );
       }
     });

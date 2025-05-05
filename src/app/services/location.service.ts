@@ -1,18 +1,11 @@
 import { Injectable } from '@angular/core';
-
-export class LocationServiceEvent extends Event {
-  location: GeolocationPosition;
-
-  constructor(location: GeolocationPosition) {
-    super('newLocation');
-    this.location = location;
-  }
-}
+import { LocationServiceEvent } from '../model/LocationServiceEvent';
+import { ILocationService } from './ILocationService';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LocationService {
+export class LocationService implements ILocationService {
   protected locations: GeolocationPosition[] = [];
   public currentLocationEvent = new EventTarget();
   private absolute = false;

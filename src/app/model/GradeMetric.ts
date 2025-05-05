@@ -1,4 +1,4 @@
-import { LocationServiceEvent } from "../services/location.service";
+import { LocationServiceEvent } from './LocationServiceEvent';
 import { MetricService } from "../services/metric.service";
 import { Util } from "../util/util";
 import { Metric } from "./Metric";

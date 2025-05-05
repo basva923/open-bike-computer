@@ -1,11 +1,19 @@
 <h2>Setting</h2>
 
+<h3>Activity</h3>
+
+<button class="btn btn-primary" (click)="startActivity()">
+    Start activity
+</button>
+<button class="btn btn-danger" (click)="stopActivity()">
+    Stop activity
+</button>
+
 <h3>HR sensor</h3>
 
 <div *ngIf="heartRateSensor.deviceSelected">
     Devicename: {{heartRateSensor.deviceName}}<br>
     Connected: {{heartRateSensor.isConnected}}<br>
-    Last heartrate: {{heartRateSensor.heartRate?.heartRate}}<br>
 </div>
 <button type="button" class="btn btn-primary" *ngIf="!heartRateSensor.deviceSelected"
     (click)="requestHeartRateDevice()">
@@ -15,3 +23,15 @@
     (click)="reconnectToLastConnected()">
     Reconnect to last connected device
 </button>
+
+<h3>Metrics</h3>
+<table>
+    <tr>
+        <th>Metric</th>
+        <th>Last value</th>
+    </tr>
+    <tr *ngFor="let metricName of metricService.getNames()">
+        <td>{{metricName}}</td>
+        <td>{{metricService.getByName(metricName)!.displayLastValue()}}</td>
+    </tr>
+</table>>

@@ -1,7 +1,5 @@
-import { MetricService } from "../services/metric.service";
-
-var convert = require('convert-units')
-
+import { IMetricService } from '../services/IMetricService';
+import { UnitConversion } from '../util/unit-conversion';
 
 export abstract class Metric {
     protected name: string;
@@ -12,9 +10,9 @@ export abstract class Metric {
     protected values: number[];
     protected timestamps: Date[];
 
-    protected metricService: MetricService;
+    protected metricService: IMetricService;
 
-    constructor(name: string, siUnit: string, metricService: MetricService, preferredUnit: string = siUnit, preferredPrecision: number = 2) {
+    constructor(name: string, siUnit: string, metricService: IMetricService, preferredUnit: string = siUnit, preferredPrecision: number = 2) {
         this.metricService = metricService;
         this.name = name;
         this.siUnit = siUnit;
@@ -56,12 +54,15 @@ export abstract class Metric {
         }
         return null;
     }
-    displayLastValue(): string {
+    displayLastValue(includeUnit: boolean = true): string {
         const lastValue = this.getLastValue();
         if (lastValue !== null) {
             let valueConverted = lastValue;
             if (this.siUnit !== this.preferredUnit) {
-                valueConverted = convert(lastValue).from(this.siUnit).to(this.preferredUnit);
+                valueConverted = UnitConversion.convert(lastValue, this.siUnit, this.preferredUnit);
+            }
+            if (includeUnit) {
+                return `${valueConverted.toFixed(this.preferredPrecision)} ${this.preferredUnit}`;
             }
             return `${valueConverted.toFixed(this.preferredPrecision)}`;
         }
