@@ -1,7 +1,7 @@
 import { LocationServiceEvent } from './LocationServiceEvent';
 import { MetricService } from "../services/metric.service";
 import { Util } from "../util/util";
-import { Metric } from "./Metric";
+import { Metric, MetricType } from "./Metric";
 
 export class DistanceMetric extends Metric {
     private lastLocation: GeolocationPosition | null = null;
@@ -9,7 +9,7 @@ export class DistanceMetric extends Metric {
     private handler = this.locationEventHandler.bind(this);
 
     constructor(metricService: MetricService) {
-        super('Distance', 'm', metricService, 'km');
+        super(MetricType.DISTANCE, 'Distance', 'm', metricService, 'km');
     }
     startLogging(): void {
         this.metricService.getLocationService().subscribeForLocation(this.handler);

@@ -1,12 +1,12 @@
 import { MetricService } from "../services/metric.service";
-import { Metric } from "./Metric";
+import { Metric, MetricType } from "./Metric";
 import { PowerMeterServiceEvent } from "./PowerMeterServiceEvent";
 
 export class PowerMetric extends Metric {
     private handler = this.handlePowerMeterEvent.bind(this);
 
     constructor(metricService: MetricService) {
-        super('Power', 'W', metricService);
+        super(MetricType.POWER, 'Power', 'W', metricService);
     }
 
     startLogging(): void {

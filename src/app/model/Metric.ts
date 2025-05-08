@@ -1,7 +1,25 @@
 import { IMetricService } from '../services/IMetricService';
 import { UnitConversion } from '../util/unit-conversion';
 
+export enum MetricType {
+    ALTITUDE = "ALTITUDE",
+    CADENCE = "CADENCE",
+    DISTANCE = "DISTANCE",
+    GRADE = "GRADE",
+    HEART_RATE = "HEART_RATE",
+    LATITUDE = "LATITUDE",
+    LONGITUDE = "LONGITUDE",
+    POWER_BALENCE = "POWER_BALENCE",
+    POWER = "POWER",
+    SPEED = "SPEED",
+    TEMPERATURE = "TEMPERATURE",
+    VERTICAL_SPEED = "VERTICAL_SPEED",
+    WHEEL_ROTATIONS = "WHEEL_ROTATIONS"
+}
+
+
 export abstract class Metric {
+    protected type: MetricType;
     protected name: string;
     protected siUnit: string;
     protected preferredUnit: string;
@@ -12,7 +30,8 @@ export abstract class Metric {
 
     protected metricService: IMetricService;
 
-    constructor(name: string, siUnit: string, metricService: IMetricService, preferredUnit: string = siUnit, preferredPrecision: number = 2) {
+    constructor(type: MetricType, name: string, siUnit: string, metricService: IMetricService, preferredUnit: string = siUnit, preferredPrecision: number = 2) {
+        this.type = type;
         this.metricService = metricService;
         this.name = name;
         this.siUnit = siUnit;

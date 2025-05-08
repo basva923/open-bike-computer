@@ -1,9 +1,9 @@
 import { MetricService } from "../services/metric.service";
-import { Metric } from "./Metric";
+import { Metric, MetricType } from "./Metric";
 
 export class TemperatureMetric extends Metric {
     constructor(metricService: MetricService) {
-        super('Temperature', '°K', metricService, '°C');
+        super(MetricType.TEMPERATURE, 'Temperature', '°K', metricService, '°C');
     }
 
     startLogging(): void {

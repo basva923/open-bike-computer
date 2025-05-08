@@ -1,12 +1,12 @@
 import { MetricService } from "../services/metric.service";
-import { Metric } from "./Metric";
+import { Metric, MetricType } from "./Metric";
 import { SpeedSensorServiceEvent } from './SpeedSensorServiceEvent';
 
 export class WheelRotationsMetric extends Metric {
     private speedSensorHandler = this.speedSensorEventHandler.bind(this);
 
     constructor(metricService: MetricService) {
-        super('Wheel Rotations', '', metricService, '');
+        super(MetricType.WHEEL_ROTATIONS, 'Wheel Rotations', '', metricService, '');
     }
 
     startLogging(): void {

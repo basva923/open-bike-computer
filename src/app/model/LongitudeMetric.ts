@@ -1,12 +1,12 @@
 import { LocationServiceEvent } from './LocationServiceEvent';
 import { MetricService } from "../services/metric.service";
-import { Metric } from "./Metric";
+import { Metric, MetricType } from "./Metric";
 
 export class LongitudeMetric extends Metric {
     private handler = this.locationEventHandler.bind(this);
 
     constructor(metricService: MetricService) {
-        super('Longitude', '°', metricService, '°', 5);
+        super(MetricType.LONGITUDE, 'Longitude', '°', metricService, '°', 5);
     }
 
     startLogging(): void {

@@ -1,6 +1,6 @@
 import { LocationServiceEvent } from './LocationServiceEvent';
 import { MetricService } from "../services/metric.service";
-import { Metric } from "./Metric";
+import { Metric, MetricType } from "./Metric";
 
 export class VerticalSpeedMetric extends Metric {
 
@@ -8,7 +8,7 @@ export class VerticalSpeedMetric extends Metric {
     private handler = this.locationEventHandler.bind(this);
 
     constructor(metricService: MetricService) {
-        super('Vertical Speed', 'm/s', metricService);
+        super(MetricType.VERTICAL_SPEED, 'Vertical Speed', 'm/s', metricService);
     }
 
     startLogging(): void {

@@ -1,11 +1,11 @@
 import { MetricService } from "../services/metric.service";
-import { Metric } from "./Metric";
+import { Metric, MetricType } from "./Metric";
 import { PowerMeterServiceEvent } from "./PowerMeterServiceEvent";
 
 export class CadenceMetric extends Metric {
     private handler = this.handlePowerMeterEvent.bind(this);
     constructor(metricService: MetricService) {
-        super('Cadence', 'rpm', metricService);
+        super(MetricType.CADENCE, 'Cadence', 'rpm', metricService);
     }
 
 

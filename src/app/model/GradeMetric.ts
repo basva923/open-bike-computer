@@ -1,14 +1,14 @@
 import { LocationServiceEvent } from './LocationServiceEvent';
 import { MetricService } from "../services/metric.service";
 import { Util } from "../util/util";
-import { Metric } from "./Metric";
+import { Metric, MetricType } from "./Metric";
 
 export class GradeMetric extends Metric {
     private lastLocation: GeolocationPosition | null = null;
     private handler = this.locationEventHandler.bind(this);
 
     constructor(metricService: MetricService) {
-        super('Grade', '%', metricService);
+        super(MetricType.GRADE, 'Grade', '%', metricService);
     }
 
     startLogging(): void {

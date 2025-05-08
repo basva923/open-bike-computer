@@ -1,6 +1,6 @@
 import { LocationServiceEvent } from './LocationServiceEvent';
 import { MetricService } from "../services/metric.service";
-import { Metric } from "./Metric";
+import { Metric, MetricType } from "./Metric";
 import { SpeedSensorServiceEvent } from './SpeedSensorServiceEvent';
 import { SpeedSensorData } from './SpeedSensorData';
 import { last } from 'rxjs';
@@ -11,7 +11,7 @@ export class SpeedMetric extends Metric {
     private lastSpeedSensorDatas: SpeedSensorData[] = [];
 
     constructor(metricService: MetricService, private wheelCircumference: number = 2.1) {
-        super('Speed', 'm/s', metricService, 'km/h');
+        super(MetricType.SPEED, 'Speed', 'm/s', metricService, 'km/h');
     }
 
     startLogging(): void {
