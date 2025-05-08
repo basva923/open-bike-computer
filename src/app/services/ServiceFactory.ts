@@ -4,12 +4,15 @@ import { LocationMockService } from "./location-mock.service";
 import { LocationService } from "./location.service";
 import { PowerMeterMockService } from "./power-meter-mock.service";
 import { PowerMeterService } from "./power-meter.service";
+import { SpeedSensorMockService } from "./speed-sensor-mock.service";
+import { SpeedSensorService } from "./speed-sensor.service";
 
 
 export class ServiceFactory {
     private static heartRateSensorServiceInstance: HeartRateSensorService | null = null;
     private static locationServiceInstance: LocationService | null = null;
     private static powerMeterServiceInstance: PowerMeterService | null = null;
+    private static speedSensorServiceInstance: SpeedSensorService | null = null;
 
     static getHeartRateSensorService(): HeartRateSensorService {
         if (!this.heartRateSensorServiceInstance) {
@@ -30,5 +33,12 @@ export class ServiceFactory {
             this.powerMeterServiceInstance = new PowerMeterMockService();
         }
         return this.powerMeterServiceInstance;
+    }
+
+    static getSpeedSensorService(): SpeedSensorService {
+        if (!this.speedSensorServiceInstance) {
+            this.speedSensorServiceInstance = new SpeedSensorMockService();
+        }
+        return this.speedSensorServiceInstance;
     }
 }

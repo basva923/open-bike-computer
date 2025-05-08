@@ -17,6 +17,8 @@ import { CadenceMetric } from '../model/CadenceMetric';
 import { IMetricService } from './IMetricService';
 import { PowerMeterService } from './power-meter.service';
 import { PowerBalenceMetric } from '../model/PowerBalenceMetric';
+import { SpeedSensorService } from './speed-sensor.service';
+import { WheelRotationsMetric } from '../model/WheelRotationsMetric';
 
 @Injectable({
   providedIn: 'root'
@@ -25,12 +27,14 @@ export class MetricService implements IMetricService {
   private locationService: LocationService;
   private heartRateSensorService: HeartRateSensorService;
   private powerMeterService: PowerMeterService;
+  private speedSensorService: SpeedSensorService;
   private metrics: Metric[] = [];
 
   constructor() {
     this.locationService = ServiceFactory.getLocationService();
     this.heartRateSensorService = ServiceFactory.getHeartRateSensorService();
     this.powerMeterService = ServiceFactory.getPowerMeterService();
+    this.speedSensorService = ServiceFactory.getSpeedSensorService();
 
     this.metrics.push(
       new AltitudeMetric(this),
@@ -44,7 +48,8 @@ export class MetricService implements IMetricService {
       new GradeMetric(this),
       new DistanceMetric(this),
       new CadenceMetric(this),
-      new PowerBalenceMetric(this)
+      new PowerBalenceMetric(this),
+      new WheelRotationsMetric(this)
     );
   }
 
@@ -70,6 +75,10 @@ export class MetricService implements IMetricService {
 
   getPowerMeterService(): PowerMeterService {
     return this.powerMeterService;
+  }
+
+  getSpeedSensorService(): SpeedSensorService {
+    return this.speedSensorService;
   }
 
   getByName(name: string): Metric | null {

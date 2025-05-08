@@ -37,6 +37,19 @@
     Reconnect to last connected device
 </button>
 
+<h3>Speed sensor</h3>
+<div *ngIf="speedSensor.deviceSelected">
+    Devicename: {{speedSensor.deviceName}}<br>
+    Connected: {{speedSensor.isConnected}}<br>
+</div>
+<button type="button" class="btn btn-primary" *ngIf="!speedSensor.deviceSelected" (click)="requestSpeedSensorDevice()">
+    Request speed sensor device
+</button>
+<button type="button" class="btn btn-success" *ngIf="!speedSensor.deviceSelected"
+    (click)="reconnectToLastConnectedSpeedSensor()">
+    Reconnect to last connected device
+</button>
+
 <h3>Metrics</h3>
 <table>
     <tr>
