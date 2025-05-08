@@ -30,7 +30,7 @@ export abstract class Metric {
 
     protected metricService: IMetricService;
 
-    constructor(type: MetricType, name: string, siUnit: string, metricService: IMetricService, preferredUnit: string = siUnit, preferredPrecision: number = 2) {
+    constructor(type: MetricType, name: string, siUnit: string, metricService: IMetricService, preferredUnit: string = siUnit, preferredPrecision: number = 0) {
         this.type = type;
         this.metricService = metricService;
         this.name = name;
@@ -85,7 +85,7 @@ export abstract class Metric {
             }
             return `${valueConverted.toFixed(this.preferredPrecision)}`;
         }
-        return 'No data';
+        return '---';
     }
 
     getLastTimestamp(): Date | null {
@@ -93,6 +93,9 @@ export abstract class Metric {
             return this.timestamps[this.timestamps.length - 1];
         }
         return null;
+    }
+    getType(): MetricType {
+        return this.type;
     }
 }
 

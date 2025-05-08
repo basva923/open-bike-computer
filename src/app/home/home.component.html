@@ -1,14 +1,8 @@
 <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
   <li [ngbNavItem]="1">
-    <button ngbNavLink>Timers</button>
+    <button ngbNavLink>Metrics</button>
     <ng-template ngbNavContent>
-      
-    </ng-template>
-  </li>
-  <li [ngbNavItem]="2">
-    <button ngbNavLink>Wind</button>
-    <ng-template ngbNavContent>
-      
+      <app-metrics></app-metrics>
     </ng-template>
   </li>
   <li [ngbNavItem]="3">

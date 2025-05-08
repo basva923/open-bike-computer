@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LocationService } from './location.service';
 import { HeartRateSensorService } from './heart-rate-sensor.service';
 import { ServiceFactory } from './ServiceFactory';
-import { Metric } from '../model/Metric';
+import { Metric, MetricType } from '../model/Metric';
 import { AltitudeMetric } from '../model/AltitudeMetric';
 import { VerticalSpeedMetric } from '../model/VerticalSpeedMetric';
 import { TemperatureMetric } from '../model/TemperatureMetric';
@@ -97,4 +97,14 @@ export class MetricService implements IMetricService {
     }
     return names;
   }
+
+  getByMetricType(metricType: MetricType): Metric {
+    for (let i = 0; i < this.metrics.length; i++) {
+      if (this.metrics[i].getType() === metricType) {
+        return this.metrics[i];
+      }
+    }
+    throw new Error(`Metric with type ${metricType} not found`);
+  }
+
 }

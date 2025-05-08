@@ -1,0 +1,10 @@
+.metric-name {
+    font-size: 0.7em;
+    padding: 0;
+}
+
+.metric-value {
+    font-size: 4em;
+    padding: 0;
+    font-weight: bold;
+}
