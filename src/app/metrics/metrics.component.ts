@@ -23,6 +23,8 @@ export class MetricsComponent {
     [MetricType.WHEEL_ROTATIONS, MetricType.DISTANCE]
   ]
 
+  protected editModeIsActive = false;
+
   constructor(protected metricsService: MetricService) {
     this.metricsService = metricsService;
   }

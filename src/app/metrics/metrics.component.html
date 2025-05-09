@@ -1,12 +1,19 @@
 <div class="container">
     <div class="row" *ngFor="let row of config" [ngStyle]="{'height': getRowHeight(row.length)}">
         <div class="metric-col" *ngFor="let metricType of row" [ngClass]="'col-' + getColumnSpan(row.length)">
-            <div class="metric-name">
-                {{getNameForMetric(metricType)}} ({{getUnitForMetric(metricType)}})
-            </div>
-            <div class="metric-value">
-                {{getLastValueForMetric(metricType)}}
-            </div>
+            <span *ngIf="!editModeIsActive">
+                <div class="metric-name">
+                    {{getNameForMetric(metricType)}} ({{getUnitForMetric(metricType)}})
+                </div>
+                <div class="metric-value">
+                    {{getLastValueForMetric(metricType)}}
+                </div>
+            </span>
+            <span *ngIf="editModeIsActive">
+                <div class="metric-name">
+                    <input type="text" />
+                </div>
+            </span>
         </div>
     </div>
 </div>
