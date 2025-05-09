@@ -1,6 +1,6 @@
 <div class="container">
-    <div class="row" *ngFor="let row of config">
-        <div class="col-6 metric-col" *ngFor="let metricType of row">
+    <div class="row" *ngFor="let row of config" [ngStyle]="{'height': getRowHeight(row.length)}">
+        <div class="metric-col" *ngFor="let metricType of row" [ngClass]="'col-' + getColumnSpan(row.length)">
             <div class="metric-name">
                 {{getNameForMetric(metricType)}} ({{getUnitForMetric(metricType)}})
             </div>
@@ -8,7 +8,5 @@
                 {{getLastValueForMetric(metricType)}}
             </div>
         </div>
-
     </div>
-
 </div>

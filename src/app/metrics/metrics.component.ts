@@ -12,10 +12,12 @@ import { CommonModule } from '@angular/common';
 })
 export class MetricsComponent {
   protected config = [
+    [MetricType.POWER],
     [MetricType.SPEED, MetricType.POWER],
     [MetricType.CADENCE, MetricType.HEART_RATE],
     [MetricType.ALTITUDE, MetricType.VERTICAL_SPEED],
-    [MetricType.DISTANCE, MetricType.GRADE],
+    [MetricType.DISTANCE, MetricType.GRADE, MetricType.CADENCE],
+    [MetricType.CADENCE],
     [MetricType.TEMPERATURE, MetricType.POWER_BALENCE],
     // [MetricType.LATITUDE, MetricType.LONGITUDE],
     [MetricType.WHEEL_ROTATIONS, MetricType.DISTANCE]
@@ -42,6 +44,32 @@ export class MetricsComponent {
   getUnitForMetric(metricType: MetricType): string {
     const metric = this.metricsService.getByMetricType(metricType);
     return metric.getPreferredUnit();
+  }
+
+  getRowHeight(metricCount: number): string {
+    switch (metricCount) {
+      case 1:
+        return '20vh';
+      case 2:
+        return '15vh';
+      case 3:
+        return '10vh';
+      default:
+        return 'auto';
+    }
+  }
+
+  getColumnSpan(metricCount: number): number {
+    switch (metricCount) {
+      case 1:
+        return 12;
+      case 2:
+        return 6;
+      case 3:
+        return 4;
+      default:
+        return 12 / metricCount;
+    }
   }
 
   protected scaleMetricValues() {

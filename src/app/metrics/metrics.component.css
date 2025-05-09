@@ -1,6 +1,7 @@
 .metric-name {
     font-size: 0.7em;
     padding: 0;
+    text-align: left;
 }
 
 .metric-value {
@@ -16,5 +17,6 @@
 
 .metric-col {
     padding: 0;
-    height: 15vh;
+    height: 100%;
+    text-align: center;
 }
