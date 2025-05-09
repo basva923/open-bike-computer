@@ -14,6 +14,9 @@ export class LocationMockService extends LocationService {
   constructor() {
     super();
     this.generateRandomRoute();
+  }
+
+  protected override startListeningForLocation() {
     this.startMockRide();
   }
 

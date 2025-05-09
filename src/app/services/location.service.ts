@@ -16,6 +16,10 @@ export class LocationService implements ILocationService {
   private reversedPhone = false;
 
   constructor() {
+    this.startListeningForLocation();
+  }
+
+  protected startListeningForLocation() {
     // start gps watch
     const self = this;
     navigator.geolocation.watchPosition(
