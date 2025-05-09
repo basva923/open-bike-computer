@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MapComponent } from '../map/map.component';
+import { LeafletMapComponent } from '../leaflet-map/leaflet-map.component';
 import { SettingsComponent } from '../settings/settings.component';
 import { MetricsComponent } from '../metrics/metrics.component';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -8,7 +8,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MapComponent, SettingsComponent, MetricsComponent, MatTabsModule],
+  imports: [LeafletMapComponent, SettingsComponent, MetricsComponent, MatTabsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })

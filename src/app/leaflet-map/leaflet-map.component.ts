@@ -15,13 +15,13 @@ import { NgIf } from '@angular/common';
 import { ServiceFactory } from '../services/ServiceFactory';
 
 @Component({
-  selector: 'app-map',
+  selector: 'app-leaflet-map',
   standalone: true,
   imports: [LeafletModule, NgIf],
-  templateUrl: './map.component.html',
-  styleUrl: './map.component.css',
+  templateUrl: './leaflet-map.component.html',
+  styleUrl: './leaflet-map.component.css',
 })
-export class MapComponent {
+export class LeafletMapComponent {
   private locationService: LocationService
   options = {
     layers: [
