@@ -3,10 +3,12 @@ import { MetricService } from '../services/metric.service';
 import { MetricType } from '../model/Metric';
 import { CommonModule } from '@angular/common';
 
+import { MatGridListModule } from '@angular/material/grid-list';
+
 @Component({
   selector: 'app-metrics',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatGridListModule],
   templateUrl: './metrics.component.html',
   styleUrl: './metrics.component.css'
 })
@@ -17,6 +19,7 @@ export class MetricsComponent {
     [MetricType.CADENCE, MetricType.HEART_RATE],
     [MetricType.ALTITUDE, MetricType.VERTICAL_SPEED],
     [MetricType.DISTANCE, MetricType.GRADE, MetricType.CADENCE],
+    [MetricType.ALTITUDE, MetricType.ALTITUDE, MetricType.ALTITUDE],
     [MetricType.CADENCE],
     [MetricType.TEMPERATURE, MetricType.POWER_BALENCE],
     // [MetricType.LATITUDE, MetricType.LONGITUDE],
@@ -48,16 +51,16 @@ export class MetricsComponent {
     return metric.getPreferredUnit();
   }
 
-  getRowHeight(metricCount: number): string {
+  getRowSpan(metricCount: number): number {
     switch (metricCount) {
       case 1:
-        return '20vh';
+        return 20;
       case 2:
-        return '15vh';
+        return 15;
       case 3:
-        return '10vh';
+        return 10;
       default:
-        return 'auto';
+        return 10;
     }
   }
 
@@ -76,6 +79,7 @@ export class MetricsComponent {
 
   protected scaleMetricValues() {
     document.querySelectorAll('.metric-value').forEach((metric) => {
+      const factor = 0.8;
       const parentWidth = metric.parentElement?.clientWidth;
       const textWidth = metric.scrollWidth;
 
@@ -87,9 +91,9 @@ export class MetricsComponent {
       }
 
       if (textWidth / textHeight > parentWidth / parentHeight) {
-        (metric as any).style.transform = 'scale(' + (parentWidth * 0.9 / textWidth) + ')';
+        (metric as any).style.transform = 'scale(' + (parentWidth * factor / textWidth) + ')';
       } else {
-        (metric as any).style.transform = 'scale(' + (parentHeight * 0.9 / textHeight) + ')';
+        (metric as any).style.transform = 'scale(' + (parentHeight * factor / textHeight) + ')';
       }
     });
 

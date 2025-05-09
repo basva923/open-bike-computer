@@ -1,19 +1,18 @@
-<div class="container">
-    <div class="row" *ngFor="let row of config" [ngStyle]="{'height': getRowHeight(row.length)}">
-        <div class="metric-col" *ngFor="let metricType of row" [ngClass]="'col-' + getColumnSpan(row.length)">
-            <span *ngIf="!editModeIsActive">
-                <div class="metric-name">
-                    {{getNameForMetric(metricType)}} ({{getUnitForMetric(metricType)}})
-                </div>
+<mat-grid-list cols="12" rowHeight="1vh">
+    @for (row of config; track row) {
+    @for (metricType of row; track metricType) {
+    <mat-grid-tile [colspan]="getColumnSpan(row.length)" [rowspan]="getRowSpan(row.length)">
+        <div class="metric-col">
+            <div class="metric-name">
+                {{getNameForMetric(metricType)}} ({{getUnitForMetric(metricType)}})
+            </div>
+            <div class="metric-value-container">
                 <div class="metric-value">
                     {{getLastValueForMetric(metricType)}}
                 </div>
-            </span>
-            <span *ngIf="editModeIsActive">
-                <div class="metric-name">
-                    <input type="text" />
-                </div>
-            </span>
+            </div>
         </div>
-    </div>
-</div>
+    </mat-grid-tile>
+    }
+    }
+</mat-grid-list>

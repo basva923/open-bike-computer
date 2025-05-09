@@ -7,11 +7,13 @@ import { ServiceFactory } from '../services/ServiceFactory';
 import { MetricService } from '../services/metric.service';
 import { PowerMeterService } from '../services/power-meter.service';
 import { SpeedSensorService } from '../services/speed-sensor.service';
+import { MatButtonModule } from '@angular/material/button';
+
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatButtonModule],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.css'
 })

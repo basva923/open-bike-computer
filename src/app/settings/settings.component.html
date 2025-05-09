@@ -2,10 +2,10 @@
 
 <h3>Activity</h3>
 
-<button class="btn btn-primary" (click)="startActivity()">
+<button mat-flat-button (click)="startActivity()">
     Start activity
 </button>
-<button class="btn btn-danger" (click)="stopActivity()">
+<button mat-flat-button (click)="stopActivity()">
     Stop activity
 </button>
 
@@ -15,12 +15,10 @@
     Devicename: {{heartRateSensor.deviceName}}<br>
     Connected: {{heartRateSensor.isConnected}}<br>
 </div>
-<button type="button" class="btn btn-primary" *ngIf="!heartRateSensor.deviceSelected"
-    (click)="requestHeartRateDevice()">
+<button mat-flat-button *ngIf="!heartRateSensor.deviceSelected" (click)="requestHeartRateDevice()">
     Request heart rate device
 </button>
-<button type="button" class="btn btn-success" *ngIf="!heartRateSensor.deviceSelected"
-    (click)="reconnectToLastConnectedHeartRateSensor()">
+<button mat-flat-button *ngIf="!heartRateSensor.deviceSelected" (click)="reconnectToLastConnectedHeartRateSensor()">
     Reconnect to last connected device
 </button>
 
@@ -29,11 +27,10 @@
     Devicename: {{powerMeter.deviceName}}<br>
     Connected: {{powerMeter.isConnected}}<br>
 </div>
-<button type="button" class="btn btn-primary" *ngIf="!powerMeter.deviceSelected" (click)="requestPowerMeterDevice()">
+<button mat-flat-button *ngIf="!powerMeter.deviceSelected" (click)="requestPowerMeterDevice()">
     Request power meter device
 </button>
-<button type="button" class="btn btn-success" *ngIf="!powerMeter.deviceSelected"
-    (click)="reconnectToLastConnectedPowerMeter()">
+<button mat-flat-button *ngIf="!powerMeter.deviceSelected" (click)="reconnectToLastConnectedPowerMeter()">
     Reconnect to last connected device
 </button>
 
@@ -42,11 +39,10 @@
     Devicename: {{speedSensor.deviceName}}<br>
     Connected: {{speedSensor.isConnected}}<br>
 </div>
-<button type="button" class="btn btn-primary" *ngIf="!speedSensor.deviceSelected" (click)="requestSpeedSensorDevice()">
+<button mat-flat-button *ngIf="!speedSensor.deviceSelected" (click)="requestSpeedSensorDevice()">
     Request speed sensor device
 </button>
-<button type="button" class="btn btn-success" *ngIf="!speedSensor.deviceSelected"
-    (click)="reconnectToLastConnectedSpeedSensor()">
+<button mat-flat-button *ngIf="!speedSensor.deviceSelected" (click)="reconnectToLastConnectedSpeedSensor()">
     Reconnect to last connected device
 </button>
 

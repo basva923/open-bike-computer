@@ -2,6 +2,7 @@
     font-size: 0.7em;
     padding: 0;
     text-align: left;
+    width: 100%;
 }
 
 .metric-value {
@@ -9,14 +10,28 @@
     padding: 0;
     font-weight: bold;
     transform: scale(1);
-    display: inline-block;
     white-space: nowrap;
-    transform-origin: left top;
     text-align: center;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .metric-col {
     padding: 0;
     height: 100%;
     text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.metric-value-container {
+    display: flex;
+    /* Use flexbox for layout */
+    justify-content: center;
+    /* Center horizontally */
+    align-items: center;
+    /* Center vertically */
+    flex: 1;
+    align-content: center;
 }
