@@ -25,6 +25,10 @@ export class MetricsComponent {
     this.metricsService = metricsService;
   }
 
+  ngAfterContentChecked() {
+    this.scaleMetricValues();
+  }
+
   getNameForMetric(metricType: MetricType): string {
     const metric = this.metricsService.getByMetricType(metricType);
     return metric.getName();
@@ -38,5 +42,27 @@ export class MetricsComponent {
   getUnitForMetric(metricType: MetricType): string {
     const metric = this.metricsService.getByMetricType(metricType);
     return metric.getPreferredUnit();
+  }
+
+  protected scaleMetricValues() {
+    document.querySelectorAll('.metric-value').forEach((metric) => {
+      const parentWidth = metric.parentElement?.clientWidth;
+      const textWidth = metric.scrollWidth;
+
+      const parentHeight = metric.parentElement?.clientHeight;
+      const textHeight = metric.scrollHeight;
+
+      if (!(parentWidth && parentHeight && textWidth && textHeight)) {
+        return;
+      }
+
+      if (textWidth / textHeight > parentWidth / parentHeight) {
+        (metric as any).style.transform = 'scale(' + (parentWidth * 0.9 / textWidth) + ')';
+      } else {
+        (metric as any).style.transform = 'scale(' + (parentHeight * 0.9 / textHeight) + ')';
+      }
+    });
+
+    console.log('scaleMetricValues: ', document.querySelectorAll('.metric-value').length);
   }
 }

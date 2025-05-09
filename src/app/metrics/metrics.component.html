@@ -1,13 +1,14 @@
-<table class="table">
-    <tr *ngFor="let row of config">
-        <td *ngFor="let metricType of row">
+<div class="container">
+    <div class="row" *ngFor="let row of config">
+        <div class="col-6 metric-col" *ngFor="let metricType of row">
             <div class="metric-name">
                 {{getNameForMetric(metricType)}} ({{getUnitForMetric(metricType)}})
             </div>
             <div class="metric-value">
                 {{getLastValueForMetric(metricType)}}
             </div>
+        </div>
 
-        </td>
-    </tr>
-</table>
+    </div>
+
+</div>

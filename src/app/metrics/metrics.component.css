@@ -4,7 +4,17 @@
 }
 
 .metric-value {
-    font-size: 4em;
+    font-size: 6em;
     padding: 0;
     font-weight: bold;
+    transform: scale(1);
+    display: inline-block;
+    white-space: nowrap;
+    transform-origin: left top;
+    text-align: center;
+}
+
+.metric-col {
+    padding: 0;
+    height: 15vh;
 }
