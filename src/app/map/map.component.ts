@@ -59,11 +59,9 @@ export class MapComponent {
     });
   }
 
-  ngAfterViewInit() {
+  ngDoCheck() {
     const self = this;
-    setTimeout(() => {
-      self.map?.invalidateSize();
-    }, 300);
+    self.map?.invalidateSize();
   }
 
   onMapReady(map: Map) {

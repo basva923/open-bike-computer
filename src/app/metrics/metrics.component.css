@@ -35,3 +35,10 @@
     flex: 1;
     align-content: center;
 }
+
+
+.metric-select {
+    margin: 4vw;
+}
+
+.edit-button {}

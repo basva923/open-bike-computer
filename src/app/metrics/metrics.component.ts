@@ -4,32 +4,34 @@ import { MetricType } from '../model/Metric';
 import { CommonModule } from '@angular/common';
 
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+
 
 @Component({
   selector: 'app-metrics',
   standalone: true,
-  imports: [CommonModule, MatGridListModule],
+  imports: [CommonModule, MatGridListModule, MatSelectModule, MatButtonModule, MatIconModule],
   templateUrl: './metrics.component.html',
   styleUrl: './metrics.component.css'
 })
 export class MetricsComponent {
-  protected config = [
-    [MetricType.POWER],
-    [MetricType.SPEED, MetricType.POWER],
-    [MetricType.CADENCE, MetricType.HEART_RATE],
-    [MetricType.ALTITUDE, MetricType.VERTICAL_SPEED],
-    [MetricType.DISTANCE, MetricType.GRADE, MetricType.CADENCE],
-    [MetricType.ALTITUDE, MetricType.ALTITUDE, MetricType.ALTITUDE],
-    [MetricType.CADENCE],
-    [MetricType.TEMPERATURE, MetricType.POWER_BALENCE],
-    // [MetricType.LATITUDE, MetricType.LONGITUDE],
-    [MetricType.WHEEL_ROTATIONS, MetricType.DISTANCE]
-  ]
+  protected config: MetricType[][] = []
 
   protected editModeIsActive = false;
+  protected metricTypes: MetricType[] = Object.values(MetricType);
 
   constructor(protected metricsService: MetricService) {
     this.metricsService = metricsService;
+    this.loadConfigFromLocalStorage();
+  }
+
+  toggleEditMode() {
+    if (this.editModeIsActive) {
+      this.saveConfigToLocalStorage();
+    }
+    this.editModeIsActive = !this.editModeIsActive;
   }
 
   ngAfterContentChecked() {
@@ -77,6 +79,11 @@ export class MetricsComponent {
     }
   }
 
+  onMetricTypeChange(selectedValue: MetricType, rowId: number, columnId: number) {
+    console.log(selectedValue)
+    this.config[rowId][columnId] = selectedValue;
+  }
+
   protected scaleMetricValues() {
     document.querySelectorAll('.metric-value').forEach((metric) => {
       const factor = 0.8;
@@ -96,7 +103,32 @@ export class MetricsComponent {
         (metric as any).style.transform = 'scale(' + (parentHeight * factor / textHeight) + ')';
       }
     });
+  }
 
-    console.log('scaleMetricValues: ', document.querySelectorAll('.metric-value').length);
+
+  protected saveConfigToLocalStorage() {
+    localStorage.setItem('metricsConfig', JSON.stringify(this.config));
+  }
+  protected loadConfigFromLocalStorage() {
+    const config = localStorage.getItem('metricsConfig');
+    if (config) {
+      this.config = JSON.parse(config);
+    } else {
+      this.resetConfig();
+    }
+  }
+  protected resetConfig() {
+    this.config = [
+      [MetricType.POWER],
+      [MetricType.SPEED, MetricType.POWER],
+      [MetricType.CADENCE, MetricType.HEART_RATE],
+      [MetricType.ALTITUDE, MetricType.VERTICAL_SPEED],
+      [MetricType.DISTANCE, MetricType.GRADE, MetricType.CADENCE],
+      [MetricType.ALTITUDE, MetricType.ALTITUDE, MetricType.ALTITUDE],
+      [MetricType.CADENCE],
+      [MetricType.TEMPERATURE, MetricType.POWER_BALENCE],
+      // [MetricType.LATITUDE, MetricType.LONGITUDE],
+      [MetricType.WHEEL_ROTATIONS, MetricType.DISTANCE]
+    ];
   }
 }
