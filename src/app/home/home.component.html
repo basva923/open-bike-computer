@@ -1,9 +1,12 @@
 <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
-  <mat-tab label="Map1">
+  <mat-tab label="Map">
     <app-mapbox-map></app-mapbox-map>
   </mat-tab>
   <mat-tab label="Data1">
-    <app-metrics></app-metrics>
+    <app-metrics tabName="data1"></app-metrics>
+  </mat-tab>
+  <mat-tab label="Data2">
+    <app-metrics tabName="data2"></app-metrics>
   </mat-tab>
   <!-- <mat-tab label="Map">
     <app-leaflet-map></app-leaflet-map>

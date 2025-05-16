@@ -1,3 +1,4 @@
+{{tabName}}
 <mat-grid-list cols="12" rowHeight="1vh">
 
 
@@ -16,11 +17,17 @@
             </div>
         </div>
         } @else {
-        <mat-select [(value)]="config[rowId][colId]" class="metric-select">
-            @for (t of metricTypes; track t) {
-            <mat-option [value]="t">{{t}}</mat-option>
-            }
-        </mat-select>
+        <div class="metric-col">
+            <mat-select [(value)]="config[rowId][colId]" class="metric-select">
+                @for (t of metricTypes; track t) {
+                <mat-option [value]="t">{{t}}</mat-option>
+                }
+            </mat-select>
+            <span>
+                <button mat-icon-button (click)="onInsertMetric(rowId, colId)"><mat-icon>add</mat-icon></button>
+                <button mat-icon-button (click)="onRemoveMetric(rowId, colId)"><mat-icon>remove</mat-icon></button>
+            </span>
+        </div>
         }
     </mat-grid-tile>
     }

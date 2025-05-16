@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MetricService } from '../services/metric.service';
 import { MetricType } from '../model/Metric';
 import { CommonModule } from '@angular/common';
@@ -21,6 +21,9 @@ export class MetricsComponent {
 
   protected editModeIsActive = false;
   protected metricTypes: MetricType[] = Object.values(MetricType);
+
+  @Input()
+  tabName!: string;
 
   constructor(protected metricsService: MetricService) {
     this.metricsService = metricsService;
@@ -84,6 +87,18 @@ export class MetricsComponent {
     this.config[rowId][columnId] = selectedValue;
   }
 
+  onInsertMetric(rowId: number, columnId: number) {
+    if (this.config[rowId].length < 4) {
+      this.config[rowId] = [...this.config[rowId].slice(0, columnId), MetricType.POWER, ...this.config[rowId].slice(columnId)];
+    }
+  }
+
+  onRemoveMetric(rowId: number, columnId: number) {
+    if (this.config[rowId].length > 1) {
+      this.config[rowId] = [...this.config[rowId].slice(0, columnId), ...this.config[rowId].slice(columnId + 1)];
+    }
+  }
+
   protected scaleMetricValues() {
     document.querySelectorAll('.metric-value').forEach((metric) => {
       const factor = 0.8;
@@ -107,10 +122,10 @@ export class MetricsComponent {
 
 
   protected saveConfigToLocalStorage() {
-    localStorage.setItem('metricsConfig', JSON.stringify(this.config));
+    localStorage.setItem('metricsConfig.' + this.tabName, JSON.stringify(this.config));
   }
   protected loadConfigFromLocalStorage() {
-    const config = localStorage.getItem('metricsConfig');
+    const config = localStorage.getItem('metricsConfig.' + this.tabName);
     if (config) {
       this.config = JSON.parse(config);
     } else {
