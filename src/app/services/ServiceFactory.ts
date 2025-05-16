@@ -13,31 +13,48 @@ export class ServiceFactory {
     private static locationServiceInstance: LocationService | null = null;
     private static powerMeterServiceInstance: PowerMeterService | null = null;
     private static speedSensorServiceInstance: SpeedSensorService | null = null;
+    private static mockEnabled = false;
 
     static getHeartRateSensorService(): HeartRateSensorService {
         if (!this.heartRateSensorServiceInstance) {
-            this.heartRateSensorServiceInstance = new HeartRateSensorMockService();
+            if (this.mockEnabled) {
+                this.heartRateSensorServiceInstance = new HeartRateSensorMockService();
+            } else {
+                this.heartRateSensorServiceInstance = new HeartRateSensorService();
+            }
         }
         return this.heartRateSensorServiceInstance;
     }
 
     static getLocationService(): LocationService {
         if (!this.locationServiceInstance) {
-            this.locationServiceInstance = new LocationMockService();
+            if (this.mockEnabled) {
+                this.locationServiceInstance = new LocationMockService();
+            } else {
+                this.locationServiceInstance = new LocationService();
+            }
         }
         return this.locationServiceInstance;
     }
 
     static getPowerMeterService(): PowerMeterService {
         if (!this.powerMeterServiceInstance) {
-            this.powerMeterServiceInstance = new PowerMeterMockService();
+            if (this.mockEnabled) {
+                this.powerMeterServiceInstance = new PowerMeterMockService();
+            } else {
+                this.powerMeterServiceInstance = new PowerMeterService();
+            }
         }
         return this.powerMeterServiceInstance;
     }
 
     static getSpeedSensorService(): SpeedSensorService {
         if (!this.speedSensorServiceInstance) {
-            this.speedSensorServiceInstance = new SpeedSensorMockService();
+            if (this.mockEnabled) {
+                this.speedSensorServiceInstance = new SpeedSensorMockService();
+            } else {
+                this.speedSensorServiceInstance = new SpeedSensorService();
+            }
         }
         return this.speedSensorServiceInstance;
     }
