@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LocationService } from './location.service';
 import { LocationServiceEvent } from '../model/LocationServiceEvent';
+import { Util } from '../util/util';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,18 @@ export class LocationMockService extends LocationService {
     for (let i = 0; i < numberOfPoints; i++) {
       const randomLatitudeOffset = (Math.random() - 0.5) * stepDistance;
       const randomLongitudeOffset = (Math.random() - 0.5) * stepDistance;
+      const heading = Util.toDegrees(Util.bearing(
+        currentLat,
+        currentLong,
+        currentLat + randomLatitudeOffset,
+        currentLong + randomLongitudeOffset
+      ))
+      const speed = Util.haversineDistanceBetweenPoints(
+        currentLat,
+        currentLong,
+        currentLat + randomLatitudeOffset,
+        currentLong + randomLongitudeOffset
+      ) / 1; // Speed in m/s (1 second interval)
       currentLat += randomLatitudeOffset;
       currentLong += randomLongitudeOffset;
       currentAltitude += (Math.random() - 0.5) * 10; // Random altitude change
@@ -42,8 +55,8 @@ export class LocationMockService extends LocationService {
           altitude: currentAltitude,
           accuracy: 5,
           altitudeAccuracy: 5,
-          heading: Math.random() * 360,
-          speed: 5 + Math.random() * 2
+          heading: heading,
+          speed: speed
         },
         timestamp: baseTimestamp + i * 1000
       });

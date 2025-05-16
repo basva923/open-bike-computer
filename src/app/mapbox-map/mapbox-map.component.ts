@@ -5,6 +5,7 @@ import { MapComponent, ControlComponent } from 'ngx-mapbox-gl';
 import { LocationService } from '../services/location.service';
 import { ServiceFactory } from '../services/ServiceFactory';
 import { LocationServiceEvent } from '../model/LocationServiceEvent';
+import { Util } from '../util/util';
 
 
 @Component({
@@ -46,10 +47,12 @@ export class MapboxMapComponent {
         if (!self.map.getSource('current-location')) {
           self.addCurrentLocationMarker();
         }
-        (self.map.getSource('track-log') as any).setData(self.trackData);
-        (self.map.getSource('current-location') as any).setData(self.currentLocationData);
+        (self.map.getSource('track-log') as any)?.setData(self.trackData);
+        (self.map.getSource('current-location') as any)?.setData(self.currentLocationData);
+        console.log(locationEvent.location.coords.heading);
+        self.map.setLayoutProperty('current-location', 'icon-rotate', locationEvent.location.coords.heading!);
       }
-    });
+    })
   }
 
   mapCreated(map: Map) {
@@ -105,17 +108,23 @@ export class MapboxMapComponent {
 
   protected addCurrentLocationMarker() {
     if (this.map) {
-      this.map.addSource('current-location', {
-        type: 'geojson',
-        data: this.currentLocationData as any,
-      });
-      this.map.addLayer({
-        id: 'current-location',
-        type: 'symbol',
-        source: 'current-location',
-        layout: {
-          'icon-image': 'circle-white-2'
-        }
+      this.map.loadImage("assets/icons/right-arrow.png", (error, image) => {
+        if (error) throw error;
+        this.map!.addImage('arrow', image!);
+        this.map!.addSource('current-location', {
+          type: 'geojson',
+          data: this.currentLocationData as any,
+        });
+        this.map!.addLayer({
+          id: 'current-location',
+          type: 'symbol',
+          source: 'current-location',
+          layout: {
+            'icon-image': 'arrow',
+            "icon-size": 0.25,
+            "icon-rotate": 90
+          }
+        });
       });
     }
   }
