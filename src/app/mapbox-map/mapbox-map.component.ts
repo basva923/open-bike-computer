@@ -25,41 +25,50 @@ export class MapboxMapComponent {
 
   constructor() {
     this.locationService = ServiceFactory.getLocationService();
-    const self = this;
     if (this.locationService.curLatitude && this.locationService.curLongitude) {
       this.center = [
         this.locationService.curLongitude,
         this.locationService.curLatitude,
       ];
     }
-    this.locationService.subscribeForLocation((locationEvent: LocationServiceEvent) => {
-      if (!self.moved) {
-        self.isProgramaticMove = true;
-        self.center = [
-          locationEvent.location.coords.longitude,
-          locationEvent.location.coords.latitude
-        ];
-      }
-      if (self.map) {
-        if (!self.map.getSource('track-log')) {
-          self.addTrackLayer();
-        }
-        if (!self.map.getSource('current-location')) {
-          self.addCurrentLocationMarker();
-        }
-        (self.map.getSource('track-log') as any)?.setData(self.trackData);
-        (self.map.getSource('current-location') as any)?.setData(self.currentLocationData);
-        console.log(locationEvent.location.coords.heading);
-        self.map.setLayoutProperty('current-location', 'icon-rotate', locationEvent.location.coords.heading!);
-      }
-    })
   }
 
   mapCreated(map: Map) {
+    console.log('Map created');
     this.map = map;
     if (this.map) {
+      this.map.resize()
       this.addNavigationControl();
-      console.log('Map created');
+      this.locationService.subscribeForLocation((locationEvent: LocationServiceEvent) => {
+        this.updateTrack(locationEvent);
+        this.updateCurrentLocation(locationEvent);
+        this.updateCenter(locationEvent);
+      });
+    }
+  }
+
+  updateTrack(locationEvent: LocationServiceEvent) {
+    if (!this.map?.getSource('track-log')) {
+      this.addTrackLayer();
+    }
+    (this.map?.getSource('track-log') as any)?.setData(this.trackData);
+  }
+
+  updateCurrentLocation(locationEvent: LocationServiceEvent) {
+    if (!this.map?.getSource('current-location')) {
+      this.addCurrentLocationMarker();
+    }
+    (this.map?.getSource('current-location') as any)?.setData(this.currentLocationData);
+    this.map?.setLayoutProperty('current-location', 'icon-rotate', locationEvent.location.coords.heading!);
+  }
+
+  updateCenter(locationEvent: LocationServiceEvent) {
+    if (!this.moved) {
+      this.isProgramaticMove = true;
+      this.center = [
+        locationEvent.location.coords.longitude,
+        locationEvent.location.coords.latitude
+      ];
     }
   }
 
