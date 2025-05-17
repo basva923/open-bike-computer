@@ -104,14 +104,14 @@ export class SpeedSensorService implements ISpeedSensorService {
         if (flags & 0x01) { // Wheel Revolution Data Present
             data.cumulativeWheelRevolutions = value.getUint32(index, true);
             index += 4;
-            data.lastWheelEventTime = new Date(timeStamp - (value.getUint16(index, true) / 1024)) // Unit is 1/1024 second
+            data.lastWheelEventTime = value.getUint16(index, true) // Unit is 1/1024 second
             index += 2;
         }
 
         if (flags & 0x02) { // Crank Revolution Data Present
             data.cumulativeCrankRevolutions = value.getUint16(index, true);
             index += 2;
-            data.lastCrankEventTime = new Date(timeStamp - (value.getUint16(index, true) / 1024)) // Unit is 1/1024 second
+            data.lastCrankEventTime = value.getUint16(index, true) // Unit is 1/1024 second
             index += 2;
         }
 

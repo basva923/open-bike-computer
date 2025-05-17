@@ -20,8 +20,8 @@ export class SpeedSensorMockService extends SpeedSensorService {
                 now,
                 0,
                 0,
-                now,
-                now
+                0,
+                0
             );
             if (this.lastSpeedSensorData) {
                 const speed = (Math.floor(Math.random() * 10) + 30) / 3.6; // in m/s
@@ -33,8 +33,8 @@ export class SpeedSensorMockService extends SpeedSensorService {
                     now,
                     this.lastSpeedSensorData.cumulativeWheelRevolutions! + wheelRotations,
                     this.lastSpeedSensorData.cumulativeCrankRevolutions! + crankRevolutions,
-                    now,
-                    now
+                    this.lastSpeedSensorData.lastWheelEventTime! + 1024,
+                    this.lastSpeedSensorData.lastCrankEventTime! + 1024
                 )
             }
 

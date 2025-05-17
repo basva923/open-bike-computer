@@ -46,9 +46,10 @@ export class SpeedMetric extends Metric {
         if (lastDataWithLessWheelRevolutions === null) {
             this.addValue(0, new Date(event.speedSensorData.timestamp));
         } else {
-            const diffRotations = event.speedSensorData.cumulativeWheelRevolutions - (lastDataWithLessWheelRevolutions!.cumulativeWheelRevolutions || 0);
-            const timediff = (event.speedSensorData.lastWheelEventTime!.getTime() - (lastDataWithLessWheelRevolutions!.lastWheelEventTime!.getTime())) / 1000; // in seconds
+            const diffRotations = event.speedSensorData.diffWheelRevolutions(lastDataWithLessWheelRevolutions) || 0;
+            const timediff = event.speedSensorData.diffWheelTimeInSeconds(lastDataWithLessWheelRevolutions) || 1;
             const speed = (diffRotations * this.wheelCircumference) / timediff; // in m/s
+            console.log(diffRotations, timediff, speed);
             this.addValue(speed, event.speedSensorData.timestamp);
         }
         this.lastSpeedSensorDatas.push(event.speedSensorData);
@@ -60,7 +61,7 @@ export class SpeedMetric extends Metric {
     getLastSpeedSensorDataWithLessWheelRevolutions(cumulativeWheelRevolutions: number): SpeedSensorData | null {
         for (let i = this.lastSpeedSensorDatas.length - 1; i >= 0; i--) {
             const data = this.lastSpeedSensorDatas[i];
-            if (data.cumulativeWheelRevolutions && data.cumulativeWheelRevolutions <= cumulativeWheelRevolutions) {
+            if (data.cumulativeWheelRevolutions && data.cumulativeWheelRevolutions < cumulativeWheelRevolutions) {
                 return data;
             }
         }
