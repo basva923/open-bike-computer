@@ -4,10 +4,36 @@
 
   <mgl-image id="arrow" url="assets/icons/arrow.png">
   </mgl-image>
+  <mgl-control>
+    <button mat-mini-fab color="primary" (click)="toggleNorth()">
+      @if (northUp) {
+      <mat-icon>north</mat-icon>
+      } @else {
+      <mat-icon>explore</mat-icon>
+      }
+    </button>
+  </mgl-control>
 
-  <mgl-control mglGeolocate position="top-right" [showUserLocation]="false"
-    (geolocate)="setCenterToCurrentLocation()"></mgl-control>
-  <mgl-control mglNavigation position="top-right"></mgl-control>
+
+  <mgl-control>
+    <button mat-mini-fab color="primary" (click)="setCenterToCurrentLocation()">
+      <mat-icon>my_location</mat-icon>
+    </button>
+  </mgl-control>
+
+  <mgl-control>
+    <button mat-mini-fab color="primary" (click)="zoomIn()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </mgl-control>
+
+  <mgl-control>
+    <button mat-mini-fab color="primary" (click)="zoomOut()">
+      <mat-icon>remove</mat-icon>
+    </button>
+  </mgl-control>
+
+
   <mgl-control mglScale position="bottom-right"></mgl-control>
 </mgl-map>
 

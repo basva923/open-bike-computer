@@ -17,6 +17,7 @@ import {
   ImageComponent
 } from '@maplibre/ngx-maplibre-gl';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
@@ -33,7 +34,8 @@ import { MatButtonModule } from '@angular/material/button';
     NavigationControlDirective,
     ScaleControlDirective,
     MarkerComponent,
-    ImageComponent
+    ImageComponent,
+    MatIconModule
 
   ],
   templateUrl: './maplibre-map.component.html',
@@ -44,6 +46,7 @@ export class MapLibreMapComponent {
   private locationService: LocationService
   protected center: LngLatLike = [0, 0];
   protected zoom: [number] = [12];
+  protected northUp = true;
 
   moved: boolean = false;
   isProgramaticMove = false;
@@ -103,6 +106,29 @@ export class MapLibreMapComponent {
   }
   onMoveEnd() {
     this.isProgramaticMove = false;
+  }
+
+  toggleNorth() {
+    this.northUp = !this.northUp;
+    if (this.northUp) {
+      this.map?.setBearing(0);
+    } else {
+      if (this.locationService.curHeading) {
+        this.map?.setBearing(this.locationService.curHeading);
+      }
+    }
+  }
+
+  zoomIn() {
+    if (this.map) {
+      this.map.zoomIn();
+    }
+  }
+
+  zoomOut() {
+    if (this.map) {
+      this.map.zoomOut();
+    }
   }
 
   protected addTrackLayer() {
