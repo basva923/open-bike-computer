@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LeafletMapComponent } from './leaflet-map.component';
+import { MapLibreMapComponent } from './maplibre-map.component';
 
-describe('MapComponent', () => {
-  let component: LeafletMapComponent;
-  let fixture: ComponentFixture<LeafletMapComponent>;
+describe('MapboxMapComponent', () => {
+  let component: MapLibreMapComponent;
+  let fixture: ComponentFixture<MapLibreMapComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LeafletMapComponent]
+      imports: [MapLibreMapComponent]
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(LeafletMapComponent);
+    fixture = TestBed.createComponent(MapLibreMapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

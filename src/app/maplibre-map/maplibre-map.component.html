@@ -1,0 +1,19 @@
+<mgl-map [style]="
+  'https://api.maptiler.com/maps/outdoor-v2/style.json?key=ySvSgRlK5jcGPEckx6HJ'" [zoom]="zoom" [center]="center"
+  (mapLoad)="mapCreated($event)" (mapDragStart)="setMoved()">
+
+  <mgl-image id="arrow" url="assets/icons/arrow.png">
+  </mgl-image>
+
+  <mgl-control mglGeolocate position="top-right" [showUserLocation]="false"
+    (geolocate)="setCenterToCurrentLocation()"></mgl-control>
+  <mgl-control mglNavigation position="top-right"></mgl-control>
+  <mgl-control mglScale position="bottom-right"></mgl-control>
+</mgl-map>
+
+
+<!-- @if (moved) {
+<button mat-flat-button class="fixed-bottom fixed-right" (click)="setCenterToCurrentLocation()">
+  Center
+</button>
+} -->

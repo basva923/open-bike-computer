@@ -1,24 +1,49 @@
 import { Component } from '@angular/core';
-
-import { LngLatLike, Map, NavigationControl } from 'mapbox-gl';
-import { MapComponent, ControlComponent } from 'ngx-mapbox-gl';
+import { LngLatLike, Map, NavigationControl } from 'maplibre-gl';
 import { LocationService } from '../services/location.service';
 import { ServiceFactory } from '../services/ServiceFactory';
 import { LocationServiceEvent } from '../model/LocationServiceEvent';
 import { Util } from '../util/util';
+import {
+  AttributionControlDirective,
+  ControlComponent,
+  FullscreenControlDirective,
+  GeolocateControlDirective,
+  MapComponent,
+  NavigationControlDirective,
+  MarkerComponent,
+  Position,
+  ScaleControlDirective,
+  ImageComponent
+} from '@maplibre/ngx-maplibre-gl';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @Component({
-  selector: 'app-mapbox-map',
+  selector: 'app-maplibre-map',
   standalone: true,
-  imports: [MapComponent, ControlComponent],
-  templateUrl: './mapbox-map.component.html',
-  styleUrl: './mapbox-map.component.css'
+  imports: [
+
+    MapComponent,
+    ControlComponent,
+    MatButtonModule,
+    AttributionControlDirective,
+    FullscreenControlDirective,
+    GeolocateControlDirective,
+    NavigationControlDirective,
+    ScaleControlDirective,
+    MarkerComponent,
+    ImageComponent
+
+  ],
+  templateUrl: './maplibre-map.component.html',
+  styleUrl: './maplibre-map.component.css'
 })
-export class MapboxMapComponent {
+export class MapLibreMapComponent {
   map: Map | null = null;
   private locationService: LocationService
   protected center: LngLatLike = [0, 0];
+  protected zoom: [number] = [12];
 
   moved: boolean = false;
   isProgramaticMove = false;
@@ -37,8 +62,6 @@ export class MapboxMapComponent {
     console.log('Map created');
     this.map = map;
     if (this.map) {
-      this.map.resize()
-      this.addNavigationControl();
       this.locationService.subscribeForLocation((locationEvent: LocationServiceEvent) => {
         this.updateTrack(locationEvent);
         this.updateCurrentLocation(locationEvent);
@@ -69,6 +92,7 @@ export class MapboxMapComponent {
         locationEvent.location.coords.longitude,
         locationEvent.location.coords.latitude
       ];
+      this.map?.setCenter(this.center);
     }
   }
 
@@ -80,18 +104,6 @@ export class MapboxMapComponent {
   onMoveEnd() {
     this.isProgramaticMove = false;
   }
-
-  protected addNavigationControl() {
-    if (this.map) {
-      const nav = new NavigationControl({
-        visualizePitch: true,
-        showCompass: true,
-        showZoom: true
-      });
-      this.map.addControl(nav, 'top-right');
-    }
-  }
-
 
   protected addTrackLayer() {
     if (this.map) {
@@ -117,23 +129,19 @@ export class MapboxMapComponent {
 
   protected addCurrentLocationMarker() {
     if (this.map) {
-      this.map.loadImage("assets/icons/right-arrow.png", (error, image) => {
-        if (error) throw error;
-        this.map!.addImage('arrow', image!);
-        this.map!.addSource('current-location', {
-          type: 'geojson',
-          data: this.currentLocationData as any,
-        });
-        this.map!.addLayer({
-          id: 'current-location',
-          type: 'symbol',
-          source: 'current-location',
-          layout: {
-            'icon-image': 'arrow',
-            "icon-size": 0.25,
-            "icon-rotate": 90
-          }
-        });
+      this.map!.addSource('current-location', {
+        type: 'geojson',
+        data: this.currentLocationData as any,
+      });
+      this.map!.addLayer({
+        id: 'current-location',
+        type: 'symbol',
+        source: 'current-location',
+        layout: {
+          'icon-image': 'arrow',
+          "icon-size": 0.25,
+          "icon-rotate": 90
+        }
       });
     }
   }
@@ -153,6 +161,7 @@ export class MapboxMapComponent {
       ];
     }
     this.moved = false;
+    return true;
   }
 
   get trackData() {
