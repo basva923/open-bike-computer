@@ -1,43 +1,47 @@
-<mat-grid-list cols="12" rowHeight="1vh">
+<div style="margin: 0 1rem;">
+
+    <mat-grid-list cols="12" rowHeight="1vh">
 
 
-    @for (row of config; track rowId; let rowId = $index) {
-    @for (metricType of row; track colId; let colId = $index) {
-    <mat-grid-tile [colspan]="getColumnSpan(row.length)" [rowspan]="getRowSpan(row.length)">
-        @if (!editModeIsActive) {
-        <div class="metric-col">
-            <div class="metric-name">
-                {{getNameForMetric(metricType)}} ({{getUnitForMetric(metricType)}})
-            </div>
-            <div class="metric-value-container">
-                <div class="metric-value" (onLongPress)="toggleEditMode()">
-                    {{getLastValueForMetric(metricType)}}
+        @for (row of config; track rowId; let rowId = $index) {
+        @for (metricType of row; track colId; let colId = $index) {
+        <mat-grid-tile [colspan]="getColumnSpan(row.length)" [rowspan]="getRowSpan(row.length)">
+            @if (!editModeIsActive) {
+            <div class="metric-col">
+                <div class="metric-name">
+                    {{getNameForMetric(metricType)}} ({{getUnitForMetric(metricType)}})
+                </div>
+                <div class="metric-value-container">
+                    <div class="metric-value" (onLongPress)="toggleEditMode()">
+                        {{getLastValueForMetric(metricType)}}
+                    </div>
                 </div>
             </div>
-        </div>
-        } @else {
-        <div class="metric-col">
-            <mat-select [(value)]="config[rowId][colId]" class="metric-select">
-                @for (t of metricTypes; track t) {
-                <mat-option [value]="t">{{t}}</mat-option>
-                }
-            </mat-select>
-            <span>
-                <button mat-icon-button (click)="onInsertMetric(rowId, colId)"><mat-icon>add</mat-icon></button>
-                <button mat-icon-button (click)="onRemoveMetric(rowId, colId)"><mat-icon>remove</mat-icon></button>
-            </span>
-        </div>
+            } @else {
+            <div class="metric-col">
+                <mat-select [(value)]="config[rowId][colId]" class="metric-select">
+                    @for (t of metricTypes; track t) {
+                    <mat-option [value]="t">{{t}}</mat-option>
+                    }
+                </mat-select>
+                <span>
+                    <button mat-icon-button (click)="onInsertMetric(rowId, colId)"><mat-icon>add</mat-icon></button>
+                    <button mat-icon-button (click)="onRemoveMetric(rowId, colId)"><mat-icon>remove</mat-icon></button>
+                </span>
+            </div>
+            }
+        </mat-grid-tile>
         }
-    </mat-grid-tile>
-    }
-    }
-</mat-grid-list>
+        }
+    </mat-grid-list>
 
-@if (editModeIsActive) {
-<button mat-flat-button (click)="toggleEditMode()" class="edit-button">Done</button>
-<button mat-flat-button (click)="loadConfigFromLocalStorage()">Cancel</button>
-<button mat-flat-button (click)="resetConfig()">Reset</button>
+    @if (editModeIsActive) {
+    <button mat-flat-button (click)="toggleEditMode()" class="edit-button">Done</button>
+    <button mat-flat-button (click)="loadConfigFromLocalStorage()">Cancel</button>
+    <button mat-flat-button (click)="resetConfig()">Reset</button>
 
-} @else {
-<button mat-icon-button (click)="toggleEditMode()" class="edit-button"><mat-icon>settings</mat-icon></button>
-}
+    } @else {
+    <button mat-icon-button (click)="toggleEditMode()" class="edit-button"><mat-icon>settings</mat-icon></button>
+    }
+
+</div>

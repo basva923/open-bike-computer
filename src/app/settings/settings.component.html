@@ -1,82 +1,85 @@
-<h2>Setting</h2>
+<div style="margin: 0 1rem;">
+    <h2>Setting</h2>
 
-<h3>Activity</h3>
+    <h3>Activity</h3>
 
-<button mat-flat-button (click)="startActivity()">
-    Start activity
-</button>
-<button mat-flat-button (click)="stopActivity()">
-    Stop activity
-</button>
+    <button mat-flat-button (click)="startActivity()">
+        Start activity
+    </button>
+    <button mat-flat-button (click)="stopActivity()">
+        Stop activity
+    </button>
 
-<h3>HR sensor</h3>
+    <h3>HR sensor</h3>
 
-<div *ngIf="heartRateSensor.deviceSelected">
-    {{heartRateSensor.deviceName}}
-    <span *ngIf="heartRateSensor.isConnected">
-        <mat-icon>check_circle</mat-icon>
-    </span>
+    <div *ngIf="heartRateSensor.deviceSelected">
+        {{heartRateSensor.deviceName}}
+        <span *ngIf="heartRateSensor.isConnected">
+            <mat-icon>check_circle</mat-icon>
+        </span>
+    </div>
+    <div *ngIf="!heartRateSensor.deviceSelected" class="no-device">
+        No heart rate sensor selected <mat-icon>cancel</mat-icon>
+    </div>
+    <button mat-flat-button (click)="requestHeartRateDevice()">
+        <mat-icon>add</mat-icon>
+    </button>
+    <button mat-flat-button *ngIf="!heartRateSensor.deviceSelected" (click)="reconnectToLastConnectedHeartRateSensor()">
+        <mat-icon>update</mat-icon>
+    </button>
+
+    <h3>Power meter</h3>
+    <div *ngIf="powerMeter.deviceSelected">
+        {{powerMeter.deviceName}}
+        <span *ngIf="powerMeter.isConnected">
+            <mat-icon>check_circle</mat-icon>
+        </span>
+    </div>
+    <div *ngIf="!powerMeter.deviceSelected" class="no-device">
+        No power meter selected <mat-icon>cancel</mat-icon>
+    </div>
+    <button mat-flat-button (click)="requestPowerMeterDevice()">
+        <mat-icon>add</mat-icon>
+    </button>
+    <button mat-flat-button *ngIf="!powerMeter.deviceSelected" (click)="reconnectToLastConnectedPowerMeter()">
+        <mat-icon>update</mat-icon>
+    </button>
+
+    <h3>Speed sensor</h3>
+    <div *ngIf="speedSensor.deviceSelected">
+        {{speedSensor.deviceName}}
+        <span *ngIf="speedSensor.isConnected">
+            <mat-icon>check_circle</mat-icon>
+        </span>
+    </div>
+    <div *ngIf="!speedSensor.deviceSelected" class="no-device">
+        No speed sensor selected <mat-icon>cancel</mat-icon>
+    </div>
+
+    <button mat-flat-button (click)="requestSpeedSensorDevice()">
+        <mat-icon>add</mat-icon>
+    </button>
+    <button mat-flat-button *ngIf="!speedSensor.deviceSelected" (click)="reconnectToLastConnectedSpeedSensor()">
+        <mat-icon>update</mat-icon>
+    </button>
+
+    <h3>Route</h3>
+
+    Upload GPX file to load a route:
+    <div><button type="button" mat-raised-button (click)="fileInput.click()">Choose File</button>
+        <input hidden (change)="onFileSelected($event)" #fileInput type="file" id="file">
+    </div>
+
+    <h3>Metrics</h3>
+    <table>
+        <tr>
+            <th>Metric</th>
+            <th>Last value</th>
+        </tr>
+        <tr *ngFor="let metricName of metricService.getNames()">
+            <td>{{metricName}}</td>
+            <td>{{metricService.getByName(metricName)!.displayLastValue()}}</td>
+        </tr>
+    </table>
+
 </div>
-<div *ngIf="!heartRateSensor.deviceSelected" class="no-device">
-    No heart rate sensor selected <mat-icon>cancel</mat-icon>
-</div>
-<button mat-flat-button (click)="requestHeartRateDevice()">
-    <mat-icon>add</mat-icon>
-</button>
-<button mat-flat-button *ngIf="!heartRateSensor.deviceSelected" (click)="reconnectToLastConnectedHeartRateSensor()">
-    <mat-icon>update</mat-icon>
-</button>
-
-<h3>Power meter</h3>
-<div *ngIf="powerMeter.deviceSelected">
-    {{powerMeter.deviceName}}
-    <span *ngIf="powerMeter.isConnected">
-        <mat-icon>check_circle</mat-icon>
-    </span>
-</div>
-<div *ngIf="!powerMeter.deviceSelected" class="no-device">
-    No power meter selected <mat-icon>cancel</mat-icon>
-</div>
-<button mat-flat-button (click)="requestPowerMeterDevice()">
-    <mat-icon>add</mat-icon>
-</button>
-<button mat-flat-button *ngIf="!powerMeter.deviceSelected" (click)="reconnectToLastConnectedPowerMeter()">
-    <mat-icon>update</mat-icon>
-</button>
-
-<h3>Speed sensor</h3>
-<div *ngIf="speedSensor.deviceSelected">
-    {{speedSensor.deviceName}}
-    <span *ngIf="speedSensor.isConnected">
-        <mat-icon>check_circle</mat-icon>
-    </span>
-</div>
-<div *ngIf="!speedSensor.deviceSelected" class="no-device">
-    No speed sensor selected <mat-icon>cancel</mat-icon>
-</div>
-
-<button mat-flat-button (click)="requestSpeedSensorDevice()">
-    <mat-icon>add</mat-icon>
-</button>
-<button mat-flat-button *ngIf="!speedSensor.deviceSelected" (click)="reconnectToLastConnectedSpeedSensor()">
-    <mat-icon>update</mat-icon>
-</button>
-
-<h3>Route</h3>
-
-Upload GPX file to load a route:
-<div><button type="button" mat-raised-button (click)="fileInput.click()">Choose File</button>
-    <input hidden (change)="onFileSelected($event)" #fileInput type="file" id="file">
-</div>
-
-<h3>Metrics</h3>
-<table>
-    <tr>
-        <th>Metric</th>
-        <th>Last value</th>
-    </tr>
-    <tr *ngFor="let metricName of metricService.getNames()">
-        <td>{{metricName}}</td>
-        <td>{{metricService.getByName(metricName)!.displayLastValue()}}</td>
-    </tr>
-</table>
