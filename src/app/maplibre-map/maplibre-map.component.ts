@@ -47,6 +47,7 @@ export class MapLibreMapComponent {
   protected center: LngLatLike = [0, 0];
   protected zoom: [number] = [12];
   protected northUp = true;
+  protected mapRotated = false;
 
   moved: boolean = false;
   isProgramaticMove = false;
@@ -109,6 +110,7 @@ export class MapLibreMapComponent {
   }
 
   toggleNorth() {
+    this.mapRotated = false;
     this.northUp = !this.northUp;
     if (this.northUp) {
       this.map?.setBearing(0);
@@ -117,6 +119,10 @@ export class MapLibreMapComponent {
         this.map?.setBearing(this.locationService.curHeading);
       }
     }
+  }
+
+  onRotate() {
+    this.mapRotated = true;
   }
 
   zoomIn() {
