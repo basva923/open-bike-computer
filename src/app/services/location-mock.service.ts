@@ -57,9 +57,9 @@ export class LocationMockService extends LocationService {
           altitudeAccuracy: 5,
           heading: heading,
           speed: speed
-        },
+        } as any,
         timestamp: baseTimestamp + i * 1000
-      });
+      } as any);
     }
   }
 
