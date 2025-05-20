@@ -18,6 +18,7 @@ import {
 } from '@maplibre/ngx-maplibre-gl';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { NavigationService, NewRouteEvent } from '../services/navigation.service';
 
 
 @Component({
@@ -43,17 +44,20 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class MapLibreMapComponent {
   map: Map | null = null;
-  private locationService: LocationService
+  private locationService: LocationService;
+  private navigationService: NavigationService
   protected center: LngLatLike = [0, 0];
   protected zoom: [number] = [12];
   protected northUp = true;
   protected mapRotated = false;
+  protected newRouteHandler = this.handleNewRoute.bind(this);
 
   moved: boolean = false;
   isProgramaticMove = false;
 
   constructor() {
     this.locationService = ServiceFactory.getLocationService();
+    this.navigationService = ServiceFactory.getNavigationService();
     if (this.locationService.curLatitude && this.locationService.curLongitude) {
       this.center = [
         this.locationService.curLongitude,
@@ -71,6 +75,7 @@ export class MapLibreMapComponent {
         this.updateCurrentLocation(locationEvent);
         this.updateCenter(locationEvent);
       });
+      this.navigationService.addNewRouteListener(this.newRouteHandler);
     }
   }
 
@@ -121,6 +126,40 @@ export class MapLibreMapComponent {
     }
   }
 
+  handleNewRoute(event: NewRouteEvent) {
+    if (!this.map) {
+      return;
+    }
+    this.map.removeLayer('track-log');
+    this.map.removeSource('track-log');
+
+    this.map.addSource('track-log', {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'LineString',
+          coordinates: event.route.map((point) => {
+            return point.LngLat;
+          }),
+        },
+      }
+    });
+    this.map.addLayer({
+      id: 'track-log',
+      type: 'line',
+      source: 'track-log',
+      'layout': {
+        'line-join': 'round',
+        'line-cap': 'round'
+      },
+      'paint': {
+        'line-color': '#0000ff',
+        'line-width': 4
+      }
+    });
+  }
   onRotate() {
     this.mapRotated = true;
   }
@@ -153,7 +192,7 @@ export class MapLibreMapComponent {
         },
         'paint': {
           'line-color': '#888',
-          'line-width': 4
+          'line-width': 3
         }
       });
     }

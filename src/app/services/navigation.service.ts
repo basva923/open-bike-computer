@@ -1,11 +1,24 @@
 import { Injectable } from '@angular/core';
 
-class RoutePoint {
+export class RoutePoint {
   constructor(
     public latitude: number,
     public longitude: number,
     public altitude: number
   ) { }
+
+  get LngLat() {
+    return [this.longitude, this.latitude];
+  }
+}
+
+export class NewRouteEvent extends Event {
+  constructor(
+    public route: RoutePoint[],
+    public name: string
+  ) {
+    super("newRoute");
+  }
 }
 
 @Injectable({
@@ -14,14 +27,15 @@ class RoutePoint {
 export class NavigationService {
 
   private route: RoutePoint[] = [];
-
-  constructor() { }
+  private routeName: string = '';
+  protected newRouteTarget: EventTarget = new EventTarget();;
 
 
   loadRouteFileGPX(content: string) {
     this.route = [];
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(content, "text/xml");
+    this.routeName = xmlDoc.getElementsByTagName("name")[0].textContent || 'GPX Route';
     const trkpts = xmlDoc.getElementsByTagName("trkpt");
     for (let i = 0; i < trkpts.length; i++) {
       const lat = parseFloat(trkpts[i].getAttribute("lat")!);
@@ -29,8 +43,15 @@ export class NavigationService {
       const ele = parseFloat(trkpts[i].getElementsByTagName("ele")[0].textContent!);
       this.route.push(new RoutePoint(lat, lon, ele));
     }
+    this.newRouteTarget.dispatchEvent(new NewRouteEvent(this.route, this.routeName))
   }
 
+  addNewRouteListener(callback: (event: NewRouteEvent) => void) {
+    this.newRouteTarget.addEventListener('newRoute', callback as any);
+  }
+  removeNewRouteListener(callback: (event: NewRouteEvent) => void) {
+    this.newRouteTarget.removeEventListener('newRoute', callback as any);
+  }
 
 
 }
