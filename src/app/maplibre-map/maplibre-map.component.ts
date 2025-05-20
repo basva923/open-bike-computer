@@ -54,6 +54,7 @@ export class MapLibreMapComponent {
 
   moved: boolean = false;
   isProgramaticMove = false;
+  isProgramaticRotate = false;
 
   constructor() {
     this.locationService = ServiceFactory.getLocationService();
@@ -71,9 +72,10 @@ export class MapLibreMapComponent {
     this.map = map;
     if (this.map) {
       this.locationService.subscribeForLocation((locationEvent: LocationServiceEvent) => {
-        this.updateTrack(locationEvent);
+        this.updateBearing(locationEvent);
         this.updateCurrentLocation(locationEvent);
         this.updateCenter(locationEvent);
+        this.updateTrack(locationEvent);
       });
       this.navigationService.addNewRouteListener(this.newRouteHandler);
     }
@@ -91,7 +93,8 @@ export class MapLibreMapComponent {
       this.addCurrentLocationMarker();
     }
     (this.map?.getSource('current-location') as any)?.setData(this.currentLocationData);
-    this.map?.setLayoutProperty('current-location', 'icon-rotate', locationEvent.location.coords.heading!);
+    const rotation = Util.normaliseDegrees(locationEvent.location.coords.heading! - this.map?.getBearing()!);
+    this.map?.setLayoutProperty('current-location', 'icon-rotate', rotation);
   }
 
   updateCenter(locationEvent: LocationServiceEvent) {
@@ -102,6 +105,14 @@ export class MapLibreMapComponent {
         locationEvent.location.coords.latitude
       ];
       this.map?.setCenter(this.center);
+    }
+  }
+
+  updateBearing(locationEvent: LocationServiceEvent) {
+    if (this.map && !this.northUp && !this.mapRotated) {
+      console.log('Setting bearing to: ', locationEvent.location.coords.heading);
+      this.isProgramaticRotate = true;
+      this.map.setBearing(locationEvent.location.coords.heading!);
     }
   }
 
@@ -118,9 +129,11 @@ export class MapLibreMapComponent {
     this.mapRotated = false;
     this.northUp = !this.northUp;
     if (this.northUp) {
+      this.isProgramaticRotate = true;
       this.map?.setBearing(0);
     } else {
       if (this.locationService.curHeading) {
+        this.isProgramaticRotate = true;
         this.map?.setBearing(this.locationService.curHeading);
       }
     }
@@ -160,8 +173,15 @@ export class MapLibreMapComponent {
       }
     });
   }
-  onRotate() {
-    this.mapRotated = true;
+  onRotateStart() {
+    if (!this.isProgramaticRotate) {
+      console.log('Map rotated by user');
+      this.mapRotated = true;
+    }
+  }
+
+  onRotateEnd() {
+    this.isProgramaticRotate = false;
   }
 
   zoomIn() {
