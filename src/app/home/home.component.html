@@ -1,14 +1,26 @@
 <mat-tab-group mat-stretch-tabs="false" style="height: 100%;">
-  <mat-tab label="Settings">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>settings</mat-icon>
+    </ng-template>
     <app-settings></app-settings>
   </mat-tab>
-  <mat-tab label="Map">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>map</mat-icon>
+    </ng-template>
     <app-maplibre-map></app-maplibre-map>
   </mat-tab>
   <mat-tab label="Data1">
+    <ng-template mat-tab-label>
+      <mat-icon>dashboard</mat-icon>
+    </ng-template>
     <app-metrics tabName="data1"></app-metrics>
   </mat-tab>
   <mat-tab label="Data2">
+    <ng-template mat-tab-label>
+      <mat-icon>dashboard</mat-icon>
+    </ng-template>
     <app-metrics tabName="data2"></app-metrics>
   </mat-tab>
   <!-- <mat-tab label="Map">
