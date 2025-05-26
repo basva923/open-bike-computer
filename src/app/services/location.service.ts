@@ -47,7 +47,7 @@ export class LocationService implements ILocationService {
     if (event.gamma != null) this.gamma = event.gamma;
   }
 
-  get heading() {
+  get bearingForVerticalPhone() {
     // Convert degrees to radians
     var alphaRad = this.alpha * (Math.PI / 180);
     var betaRad = this.beta * (Math.PI / 180);
@@ -82,6 +82,10 @@ export class LocationService implements ILocationService {
     // Convert radians to degrees
     compassHeading *= 180 / Math.PI;
     return compassHeading;
+  }
+
+  get bearingForHorizontalPhone() {
+    return (360 - this.alpha);
   }
 
   public subscribeForLocation(

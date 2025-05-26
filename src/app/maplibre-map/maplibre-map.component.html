@@ -1,7 +1,6 @@
 <mgl-map [style]="
   'https://api.maptiler.com/maps/outdoor-v2/style.json?key=ySvSgRlK5jcGPEckx6HJ'" [zoom]="zoom" [center]="center"
-  (mapLoad)="mapCreated($event)" (mapDragStart)="setMoved()" (rotateStart)="onRotateStart()"
-  (rotateEnd)="onRotateEnd()">
+  (mapLoad)="mapCreated($event)" (touchstart)="onTouchEvent($event)" (click)="onTouchEvent($event)">
 
   <mgl-image id="arrow" url="assets/icons/arrow.png">
   </mgl-image>

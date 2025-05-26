@@ -19,6 +19,7 @@ import { PowerMeterService } from './power-meter.service';
 import { PowerBalenceMetric } from '../model/PowerBalenceMetric';
 import { SpeedSensorService } from './speed-sensor.service';
 import { WheelRotationsMetric } from '../model/WheelRotationsMetric';
+import { BearingMetric } from '../model/BearingMetric';
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +50,8 @@ export class MetricService implements IMetricService {
       new DistanceMetric(this),
       new CadenceMetric(this),
       new PowerBalenceMetric(this),
-      new WheelRotationsMetric(this)
+      new WheelRotationsMetric(this),
+      new BearingMetric(this)
     );
   }
 

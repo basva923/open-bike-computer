@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LngLatLike, Map, NavigationControl } from 'maplibre-gl';
+import { LngLatLike, Map, MapMouseEvent, MapTouchEvent, NavigationControl } from 'maplibre-gl';
 import { LocationService } from '../services/location.service';
 import { ServiceFactory } from '../services/ServiceFactory';
 import { LocationServiceEvent } from '../model/LocationServiceEvent';
@@ -53,8 +53,6 @@ export class MapLibreMapComponent {
   protected newRouteHandler = this.handleNewRoute.bind(this);
 
   moved: boolean = false;
-  isProgramaticMove = false;
-  isProgramaticRotate = false;
 
   constructor() {
     this.locationService = ServiceFactory.getLocationService();
@@ -93,13 +91,12 @@ export class MapLibreMapComponent {
       this.addCurrentLocationMarker();
     }
     (this.map?.getSource('current-location') as any)?.setData(this.currentLocationData);
-    const rotation = Util.normaliseDegrees(locationEvent.location.coords.heading! - this.map?.getBearing()!);
+    const rotation = Util.normaliseDegrees(this.locationService.bearingForHorizontalPhone - this.map?.getBearing()!);
     this.map?.setLayoutProperty('current-location', 'icon-rotate', rotation);
   }
 
   updateCenter(locationEvent: LocationServiceEvent) {
     if (!this.moved) {
-      this.isProgramaticMove = true;
       this.center = [
         locationEvent.location.coords.longitude,
         locationEvent.location.coords.latitude
@@ -110,32 +107,17 @@ export class MapLibreMapComponent {
 
   updateBearing(locationEvent: LocationServiceEvent) {
     if (this.map && !this.northUp && !this.mapRotated) {
-      console.log('Setting bearing to: ', locationEvent.location.coords.heading);
-      this.isProgramaticRotate = true;
-      this.map.setBearing(locationEvent.location.coords.heading!);
+      this.map.setBearing(this.locationService.bearingForHorizontalPhone);
     }
-  }
-
-  onMoveStart() {
-    if (!this.isProgramaticMove) {
-      this.setMoved();
-    }
-  }
-  onMoveEnd() {
-    this.isProgramaticMove = false;
   }
 
   toggleNorth() {
     this.mapRotated = false;
     this.northUp = !this.northUp;
     if (this.northUp) {
-      this.isProgramaticRotate = true;
       this.map?.setBearing(0);
     } else {
-      if (this.locationService.curHeading) {
-        this.isProgramaticRotate = true;
-        this.map?.setBearing(this.locationService.curHeading);
-      }
+      this.map?.setBearing(this.locationService.bearingForHorizontalPhone);
     }
   }
 
@@ -173,16 +155,7 @@ export class MapLibreMapComponent {
       }
     });
   }
-  onRotateStart() {
-    if (!this.isProgramaticRotate) {
-      console.log('Map rotated by user');
-      this.mapRotated = true;
-    }
-  }
 
-  onRotateEnd() {
-    this.isProgramaticRotate = false;
-  }
 
   zoomIn() {
     if (this.map) {
@@ -238,14 +211,24 @@ export class MapLibreMapComponent {
   }
 
 
-  setMoved() {
-    console.log('Map moved by user');
-    this.moved = true;
+  onTouchEvent(event: TouchEvent | MouseEvent | null = null) {
+    if (!this.map || !event) {
+      return;
+    }
+    const target = event.target as HTMLElement;
+    if (!target) {
+      return;
+    }
+    console.log(target)
+    if (target.ariaLabel === 'Map') {
+      console.log('Map moved by user');
+      this.moved = true;
+      this.mapRotated = true;
+    }
   }
 
   setCenterToCurrentLocation() {
     if (this.locationService.curLatitude && this.locationService.curLongitude) {
-      this.isProgramaticMove = true;
       this.center = [
         this.locationService.curLongitude,
         this.locationService.curLatitude

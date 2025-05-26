@@ -18,5 +18,6 @@ export interface ILocationService {
     readonly maxSpeed: number | null;
     readonly avgSpeed: number;
     readonly coordinatesLog: GeolocationCoordinates[];
-    readonly heading: number;
+    readonly bearingForVerticalPhone: number;
+    readonly bearingForHorizontalPhone: number;
 }
