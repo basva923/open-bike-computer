@@ -15,4 +15,10 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class HomeComponent {
   activeTab = 1;
+  protected showFooter = false;
+
+
+  get contentHeight(): string {
+    return this.showFooter ? '83vh' : '93vh';
+  }
 }

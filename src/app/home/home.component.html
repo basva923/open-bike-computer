@@ -1,4 +1,4 @@
-<mat-tab-group mat-stretch-tabs="false" style="height: 100%;">
+<mat-tab-group mat-stretch-tabs="false" [style.height]="contentHeight">
   <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon>settings</mat-icon>
@@ -9,7 +9,7 @@
     <ng-template mat-tab-label>
       <mat-icon>map</mat-icon>
     </ng-template>
-    <app-maplibre-map></app-maplibre-map>
+    <app-maplibre-map [height]="contentHeight"></app-maplibre-map>
   </mat-tab>
   <mat-tab label="Data1">
     <ng-template mat-tab-label>
@@ -27,3 +27,9 @@
     <app-leaflet-map></app-leaflet-map>
   </mat-tab> -->
 </mat-tab-group>
+
+@if (showFooter) {
+<div style="height: 10vh">
+  This is the footer
+</div>
+}

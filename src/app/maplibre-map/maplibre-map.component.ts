@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { LngLatLike, Map, MapMouseEvent, MapTouchEvent, NavigationControl } from 'maplibre-gl';
 import { LocationService } from '../services/location.service';
 import { ServiceFactory } from '../services/ServiceFactory';
@@ -43,6 +43,11 @@ import { NavigationService, NewRouteEvent } from '../services/navigation.service
   styleUrl: './maplibre-map.component.css'
 })
 export class MapLibreMapComponent {
+  @Input() set height(value: string) {
+    this._height = value;
+  }
+
+
   map: Map | null = null;
   private locationService: LocationService;
   private navigationService: NavigationService
@@ -51,6 +56,7 @@ export class MapLibreMapComponent {
   protected northUp = true;
   protected mapRotated = false;
   protected newRouteHandler = this.handleNewRoute.bind(this);
+  protected _height = '100%';
 
   moved: boolean = false;
 
@@ -219,9 +225,7 @@ export class MapLibreMapComponent {
     if (!target) {
       return;
     }
-    console.log(target)
     if (target.ariaLabel === 'Map') {
-      console.log('Map moved by user');
       this.moved = true;
       this.mapRotated = true;
     }
