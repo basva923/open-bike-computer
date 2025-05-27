@@ -21,4 +21,12 @@ export class HomeComponent {
   get contentHeight(): string {
     return this.showFooter ? '83vh' : '93vh';
   }
+
+  get fullTabsHeight(): string {
+    if (this.showFooter) {
+      return '90vh';
+    } else {
+      return '100vh';
+    }
+  }
 }
