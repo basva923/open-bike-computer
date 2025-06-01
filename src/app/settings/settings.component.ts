@@ -13,6 +13,7 @@ import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { NavigationService } from '../services/navigation.service';
+import { TrainingService } from '../services/training.service';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class SettingsComponent {
   protected powerMeter: PowerMeterService;
   protected speedSensor: SpeedSensorService;
   protected navigationService: NavigationService;
+  protected trainingService: TrainingService;
 
 
   constructor(protected metricService: MetricService) {
@@ -37,6 +39,7 @@ export class SettingsComponent {
     this.powerMeter = ServiceFactory.getPowerMeterService();
     this.speedSensor = ServiceFactory.getSpeedSensorService();
     this.navigationService = ServiceFactory.getNavigationService();
+    this.trainingService = ServiceFactory.getTrainingService();
   }
 
   async startActivity() {
@@ -47,8 +50,7 @@ export class SettingsComponent {
     this.metricService.stopLogging();
   }
 
-  onFileSelected(event: Event) {
-    // print the file content to the console
+  onRouteFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
@@ -58,6 +60,19 @@ export class SettingsComponent {
         this.navigationService.loadRouteFileGPX(content as string);
       };
       reader.readAsText(file);
+    }
+  }
+
+  onTrainingFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const content = (e.target as FileReader).result;
+        this.trainingService.loadFitFile(content as ArrayBuffer);
+      };
+      reader.readAsArrayBuffer(file);
     }
   }
 

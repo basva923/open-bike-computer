@@ -66,8 +66,16 @@
     <h3>Route</h3>
 
     Upload GPX file to load a route:
-    <div><button type="button" mat-raised-button color="primary" (click)="fileInput.click()">Choose File</button>
-        <input hidden (change)="onFileSelected($event)" #fileInput type="file" id="file">
+    <div><button type="button" mat-raised-button color="primary" (click)="routeFileInput.click()">Choose File</button>
+        <input hidden (change)="onRouteFileSelected($event)" #routeFileInput type="file" id="routeFile">
+    </div>
+
+    <h3>Training</h3>
+
+    Upload FIT file to load a training:
+    <div><button type="button" mat-raised-button color="primary" (click)="trainingFileInput.click()">Choose
+            File</button>
+        <input hidden (change)="onTrainingFileSelected($event)" #trainingFileInput type="file" id="trainingFile">
     </div>
 
     <h3>Metrics</h3>

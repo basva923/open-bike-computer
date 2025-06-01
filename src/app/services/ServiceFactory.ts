@@ -7,6 +7,7 @@ import { PowerMeterMockService } from "./power-meter-mock.service";
 import { PowerMeterService } from "./power-meter.service";
 import { SpeedSensorMockService } from "./speed-sensor-mock.service";
 import { SpeedSensorService } from "./speed-sensor.service";
+import { TrainingService } from "./training.service";
 
 
 export class ServiceFactory {
@@ -15,6 +16,7 @@ export class ServiceFactory {
     private static powerMeterServiceInstance: PowerMeterService | null = null;
     private static speedSensorServiceInstance: SpeedSensorService | null = null;
     private static navigationServiceInstance: NavigationService | null = null;
+    private static trainingServiceInstance: TrainingService | null = null;
     private static mockEnabled = false;
 
     static getHeartRateSensorService(): HeartRateSensorService {
@@ -67,5 +69,13 @@ export class ServiceFactory {
             this.navigationServiceInstance = new NavigationService();
         }
         return this.navigationServiceInstance;
+    }
+
+
+    static getTrainingService(): TrainingService {
+        if (!this.trainingServiceInstance) {
+            this.trainingServiceInstance = new TrainingService();
+        }
+        return this.trainingServiceInstance;
     }
 }
