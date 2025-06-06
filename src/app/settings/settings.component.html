@@ -1,82 +1,80 @@
 <div style="margin: 0 1rem;">
     <h2>Setting</h2>
 
-    <h3>Activity</h3>
-
-    <button mat-flat-button color="primary" (click)="startActivity()">
-        Start activity
-    </button>
-    <button mat-flat-button (click)="stopActivity()">
-        Stop activity
-    </button>
-
-    <h3>HR sensor</h3>
-
-    <div *ngIf="heartRateSensor.deviceSelected">
-        {{heartRateSensor.deviceName}}
-        <span *ngIf="heartRateSensor.isConnected">
-            <mat-icon>check_circle</mat-icon>
-        </span>
+    <h3>Sensors</h3>
+    <div class="sensor-buttons">
+        <button mat-fab extended [color]="heartRateSensor.deviceSelected ? 'primary' : 'warn'"
+            [ngClass]="{'sensor-selected': heartRateSensor.deviceSelected}" class="sensor-button"
+            (click)="requestHeartRateDevice()">
+            <mat-icon>favorite</mat-icon>
+            HR
+        </button>
+        <button mat-fab extended [color]="powerMeter.deviceSelected ? 'primary' : 'warn'"
+            [ngClass]="{'sensor-selected': powerMeter.deviceSelected}" class="sensor-button"
+            (click)="requestPowerMeterDevice()">
+            <mat-icon>bolt</mat-icon>
+            Power
+        </button>
+        <button mat-fab extended [color]="speedSensor.deviceSelected ? 'primary' : 'warn'"
+            [ngClass]="{'sensor-selected': speedSensor.deviceSelected}" class="sensor-button"
+            (click)="requestSpeedSensorDevice()">
+            <mat-icon>speed</mat-icon>
+            Speed
+        </button>
     </div>
-    <div *ngIf="!heartRateSensor.deviceSelected" class="no-device">
-        No heart rate sensor selected <mat-icon>cancel</mat-icon>
-    </div>
-    <button mat-flat-button color="primary" (click)="requestHeartRateDevice()">
-        <mat-icon>add</mat-icon>
-    </button>
-    <button mat-flat-button *ngIf="!heartRateSensor.deviceSelected" (click)="reconnectToLastConnectedHeartRateSensor()">
-        <mat-icon>update</mat-icon>
-    </button>
-
-    <h3>Power meter</h3>
-    <div *ngIf="powerMeter.deviceSelected">
-        {{powerMeter.deviceName}}
-        <span *ngIf="powerMeter.isConnected">
-            <mat-icon>check_circle</mat-icon>
-        </span>
-    </div>
-    <div *ngIf="!powerMeter.deviceSelected" class="no-device">
-        No power meter selected <mat-icon>cancel</mat-icon>
-    </div>
-    <button mat-flat-button color="primary" (click)="requestPowerMeterDevice()">
-        <mat-icon>add</mat-icon>
-    </button>
-    <button mat-flat-button *ngIf="!powerMeter.deviceSelected" (click)="reconnectToLastConnectedPowerMeter()">
-        <mat-icon>update</mat-icon>
-    </button>
-
-    <h3>Speed sensor</h3>
-    <div *ngIf="speedSensor.deviceSelected">
-        {{speedSensor.deviceName}}
-        <span *ngIf="speedSensor.isConnected">
-            <mat-icon>check_circle</mat-icon>
-        </span>
-    </div>
-    <div *ngIf="!speedSensor.deviceSelected" class="no-device">
-        No speed sensor selected <mat-icon>cancel</mat-icon>
-    </div>
-
-    <button mat-flat-button color="primary" (click)="requestSpeedSensorDevice()">
-        <mat-icon>add</mat-icon>
-    </button>
-    <button mat-flat-button *ngIf="!speedSensor.deviceSelected" (click)="reconnectToLastConnectedSpeedSensor()">
-        <mat-icon>update</mat-icon>
-    </button>
 
     <h3>Route</h3>
-
-    Upload GPX file to load a route:
-    <div><button type="button" mat-raised-button color="primary" (click)="routeFileInput.click()">Choose File</button>
+    <div class="route-training-buttons">
+        <button mat-fab extended class="route-training-button"
+            [color]="navigationService.hasRoute() ? 'primary' : 'warn'"
+            [ngClass]="navigationService.hasRoute() ? 'route-selected' : 'route-unselected'"
+            (click)="routeFileInput.click()">
+            <mat-icon>navigation</mat-icon>
+            Route
+        </button>
+        <span *ngIf="navigationService.hasRoute()" class="route-training-label">
+            {{ navigationService.getRouteName() }}
+        </span>
         <input hidden (change)="onRouteFileSelected($event)" #routeFileInput type="file" id="routeFile">
     </div>
 
     <h3>Training</h3>
-
-    Upload FIT file to load a training:
-    <div><button type="button" mat-raised-button color="primary" (click)="trainingFileInput.click()">Choose
-            File</button>
+    <div class="route-training-buttons">
+        <button mat-fab extended class="route-training-button"
+            [color]="trainingService.hasTraining() ? 'primary' : 'warn'"
+            [ngClass]="trainingService.hasTraining() ? 'training-selected' : 'training-unselected'"
+            (click)="trainingFileInput.click()">
+            <mat-icon>fitness_center</mat-icon>
+            Training
+        </button>
+        <span *ngIf="trainingService.hasTraining()" class="route-training-label">
+            {{ trainingService.getTrainingName() }}
+        </span>
         <input hidden (change)="onTrainingFileSelected($event)" #trainingFileInput type="file" id="trainingFile">
     </div>
+    <div *ngIf="trainingService.hasTraining()" class="training-controls"
+        style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
+        <button mat-mini-fab [color]="trainingService.isRunning() ? 'warn' : 'primary'"
+            (click)="trainingService.isRunning() ? trainingService.stopWorkout() : trainingService.startWorkout()"
+            [title]="trainingService.isRunning() ? 'Stop' : 'Start'">
+            <mat-icon>{{ trainingService.isRunning() ? 'stop' : 'play_arrow' }}</mat-icon>
+        </button>
+        <button mat-mini-fab color="primary" (click)="trainingService.moveToPreviousStep()" title="Previous step">
+            <mat-icon>skip_previous</mat-icon>
+        </button>
+        <button mat-mini-fab color="primary" (click)="trainingService.moveToNextStep()" title="Next step">
+            <mat-icon>skip_next</mat-icon>
+        </button>
+    </div>
+
+    <h3>Activity</h3>
+
+    <button mat-flat-button [color]="metricService.isRunning() ? 'warn' : 'primary'"
+        (click)="metricService.isRunning() ? stopActivity() : startActivity()">
+        <mat-icon>{{ metricService.isRunning() ? 'pause' : 'play_arrow' }}</mat-icon>
+        {{ metricService.isRunning() ? 'Stop activity' : 'Start activity' }}
+    </button>
+
 
     <h3>Metrics</h3>
     <table>

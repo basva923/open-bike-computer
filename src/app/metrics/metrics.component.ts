@@ -7,6 +7,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { F } from '@angular/cdk/a11y-module.d-DBHGyKoh';
+import { ServiceFactory } from '../services/ServiceFactory';
 
 
 @Component({
@@ -21,12 +23,13 @@ export class MetricsComponent {
 
   protected editModeIsActive = false;
   protected metricTypes: MetricType[] = Object.values(MetricType);
+  protected metricsService: MetricService
 
   @Input()
   tabName!: string;
 
-  constructor(protected metricsService: MetricService) {
-    this.metricsService = metricsService;
+  constructor() {
+    this.metricsService = ServiceFactory.getMetricService();
     this.loadConfigFromLocalStorage();
   }
 
@@ -48,7 +51,8 @@ export class MetricsComponent {
 
   getLastValueForMetric(metricType: MetricType): string {
     const metric = this.metricsService.getByMetricType(metricType);
-    return metric.displayLastValue(false);
+    const value = metric.displayLastValue(false);
+    return value;
   }
 
   getUnitForMetric(metricType: MetricType): string {

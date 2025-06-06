@@ -30,6 +30,7 @@ export class MetricService implements IMetricService {
   private powerMeterService: PowerMeterService;
   private speedSensorService: SpeedSensorService;
   private metrics: Metric[] = [];
+  private running: boolean = false;
 
   constructor() {
     this.locationService = ServiceFactory.getLocationService();
@@ -56,15 +57,29 @@ export class MetricService implements IMetricService {
   }
 
   startLogging(): void {
+    if (this.running) {
+      console.warn('Logging is already running');
+      return;
+    }
+    this.running = true;
     for (let i = 0; i < this.metrics.length; i++) {
       this.metrics[i].startLogging();
     }
   }
 
   stopLogging(): void {
+    if (!this.running) {
+      console.warn('Logging is not running');
+      return;
+    }
+    this.running = false;
     for (let i = 0; i < this.metrics.length; i++) {
       this.metrics[i].stopLogging();
     }
+  }
+
+  isRunning(): boolean {
+    return this.running;
   }
 
   getLocationService(): LocationService {

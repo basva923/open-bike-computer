@@ -53,5 +53,11 @@ export class NavigationService {
     this.newRouteTarget.removeEventListener('newRoute', callback as any);
   }
 
+  hasRoute(): boolean {
+    return this.route && this.route.length > 0;
+  }
 
+  getRouteName(): string {
+    return this.routeName || '';
+  }
 }

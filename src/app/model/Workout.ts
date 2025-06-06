@@ -155,8 +155,8 @@ export class Workout {
     static fromGarminFitFile(workout: any): Workout {
         const steps = workout.workoutStepMesgs.map((step: any) => WorkoutStep.fromGarminFitFile(step));
         return new Workout(
-            workout.sport || 'cycling',
-            workout.wktName || 'Unnamed Workout',
+            workout.workoutMesgs[0]?.sport || 'cycling',
+            workout.workoutMesgs[0]?.wktName || 'Unnamed Workout',
             steps
         );
     }

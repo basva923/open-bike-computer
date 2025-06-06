@@ -49,7 +49,7 @@ export class SpeedMetric extends Metric {
             const diffRotations = event.speedSensorData.diffWheelRevolutions(lastDataWithLessWheelRevolutions) || 0;
             const timediff = event.speedSensorData.diffWheelTimeInSeconds(lastDataWithLessWheelRevolutions) || 1;
             const speed = (diffRotations * this.wheelCircumference) / timediff; // in m/s
-            console.log(diffRotations, timediff, speed);
+
             this.addValue(speed, event.speedSensorData.timestamp);
         }
         this.lastSpeedSensorDatas.push(event.speedSensorData);

@@ -1,3 +1,59 @@
 .no-device {
     color: red;
 }
+
+.sensor-buttons {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.sensor-button {
+    display: flex;
+    align-items: center;
+    min-width: 80px;
+    height: 36px;
+    font-size: 0.85em;
+    padding: 0 10px;
+}
+
+.sensor-button mat-icon {
+    font-size: 20px;
+}
+
+.sensor-selected mat-icon {
+    color: #4CAF50;
+}
+
+.route-training-buttons {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.route-training-button {
+    display: flex;
+    align-items: center;
+    min-width: 100px;
+    height: 36px;
+    font-size: 0.85em;
+    padding: 0 10px;
+}
+
+.route-training-button.mat-fab {
+    box-shadow: none;
+}
+
+.route-selected mat-icon,
+.training-selected mat-icon {
+    color: black !important;
+}
+
+.route-unselected mat-icon,
+.training-unselected mat-icon {
+    color: black !important;
+}

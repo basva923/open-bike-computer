@@ -28,6 +28,17 @@
   </mat-tab> -->
 </mat-tab-group>
 
+<div style="
+    position: fixed;
+    right: 24px;
+    z-index: 100;
+    transition: bottom 0.2s;
+    " [style.bottom]="showFooter ? '22vh' : '16px'">
+  <button mat-mini-fab color="primary" (click)="toggleFooter()">
+    <mat-icon>{{ toggleFooterIcon }}</mat-icon>
+  </button>
+</div>
+
 @if (showFooter) {
 <div [style.height]="footerHeight">
   <app-workout></app-workout>

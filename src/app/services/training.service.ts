@@ -61,6 +61,10 @@ export class TrainingService {
     return this.workout;
   }
 
+  isRunning(): boolean {
+    return this.currentStepIndex !== -1 && this.workout !== null;
+  }
+
   startWorkout(): void {
     if (!this.workout) {
       throw new Error("No workout loaded");
@@ -168,6 +172,14 @@ export class TrainingService {
       default:
         return null;
     }
+  }
+
+  hasTraining(): boolean {
+    return this.workout !== null;
+  }
+
+  getTrainingName(): string {
+    return this.workout?.name || '';
   }
 
 }
