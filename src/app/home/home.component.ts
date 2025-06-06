@@ -28,18 +28,23 @@ export class HomeComponent {
   }
 
   get contentHeight(): string {
-    return this.showFooter ? '83vh' : '93vh';
+    // full tabs height - 7vh
+    return `calc(${this.fullTabsHeight} - 7vh)`;
   }
 
   get fullTabsHeight(): string {
     if (this.showFooter) {
-      return '80vh';
+      return '83vh';
     } else {
       return '100vh';
     }
   }
 
   get footerHeight(): string {
-    return this.showFooter ? '20vh' : '0';
+    return this.showFooter ? '17vh' : '0vh';
+  }
+
+  get toggleBottomMargin(): string {
+    return `calc(${this.footerHeight} + 1vh)`;
   }
 }

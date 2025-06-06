@@ -33,7 +33,7 @@
     right: 24px;
     z-index: 100;
     transition: bottom 0.2s;
-    " [style.bottom]="showFooter ? '22vh' : '16px'">
+    " [style.bottom]="toggleBottomMargin">
   <button mat-mini-fab color="primary" (click)="toggleFooter()">
     <mat-icon>{{ toggleFooterIcon }}</mat-icon>
   </button>
