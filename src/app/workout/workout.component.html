@@ -39,18 +39,21 @@
 
     <!-- CURRENT TARGET AND METRIC -->
     <mat-grid-tile colspan="1" rowspan="1">
-        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(0, 0)"
-            class="out-of-zone-progress-bar-start"></mat-progress-bar>
+        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(0, 0)" class="out-of-zone-progress-bar-start"
+            [style.--mdc-linear-progress-active-indicator-color]="getProgressBarIndicatorColor(0)"></mat-progress-bar>
     </mat-grid-tile>
 
     <mat-grid-tile colspan="2" rowspan="1">
-        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(0, 1)"
-            class="in-zone-progress-bar"></mat-progress-bar>
+        <div class="in-zone-progress-bar-container">
+            <span class="in-zone-progress-bar-value">{{ getProgressBarDisplayValue(0) }}</span>
+            <mat-progress-bar mode="determinate" [value]="getProgressBarValue(0, 1)" class="in-zone-progress-bar"
+                [style.--mdc-linear-progress-active-indicator-color]="getProgressBarIndicatorColor(0)"></mat-progress-bar>
+        </div>
     </mat-grid-tile>
 
     <mat-grid-tile colspan="1" rowspan="1">
-        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(0, 2)"
-            class="out-of-zone-progress-bar-end"></mat-progress-bar>
+        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(0, 2)" class="out-of-zone-progress-bar-end"
+            [style.--mdc-linear-progress-active-indicator-color]="getProgressBarIndicatorColor(0)"></mat-progress-bar>
     </mat-grid-tile>
 
 
@@ -58,18 +61,21 @@
 
     <!-- 30s AVG TARGET AND METRIC -->
     <mat-grid-tile colspan="1" rowspan="1">
-        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(1, 0)"
-            class="out-of-zone-progress-bar-start"></mat-progress-bar>
+        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(1, 0)" class="out-of-zone-progress-bar-start"
+            [style.--mdc-linear-progress-active-indicator-color]="getProgressBarIndicatorColor(1)"></mat-progress-bar>
     </mat-grid-tile>
 
     <mat-grid-tile colspan="2" rowspan="1">
-        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(1, 1)"
-            class="in-zone-progress-bar"></mat-progress-bar>
+        <div class="in-zone-progress-bar-container">
+            <span class="in-zone-progress-bar-value">{{ getProgressBarDisplayValue(1) }}</span>
+            <mat-progress-bar mode="determinate" [value]="getProgressBarValue(1, 1)" class="in-zone-progress-bar"
+                [style.--mdc-linear-progress-active-indicator-color]="getProgressBarIndicatorColor(1)"></mat-progress-bar>
+        </div>
     </mat-grid-tile>
 
     <mat-grid-tile colspan="1" rowspan="1">
-        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(1, 2)"
-            class="out-of-zone-progress-bar-end"></mat-progress-bar>
+        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(1, 2)" class="out-of-zone-progress-bar-end"
+            [style.--mdc-linear-progress-active-indicator-color]="getProgressBarIndicatorColor(1)"></mat-progress-bar>
     </mat-grid-tile>
 
     <mat-grid-tile colspan="2" rowspan="3">
@@ -84,18 +90,21 @@
 
     <!-- LAP AVG TARGET AND METRIC -->
     <mat-grid-tile colspan="1" rowspan="1">
-        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(2, 0)"
-            class="out-of-zone-progress-bar-start"></mat-progress-bar>
+        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(2, 0)" class="out-of-zone-progress-bar-start"
+            [style.--mdc-linear-progress-active-indicator-color]="getProgressBarIndicatorColor(2)"></mat-progress-bar>
     </mat-grid-tile>
 
     <mat-grid-tile colspan="2" rowspan="1">
-        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(2, 1)"
-            class="in-zone-progress-bar"></mat-progress-bar>
+        <div class="in-zone-progress-bar-container">
+            <span class="in-zone-progress-bar-value">{{ getProgressBarDisplayValue(2) }}</span>
+            <mat-progress-bar mode="determinate" [value]="getProgressBarValue(2, 1)" class="in-zone-progress-bar"
+                [style.--mdc-linear-progress-active-indicator-color]="getProgressBarIndicatorColor(2)"></mat-progress-bar>
+        </div>
     </mat-grid-tile>
 
     <mat-grid-tile colspan="1" rowspan="1">
-        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(2, 2)"
-            class="out-of-zone-progress-bar-end"></mat-progress-bar>
+        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(2, 2)" class="out-of-zone-progress-bar-end"
+            [style.--mdc-linear-progress-active-indicator-color]="getProgressBarIndicatorColor(2)"></mat-progress-bar>
     </mat-grid-tile>
 
 

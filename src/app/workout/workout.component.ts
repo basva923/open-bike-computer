@@ -83,8 +83,10 @@ export class WorkoutComponent {
       value = this.trainingService.targetMetric.getAverageForLap() || 0;
     }
     if (column == 0) {
+      // Progress bar for below target
       return value < targetLow ? Math.max(0, (value - lowest) / (targetLow - lowest) * 100) : 100;
     } else if (column == 1) {
+      // Progress bar for within target
       if (value < targetLow) {
         return 0;
       } else if (value > targetHigh) {
@@ -92,12 +94,47 @@ export class WorkoutComponent {
       }
       return (value - targetLow) / (targetHigh - targetLow) * 100;
     } else if (column == 2) {
+      // Progress bar for above target
       return value > targetHigh ? Math.min(100, (value - targetHigh) / (highest - targetHigh) * 100) : 0;
     }
     throw new Error('Invalid row or column index');
   }
 
+  getProgressBarDisplayValue(row: number) {
+    if (!this.workout || !this.currentStep || !this.trainingService.targetMetric) {
+      return '---';
+    }
+    if (row == 0) {
+      return this.trainingService.targetMetric.display3sAverage() + "(3s)";
+    } else if (row == 1) {
+      return this.trainingService.targetMetric.display30sAverage() + "(30s)";
+    } else if (row == 2) {
+      return this.trainingService.targetMetric.displayAverageForLap() + "(Lap)";
+    }
+    throw new Error('Invalid row index');
+  }
 
+  getProgressBarIndicatorColor(row: number): string {
+    if (!this.workout || !this.currentStep || !this.trainingService.targetMetric) {
+      return 'green';
+    }
+    const targetLow = this.currentStep.targetLow || 0;
+    const targetHigh = this.currentStep.targetHigh || 0;
+    let value = 0;
+    if (row == 0) {
+      value = this.trainingService.targetMetric.get3sAverage() || 0;
+    } else if (row == 1) {
+      value = this.trainingService.targetMetric.get30sAverage() || 0;
+    } else if (row == 2) {
+      value = this.trainingService.targetMetric.getAverageForLap() || 0;
+    }
+    if (value < targetLow) {
+      return '#F5B700'; // Below target
+    } else if (value > targetHigh) {
+      return '#F5B700'; // Above target
+    }
+    return '#3D8F5E'; // Within target
+  }
 
   private updateRemainingString() {
     let remainingString = "---";
