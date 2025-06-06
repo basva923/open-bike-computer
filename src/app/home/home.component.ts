@@ -6,12 +6,13 @@ import { MapLibreMapComponent } from '../maplibre-map/maplibre-map.component';
 import { MatIconModule } from '@angular/material/icon';
 import { WorkoutComponent } from '../workout/workout.component';
 import { MatButtonModule } from '@angular/material/button';
+import { LapsComponent } from '../laps/laps.component';
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [SettingsComponent, MetricsComponent, WorkoutComponent, MatTabsModule, MapLibreMapComponent, MatIconModule, MatButtonModule],
+  imports: [SettingsComponent, MetricsComponent, WorkoutComponent, MatTabsModule, MapLibreMapComponent, MatIconModule, MatButtonModule, LapsComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })

@@ -32,6 +32,7 @@ export class MetricService implements IMetricService {
   private speedSensorService: SpeedSensorService;
   private metrics: Metric[] = [];
   private running: boolean = false;
+  private lapStartTimes: Date[] = []; // Store lap timestamps
 
   constructor() {
     this.locationService = ServiceFactory.getLocationService();
@@ -59,9 +60,34 @@ export class MetricService implements IMetricService {
   }
 
   newLap(): void {
+    this.lapStartTimes.push(new Date());
     for (let i = 0; i < this.metrics.length; i++) {
       this.metrics[i].newLap();
     }
+  }
+
+  getNumberOfLaps(): number {
+    return this.lapStartTimes.length;
+  }
+
+  getLapStartTime(lapIndex: number): Date | null {
+    if (lapIndex < 0 || lapIndex >= this.lapStartTimes.length) {
+      throw new Error(`Lap index ${lapIndex} is out of bounds. Total laps: ${this.lapStartTimes.length}`);
+    }
+    return this.lapStartTimes[lapIndex];
+  }
+
+  displayLapDuration(lapIndex: number): string {
+    if (lapIndex < 0 || lapIndex >= this.lapStartTimes.length) {
+      throw new Error(`Lap index ${lapIndex} is out of bounds. Total laps: ${this.lapStartTimes.length}`);
+    }
+    const startTime = this.lapStartTimes[lapIndex];
+    const endTime = lapIndex < this.lapStartTimes.length - 1 ? this.lapStartTimes[lapIndex + 1] : new Date();
+    const duration = endTime.getTime() - startTime.getTime();
+    const seconds = Math.floor((duration / 1000) % 60);
+    const minutes = Math.floor((duration / (1000 * 60)) % 60);
+    const hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   }
 
   startLogging(): void {
@@ -69,9 +95,13 @@ export class MetricService implements IMetricService {
       console.warn('Logging is already running');
       return;
     }
+
     this.running = true;
     for (let i = 0; i < this.metrics.length; i++) {
       this.metrics[i].startLogging();
+    }
+    if (this.lapStartTimes.length === 0) {
+      this.lapStartTimes.push(new Date()); // Initialize first lap start time
     }
   }
 
