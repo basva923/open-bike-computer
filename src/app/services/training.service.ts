@@ -105,6 +105,7 @@ export class TrainingService {
     this.currentStepIndex++;
     this.currentStepStartTime = new Date().getTime();
     this.currentStepStartDistance = this.metricService.getByMetricType(MetricType.DISTANCE)?.getLastValue() || 0;
+    this.metricService.newLap();
   }
 
   moveToPreviousStep(): void {
@@ -114,6 +115,7 @@ export class TrainingService {
     this.currentStepIndex--;
     this.currentStepStartTime = new Date().getTime();
     this.currentStepStartDistance = this.metricService.getByMetricType(MetricType.DISTANCE)?.getLastValue() || 0;
+    this.metricService.newLap();
   }
 
 

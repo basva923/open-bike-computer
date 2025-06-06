@@ -38,9 +38,6 @@
 .route-training-button {
     display: flex;
     align-items: center;
-    min-width: 100px;
-    height: 36px;
-    font-size: 0.85em;
     padding: 0 10px;
 }
 

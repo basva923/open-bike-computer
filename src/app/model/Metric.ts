@@ -15,7 +15,8 @@ export enum MetricType {
     TEMPERATURE = "TEMPERATURE",
     VERTICAL_SPEED = "VERTICAL_SPEED",
     WHEEL_ROTATIONS = "WHEEL_ROTATIONS",
-    BEARING = "BEARING"
+    BEARING = "BEARING",
+    LAP_COUNTER = "LAP_COUNTER"
 }
 
 
@@ -28,6 +29,7 @@ export abstract class Metric {
 
     protected values: number[];
     protected timestamps: Date[];
+    protected laps: number[] = [0];  // The starting index of each lap
 
     protected metricService: IMetricService;
 
@@ -51,6 +53,10 @@ export abstract class Metric {
      * Stop logging the metric. This method should be implemented by subclasses to stop the logging process.
      */
     abstract stopLogging(): void;
+
+    newLap() {
+        this.laps.push(this.values.length);
+    }
 
     addValue(value: number, timestamp: Date) {
         this.values.push(value);
@@ -108,6 +114,24 @@ export abstract class Metric {
         return Math.max(...this.values);
     }
 
+    getAverageForLap(lapIndex: number | null = null): number | null {
+        if (lapIndex === null) {
+            lapIndex = this.laps.length - 1; // Last lap
+        }
+        if (lapIndex < 0 || lapIndex >= this.laps.length) {
+            throw new Error('Invalid lap index: ' + lapIndex);
+        }
+        const start = this.laps[lapIndex];
+        const end = lapIndex + 1 < this.laps.length ? this.laps[lapIndex + 1] : this.values.length;
+        const lapValues = this.values.slice(start, end);
+        if (lapValues.length === 0) {
+            return null;
+        }
+        const sum = lapValues.reduce((acc, value) => acc + value, 0);
+        return sum / lapValues.length;
+    }
+
+
 
     displayLastValue(includeUnit: boolean = true): string {
         const lastValue = this.getLastValue();
@@ -132,6 +156,11 @@ export abstract class Metric {
     displayMax(includeUnit: boolean = true): string {
         const max = this.getMax();
         return this.displayValue(max, includeUnit);
+    }
+
+    displayAverageForLap(lapIndex: number | null = null, includeUnit: boolean = true): string {
+        const average = this.getAverageForLap(lapIndex);
+        return this.displayValue(average, includeUnit);
     }
 
     getLastTimestamp(): Date | null {

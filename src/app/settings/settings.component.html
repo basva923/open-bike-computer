@@ -69,10 +69,15 @@
 
     <h3>Activity</h3>
 
-    <button mat-flat-button [color]="metricService.isRunning() ? 'warn' : 'primary'"
-        (click)="metricService.isRunning() ? stopActivity() : startActivity()">
+    <button mat-fab extended [color]="metricService.isRunning() ? 'warn' : 'primary'"
+        (click)="metricService.isRunning() ? stopActivity() : startActivity()" style="margin-right: 0.5rem;">
         <mat-icon>{{ metricService.isRunning() ? 'pause' : 'play_arrow' }}</mat-icon>
         {{ metricService.isRunning() ? 'Stop activity' : 'Start activity' }}
+    </button>
+
+    <button mat-fab extended color="primary" (click)="metricService.newLap()">
+        <mat-icon>replay</mat-icon>
+        Lap
     </button>
 
 
@@ -83,12 +88,14 @@
             <th>Last</th>
             <th>Avg</th>
             <th>Max</th>
+            <th>Lap</th>
         </tr>
         <tr *ngFor="let metricName of metricService.getNames()">
             <td>{{metricName}}</td>
             <td>{{metricService.getByName(metricName)!.displayLastValue()}}</td>
             <td>{{metricService.getByName(metricName)!.displayAverage()}}</td>
             <td>{{metricService.getByName(metricName)!.displayMax()}}</td>
+            <td>{{metricService.getByName(metricName)!.displayAverageForLap()}}</td>
         </tr>
     </table>
 

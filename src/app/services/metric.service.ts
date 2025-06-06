@@ -20,6 +20,7 @@ import { PowerBalenceMetric } from '../model/PowerBalenceMetric';
 import { SpeedSensorService } from './speed-sensor.service';
 import { WheelRotationsMetric } from '../model/WheelRotationsMetric';
 import { BearingMetric } from '../model/BearingMetric';
+import { LapCounterMetric } from '../model/LapCounterMetric';
 
 @Injectable({
   providedIn: 'root'
@@ -52,8 +53,15 @@ export class MetricService implements IMetricService {
       new CadenceMetric(this),
       new PowerBalenceMetric(this),
       new WheelRotationsMetric(this),
-      new BearingMetric(this)
+      new BearingMetric(this),
+      new LapCounterMetric(this)
     );
+  }
+
+  newLap(): void {
+    for (let i = 0; i < this.metrics.length; i++) {
+      this.metrics[i].newLap();
+    }
   }
 
   startLogging(): void {

@@ -80,7 +80,7 @@ export class WorkoutComponent {
     } else if (row == 1) {
       value = this.trainingService.targetMetric.get30sAverage() || 0;
     } else if (row == 2) {
-      value = this.trainingService.targetMetric.getAverage() || 0;
+      value = this.trainingService.targetMetric.getAverageForLap() || 0;
     }
     if (column == 0) {
       return value < targetLow ? Math.max(0, (value - lowest) / (targetLow - lowest) * 100) : 100;
