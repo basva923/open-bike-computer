@@ -19,7 +19,7 @@ export class ServiceFactory {
     private static navigationServiceInstance: NavigationService | null = null;
     private static trainingServiceInstance: TrainingService | null = null;
     private static metricServiceInstance: MetricService | null = null;
-    private static mockEnabled = true;
+    private static mockEnabled = false;
 
     static getHeartRateSensorService(): HeartRateSensorService {
         if (!this.heartRateSensorServiceInstance) {

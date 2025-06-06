@@ -18,7 +18,7 @@ import { LapsComponent } from '../laps/laps.component';
 })
 export class HomeComponent {
   activeTab = 1;
-  protected showFooter = true;
+  protected showFooter = false;
 
   toggleFooter() {
     this.showFooter = !this.showFooter;
