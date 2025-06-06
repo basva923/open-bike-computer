@@ -4,18 +4,19 @@ import { MetricsComponent } from '../metrics/metrics.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MapLibreMapComponent } from '../maplibre-map/maplibre-map.component';
 import { MatIconModule } from '@angular/material/icon';
+import { WorkoutComponent } from '../workout/workout.component';
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [SettingsComponent, MetricsComponent, MatTabsModule, MapLibreMapComponent, MatIconModule],
+  imports: [SettingsComponent, MetricsComponent, WorkoutComponent, MatTabsModule, MapLibreMapComponent, MatIconModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
   activeTab = 1;
-  protected showFooter = false;
+  protected showFooter = true;
 
 
   get contentHeight(): string {
@@ -24,9 +25,13 @@ export class HomeComponent {
 
   get fullTabsHeight(): string {
     if (this.showFooter) {
-      return '90vh';
+      return '80vh';
     } else {
       return '100vh';
     }
+  }
+
+  get footerHeight(): string {
+    return this.showFooter ? '20vh' : '0';
   }
 }

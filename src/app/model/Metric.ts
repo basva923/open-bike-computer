@@ -74,6 +74,34 @@ export abstract class Metric {
         }
         return null;
     }
+
+    get3sAverage(): number | null {
+        const values = this.getValuesUnil(3);
+        if (values.length === 0) {
+            return null;
+        }
+        const sum = values.reduce((acc, value) => acc + value, 0);
+        return sum / values.length;
+    }
+
+    get30sAverage(): number | null {
+        const values = this.getValuesUnil(30);
+        if (values.length === 0) {
+            return null;
+        }
+        const sum = values.reduce((acc, value) => acc + value, 0);
+        return sum / values.length;
+    }
+
+    getAverage(): number | null {
+        if (this.values.length === 0) {
+            return null;
+        }
+        const sum = this.values.reduce((acc, value) => acc + value, 0);
+        return sum / this.values.length;
+    }
+
+
     displayLastValue(includeUnit: boolean = true): string {
         const lastValue = this.getLastValue();
         if (lastValue !== null) {
@@ -97,6 +125,12 @@ export abstract class Metric {
     }
     getType(): MetricType {
         return this.type;
+    }
+
+    getValuesUnil(secondsAgo: number): number[] {
+        const now = new Date();
+        const threshold = new Date(now.getTime() - secondsAgo * 1000);
+        return this.values.filter((_, index) => this.timestamps[index] >= threshold);
     }
 }
 

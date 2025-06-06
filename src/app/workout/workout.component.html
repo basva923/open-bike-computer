@@ -1,0 +1,102 @@
+<mat-divider></mat-divider>
+
+<mat-grid-list cols="6" rowHeight="3vh">
+    <mat-grid-tile colspan="1" rowspan="2">
+        {{ currentHeartRate || '---' }}
+        <mat-icon>favorite</mat-icon>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="2" rowspan="2" class="current-step-description">
+        <div style="width: 100%;">
+            <div>{{ trainingService.currentStep?.name || '---' }}</div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="flex: 1; text-align: left;">
+                    {{ trainingService.currentStep?.displayTargetLow() || '---' }}
+                </span>
+                <span style="flex: 1; text-align: center;">
+                    {{ remainingString || '---' }}
+                </span>
+                <span style="flex: 1; text-align: right;">
+                    {{ trainingService.currentStep?.displayTargetHigh() || '---' }}
+                </span>
+            </div>
+        </div>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="1" rowspan="2" class="current-step-icon">
+        {{ currentPower || '---' }}
+        <mat-icon>bolt</mat-icon>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="2" rowspan="3" class="next-step-description">
+        Next Step: <br>
+        @if (trainingService.nextStep) {
+        {{ trainingService.nextStep.displayDuration() || '---' }}
+        &#64; {{ trainingService.nextStep.displayTargetLow() || '---' }} -
+        {{ trainingService.nextStep.displayTargetHigh() || '---' }}
+        } @else {
+        No next step
+        }
+    </mat-grid-tile>
+
+
+    <!-- CURRENT TARGET AND METRIC -->
+    <mat-grid-tile colspan="1" rowspan="1">
+        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(0, 0)"
+            class="out-of-zone-progress-bar-start"></mat-progress-bar>
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="2" rowspan="1">
+        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(0, 1)"
+            class="in-zone-progress-bar"></mat-progress-bar>
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="1" rowspan="1">
+        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(0, 2)"
+            class="out-of-zone-progress-bar-end"></mat-progress-bar>
+    </mat-grid-tile>
+
+
+
+
+    <!-- 30s AVG TARGET AND METRIC -->
+    <mat-grid-tile colspan="1" rowspan="1">
+        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(1, 0)"
+            class="out-of-zone-progress-bar-start"></mat-progress-bar>
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="2" rowspan="1">
+        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(1, 1)"
+            class="in-zone-progress-bar"></mat-progress-bar>
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="1" rowspan="1">
+        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(1, 2)"
+            class="out-of-zone-progress-bar-end"></mat-progress-bar>
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="2" rowspan="3">
+        <button mat-mini-fab aria-label="Previous Step" (click)="moveToPreviousStep()">
+            <mat-icon>skip_previous</mat-icon>
+        </button>
+        <button mat-mini-fab aria-label="Next Step" (click)="moveToNextStep()">
+            <mat-icon>skip_next</mat-icon>
+        </button>
+    </mat-grid-tile>
+
+
+    <!-- LAP AVG TARGET AND METRIC -->
+    <mat-grid-tile colspan="1" rowspan="1">
+        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(2, 0)"
+            class="out-of-zone-progress-bar-start"></mat-progress-bar>
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="2" rowspan="1">
+        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(2, 1)"
+            class="in-zone-progress-bar"></mat-progress-bar>
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="1" rowspan="1">
+        <mat-progress-bar mode="determinate" [value]="getProgressBarValue(2, 2)"
+            class="out-of-zone-progress-bar-end"></mat-progress-bar>
+    </mat-grid-tile>
+
+
+</mat-grid-list>

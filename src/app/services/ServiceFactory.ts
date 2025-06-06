@@ -2,6 +2,7 @@ import { HeartRateSensorMockService } from "./heart-rate-sensor-mock.service";
 import { HeartRateSensorService } from "./heart-rate-sensor.service";
 import { LocationMockService } from "./location-mock.service";
 import { LocationService } from "./location.service";
+import { MetricService } from "./metric.service";
 import { NavigationService } from "./navigation.service";
 import { PowerMeterMockService } from "./power-meter-mock.service";
 import { PowerMeterService } from "./power-meter.service";
@@ -17,7 +18,8 @@ export class ServiceFactory {
     private static speedSensorServiceInstance: SpeedSensorService | null = null;
     private static navigationServiceInstance: NavigationService | null = null;
     private static trainingServiceInstance: TrainingService | null = null;
-    private static mockEnabled = false;
+    private static metricServiceInstance: MetricService | null = null;
+    private static mockEnabled = true;
 
     static getHeartRateSensorService(): HeartRateSensorService {
         if (!this.heartRateSensorServiceInstance) {
@@ -77,5 +79,12 @@ export class ServiceFactory {
             this.trainingServiceInstance = new TrainingService();
         }
         return this.trainingServiceInstance;
+    }
+
+    static getMetricService(): MetricService {
+        if (!this.metricServiceInstance) {
+            this.metricServiceInstance = new MetricService();
+        }
+        return this.metricServiceInstance;
     }
 }

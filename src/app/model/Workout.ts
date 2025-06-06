@@ -18,10 +18,51 @@ export class WorkoutStep {
         public durationType: DurationType,
         public durationValue: number,
         public targetType: TargetType,
-        public targetLow: number = 0,
-        public targetHigh: number = 0,
-        public wktStepName: string,
+        public targetLow: number | null = null,
+        public targetHigh: number | null = null,
+        public name: string,
     ) { }
+
+    displayValue(value: number | null): string {
+        if (this.targetType === TargetType.OPEN) {
+            return 'Open';
+        }
+        if (this.targetType === TargetType.POWER) {
+            return `${value}W`;
+        }
+        if (this.targetType === TargetType.HEART_RATE) {
+            return `${value}bpm`;
+        }
+        if (this.targetType === TargetType.SPEED) {
+            return `${value}m/s`;
+        }
+        if (this.targetType === TargetType.CADENCE) {
+            return `${value}rpm`;
+        }
+        return 'N/A';
+    }
+
+
+    displayTargetLow(): string {
+        return this.displayValue(this.targetLow);
+    }
+    displayTargetHigh(): string {
+        return this.displayValue(this.targetHigh);
+    }
+    displayDuration(): string {
+        if (this.durationType === DurationType.TIME) {
+            const minutes = Math.floor(this.durationValue / 60);
+            const seconds = Math.floor((this.durationValue % 60));
+            return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        } else if (this.durationType === DurationType.DISTANCE) {
+            const kilometers = this.durationValue;
+            return `${kilometers} km`;
+        } else if (this.durationType === DurationType.OPEN) {
+            return 'Open';
+        } else {
+            throw new Error(`Unknown duration type: ${this.durationType}`);
+        }
+    }
 
     /**
      * 
@@ -45,10 +86,10 @@ export class WorkoutStep {
 
         return new WorkoutStep(
             durationType,
-            step.durationValue || 0,
+            step.durationValue / 1000 || 0,
             targetType,
-            step.customTargetValueLow || 0,
-            step.customTargetValueHigh || 0,
+            this.parseCustomTargetValue(targetType, step.customTargetValueLow),
+            this.parseCustomTargetValue(targetType, step.customTargetValueHigh),
             step.wktStepName || ''
         );
 
@@ -78,12 +119,36 @@ export class WorkoutStep {
         }
         return TargetType.OPEN;
     }
+
+    static parseCustomTargetValue(targetType: TargetType, value: number): number | null {
+        if (!value || value <= 0) {
+            return null;
+        }
+        switch (targetType) {
+            case TargetType.POWER:
+                if (value < 1000) {
+                    throw new Error("Relative power target not supported");
+                }
+                return value - 1000;
+            case TargetType.HEART_RATE:
+                if (value < 100) {
+                    throw new Error("Relative heart rate target not supported");
+                }
+                return value - 100; // Convert to bpm
+            case TargetType.SPEED:
+                return value; // Speed is already in m/s
+            case TargetType.CADENCE:
+                return value; // Cadence is already in rpm
+            default:
+                return 0; // For OPEN or unknown types, return 0
+        }
+    }
 }
 
 export class Workout {
     constructor(
         public sport: string,
-        public wktName: string,
+        public name: string,
         public steps: WorkoutStep[] = []
     ) { }
 

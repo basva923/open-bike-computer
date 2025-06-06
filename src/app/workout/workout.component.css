@@ -1,0 +1,29 @@
+.out-of-zone-progress-bar-start {
+    --mdc-linear-progress-track-color: rgb(223, 196, 147);
+    --mdc-linear-progress-active-indicator-height: 1rem;
+    --mdc-linear-progress-track-height: 1rem;
+}
+
+.out-of-zone-progress-bar-end {
+    --mdc-linear-progress-track-color: rgb(223, 196, 147);
+    --mdc-linear-progress-active-indicator-color: orange;
+    --mdc-linear-progress-active-indicator-height: 1rem;
+    --mdc-linear-progress-track-height: 1rem;
+
+}
+
+.in-zone-progress-bar {
+    --mdc-linear-progress-track-color: rgb(157, 196, 157);
+    --mdc-linear-progress-active-indicator-height: 1rem;
+    --mdc-linear-progress-track-height: 1rem;
+}
+
+.current-step-description {
+    font-size: 3vw;
+}
+
+.next-step-description {
+    font-size: 3vw;
+    text-align: left;
+    vertical-align: top;
+}

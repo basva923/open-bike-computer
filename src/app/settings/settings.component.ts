@@ -32,14 +32,15 @@ export class SettingsComponent {
   protected speedSensor: SpeedSensorService;
   protected navigationService: NavigationService;
   protected trainingService: TrainingService;
+  protected metricService: MetricService;
 
-
-  constructor(protected metricService: MetricService) {
+  constructor() {
     this.heartRateSensor = ServiceFactory.getHeartRateSensorService();
     this.powerMeter = ServiceFactory.getPowerMeterService();
     this.speedSensor = ServiceFactory.getSpeedSensorService();
     this.navigationService = ServiceFactory.getNavigationService();
     this.trainingService = ServiceFactory.getTrainingService();
+    this.metricService = ServiceFactory.getMetricService();
   }
 
   async startActivity() {
