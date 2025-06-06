@@ -101,20 +101,37 @@ export abstract class Metric {
         return sum / this.values.length;
     }
 
+    getMax(): number | null {
+        if (this.values.length === 0) {
+            return null;
+        }
+        return Math.max(...this.values);
+    }
+
 
     displayLastValue(includeUnit: boolean = true): string {
         const lastValue = this.getLastValue();
-        if (lastValue !== null) {
-            let valueConverted = lastValue;
-            if (this.siUnit !== this.preferredUnit) {
-                valueConverted = UnitConversion.convert(lastValue, this.siUnit, this.preferredUnit);
-            }
-            if (includeUnit) {
-                return `${valueConverted.toFixed(this.preferredPrecision)} ${this.preferredUnit}`;
-            }
-            return `${valueConverted.toFixed(this.preferredPrecision)}`;
-        }
-        return '---';
+        return this.displayValue(lastValue, includeUnit);
+    }
+
+    display3sAverage(includeUnit: boolean = true): string {
+        const average = this.get3sAverage();
+        return this.displayValue(average, includeUnit);
+    }
+
+    display30sAverage(includeUnit: boolean = true): string {
+        const average = this.get30sAverage();
+        return this.displayValue(average, includeUnit);
+    }
+
+    displayAverage(includeUnit: boolean = true): string {
+        const average = this.getAverage();
+        return this.displayValue(average, includeUnit);
+    }
+
+    displayMax(includeUnit: boolean = true): string {
+        const max = this.getMax();
+        return this.displayValue(max, includeUnit);
     }
 
     getLastTimestamp(): Date | null {
@@ -131,6 +148,20 @@ export abstract class Metric {
         const now = new Date();
         const threshold = new Date(now.getTime() - secondsAgo * 1000);
         return this.values.filter((_, index) => this.timestamps[index] >= threshold);
+    }
+
+    private displayValue(value: number | null, includeUnit: boolean = true): string {
+        if (value === null) {
+            return '---';
+        }
+        let valueConverted = value;
+        if (this.siUnit !== this.preferredUnit) {
+            valueConverted = UnitConversion.convert(value, this.siUnit, this.preferredUnit);
+        }
+        if (includeUnit) {
+            return `${valueConverted.toFixed(this.preferredPrecision)} ${this.preferredUnit}`;
+        }
+        return `${valueConverted.toFixed(this.preferredPrecision)}`;
     }
 }
 

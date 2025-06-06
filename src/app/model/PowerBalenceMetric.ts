@@ -6,7 +6,7 @@ export class PowerBalenceMetric extends Metric {
     private handler = this.handlePowerMeterEvent.bind(this);
 
     constructor(metricService: MetricService) {
-        super(MetricType.POWER_BALENCE, 'Power Balence', '%', metricService, '%', 2);
+        super(MetricType.POWER_BALENCE, 'Power Balence', '%', metricService, '%', 0);
     }
 
     startLogging(): void {

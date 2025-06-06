@@ -17,7 +17,7 @@ export class PowerMeterMockService extends PowerMeterService {
       const powerData = new PowerMeterData(
         new Date(),
         Math.floor(Math.random() * 100) + 300,
-        Math.random(),
+        Math.random() * 100,
         Math.floor(Math.random() * 10) + 80,
         Math.random(),
         Math.random());

@@ -80,11 +80,15 @@
     <table>
         <tr>
             <th>Metric</th>
-            <th>Last value</th>
+            <th>Last</th>
+            <th>Avg</th>
+            <th>Max</th>
         </tr>
         <tr *ngFor="let metricName of metricService.getNames()">
             <td>{{metricName}}</td>
             <td>{{metricService.getByName(metricName)!.displayLastValue()}}</td>
+            <td>{{metricService.getByName(metricName)!.displayAverage()}}</td>
+            <td>{{metricService.getByName(metricName)!.displayMax()}}</td>
         </tr>
     </table>
 
