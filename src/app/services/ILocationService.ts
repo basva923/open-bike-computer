@@ -20,4 +20,5 @@ export interface ILocationService {
     readonly coordinatesLog: GeolocationCoordinates[];
     readonly bearingForVerticalPhone: number;
     readonly bearingForHorizontalPhone: number;
+    readonly gradeForHorizontalPhone: number;
 }

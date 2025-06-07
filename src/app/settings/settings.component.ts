@@ -14,6 +14,8 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { NavigationService } from '../services/navigation.service';
 import { TrainingService } from '../services/training.service';
+import { MetricType } from '../model/Metric';
+import { GradeMetric } from '../model/GradeMetric';
 
 
 @Component({
@@ -95,6 +97,10 @@ export class SettingsComponent {
       // Clear the input value to allow re-selection of the same file
       input.value = '';
     }
+  }
+
+  calibrateGrade() {
+    (this.metricService.getByMetricType(MetricType.GRADE) as GradeMetric).calibrateGrade();
   }
 
   async ngOnInit() {
