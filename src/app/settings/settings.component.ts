@@ -34,6 +34,9 @@ export class SettingsComponent {
   protected trainingService: TrainingService;
   protected metricService: MetricService;
 
+  protected powerThreshold: number = 0;
+  protected heartRateThreshold: number = 0;
+
   constructor() {
     this.heartRateSensor = ServiceFactory.getHeartRateSensorService();
     this.powerMeter = ServiceFactory.getPowerMeterService();
@@ -41,6 +44,19 @@ export class SettingsComponent {
     this.navigationService = ServiceFactory.getNavigationService();
     this.trainingService = ServiceFactory.getTrainingService();
     this.metricService = ServiceFactory.getMetricService();
+    // Load thresholds from local storage if available
+    this.powerThreshold = +(localStorage.getItem('powerThreshold') || '250');
+    this.heartRateThreshold = +(localStorage.getItem('heartRateThreshold') || '180');
+  }
+
+  onPowerThresholdChange(value: number) {
+    this.powerThreshold = value;
+    localStorage.setItem('powerThreshold', value.toString());
+  }
+
+  onHeartRateThresholdChange(value: number) {
+    this.heartRateThreshold = value;
+    localStorage.setItem('heartRateThreshold', value.toString());
   }
 
   async startActivity() {
@@ -61,6 +77,8 @@ export class SettingsComponent {
         this.navigationService.loadRouteFileGPX(content as string);
       };
       reader.readAsText(file);
+      // Clear the input value to allow re-selection of the same file
+      input.value = '';
     }
   }
 
@@ -71,9 +89,11 @@ export class SettingsComponent {
       const reader = new FileReader();
       reader.onload = (e) => {
         const content = (e.target as FileReader).result;
-        this.trainingService.loadFitFile(content as ArrayBuffer);
+        this.trainingService.loadFitFile(content as ArrayBuffer, this.powerThreshold, this.heartRateThreshold);
       };
       reader.readAsArrayBuffer(file);
+      // Clear the input value to allow re-selection of the same file
+      input.value = '';
     }
   }
 
@@ -81,6 +101,11 @@ export class SettingsComponent {
     this.reconnectToLastConnectedHeartRateSensor();
     this.reconnectToLastConnectedPowerMeter();
     this.reconnectToLastConnectedSpeedSensor();
+    // Also load thresholds in case constructor is skipped (Angular lifecycle)
+    const power = localStorage.getItem('powerThreshold');
+    const hr = localStorage.getItem('heartRateThreshold');
+    if (power !== null) this.powerThreshold = +power;
+    if (hr !== null) this.heartRateThreshold = +hr;
   }
 
   async requestHeartRateDevice() {

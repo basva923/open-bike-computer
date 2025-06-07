@@ -80,16 +80,18 @@ export class WorkoutStep {
      * "durationDistance": 5000
      * }
      */
-    static fromGarminFitFile(step: any): WorkoutStep {
+    static fromGarminFitFile(step: any, powerThreshold: number, heartRateThreshold: number): WorkoutStep {
         const durationType = WorkoutStep.parseDurationType(step.durationType);
         const targetType = WorkoutStep.parseTargetType(step.targetType);
+
+        const threshold = targetType === TargetType.POWER ? powerThreshold : targetType === TargetType.HEART_RATE ? heartRateThreshold : null;
 
         return new WorkoutStep(
             durationType,
             step.durationValue / 1000 || 0,
             targetType,
-            this.parseCustomTargetValue(targetType, step.customTargetValueLow),
-            this.parseCustomTargetValue(targetType, step.customTargetValueHigh),
+            this.parseCustomTargetValue(targetType, step.customTargetValueLow, threshold),
+            this.parseCustomTargetValue(targetType, step.customTargetValueHigh, threshold),
             step.wktStepName || ''
         );
 
@@ -120,19 +122,25 @@ export class WorkoutStep {
         return TargetType.OPEN;
     }
 
-    static parseCustomTargetValue(targetType: TargetType, value: number): number | null {
+    static parseCustomTargetValue(targetType: TargetType, value: number, threshold: number | null): number | null {
         if (!value || value <= 0) {
             return null;
         }
         switch (targetType) {
             case TargetType.POWER:
                 if (value < 1000) {
-                    throw new Error("Relative power target not supported");
+                    if (!threshold) {
+                        throw new Error("Relative power target not supported");
+                    }
+                    return threshold * value / 100;
                 }
                 return value - 1000;
             case TargetType.HEART_RATE:
                 if (value < 100) {
-                    throw new Error("Relative heart rate target not supported");
+                    if (!threshold) {
+                        throw new Error("Relative heart rate target not supported");
+                    }
+                    return threshold * value / 100;
                 }
                 return value - 100; // Convert to bpm
             case TargetType.SPEED:
@@ -152,8 +160,8 @@ export class Workout {
         public steps: WorkoutStep[] = []
     ) { }
 
-    static fromGarminFitFile(workout: any): Workout {
-        const steps = workout.workoutStepMesgs.map((step: any) => WorkoutStep.fromGarminFitFile(step));
+    static fromGarminFitFile(workout: any, powerThreshold: number, heartRateThreshold: number): Workout {
+        const steps = workout.workoutStepMesgs.map((step: any) => WorkoutStep.fromGarminFitFile(step, powerThreshold, heartRateThreshold));
         return new Workout(
             workout.workoutMesgs[0]?.sport || 'cycling',
             workout.workoutMesgs[0]?.wktName || 'Unnamed Workout',

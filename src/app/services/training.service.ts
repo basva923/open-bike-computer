@@ -35,7 +35,7 @@ export class TrainingService {
       , 500);
   }
 
-  loadFitFile(fileContent: ArrayBuffer): void {
+  loadFitFile(fileContent: ArrayBuffer, powerThreshold: number, heartRateThreshold: number): void {
     this.stopWorkout(); // Stop any existing workout before loading a new one
 
     const stream = Stream.fromByteArray(fileContent);
@@ -46,7 +46,7 @@ export class TrainingService {
       console.error("Errors while reading FIT file:", errors);
     }
     console.log(JSON.stringify(messages, null, 2));
-    this.workout = Workout.fromGarminFitFile(messages);
+    this.workout = Workout.fromGarminFitFile(messages, powerThreshold, heartRateThreshold);
     this.eventTarget.dispatchEvent(new NewWorkoutEvent(this.workout));
   }
 

@@ -35,10 +35,21 @@
         <span *ngIf="navigationService.hasRoute()" class="route-training-label">
             {{ navigationService.getRouteName() }}
         </span>
-        <input hidden (change)="onRouteFileSelected($event)" #routeFileInput type="file" id="routeFile">
+        <input hidden (change)="onRouteFileSelected($event)" #routeFileInput type="file" id="routeFile" accept=".gpx">
     </div>
 
     <h3>Training</h3>
+    <div style="display: flex; gap: 1rem; margin: 0.5rem 0; align-items: center;">
+        <mat-form-field appearance="outline" style="width: 10rem;">
+            <mat-label>Power threshold</mat-label>
+            <input matInput type="number" [(ngModel)]="powerThreshold" (ngModelChange)="onPowerThresholdChange($event)">
+        </mat-form-field>
+        <mat-form-field appearance="outline" style="width: 12rem;">
+            <mat-label>Heart rate threshold</mat-label>
+            <input matInput type="number" [(ngModel)]="heartRateThreshold"
+                (ngModelChange)="onHeartRateThresholdChange($event)">
+        </mat-form-field>
+    </div>
     <div class="route-training-buttons">
         <button mat-fab extended class="route-training-button"
             [color]="trainingService.hasTraining() ? 'primary' : 'warn'"
@@ -50,7 +61,8 @@
         <span *ngIf="trainingService.hasTraining()" class="route-training-label">
             {{ trainingService.getTrainingName() }}
         </span>
-        <input hidden (change)="onTrainingFileSelected($event)" #trainingFileInput type="file" id="trainingFile">
+        <input hidden (change)="onTrainingFileSelected($event)" #trainingFileInput type="file" id="trainingFile"
+            accept=".fit">
     </div>
     <div *ngIf="trainingService.hasTraining()" class="training-controls"
         style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">

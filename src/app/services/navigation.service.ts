@@ -60,4 +60,8 @@ export class NavigationService {
   getRouteName(): string {
     return this.routeName || '';
   }
+
+  getRoute(): RoutePoint[] {
+    return this.route;
+  }
 }

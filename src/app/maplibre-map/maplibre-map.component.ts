@@ -18,7 +18,7 @@ import {
 } from '@maplibre/ngx-maplibre-gl';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { NavigationService, NewRouteEvent } from '../services/navigation.service';
+import { NavigationService, NewRouteEvent, RoutePoint } from '../services/navigation.service';
 
 
 @Component({
@@ -81,6 +81,9 @@ export class MapLibreMapComponent {
         this.updateCenter(locationEvent);
         this.updateTrack(locationEvent);
       });
+      if (this.navigationService.hasRoute()) {
+        this.loadRoute(this.navigationService.getRoute());
+      }
       this.navigationService.addNewRouteListener(this.newRouteHandler);
     }
   }
@@ -128,11 +131,21 @@ export class MapLibreMapComponent {
   }
 
   handleNewRoute(event: NewRouteEvent) {
+    this.loadRoute(event.route);
+
+  }
+
+  protected loadRoute(route: RoutePoint[]) {
     if (!this.map) {
       return;
     }
-    this.map.removeLayer('track-log');
-    this.map.removeSource('track-log');
+
+    if (this.map.getLayer('track-log')) {
+      this.map.removeLayer('track-log');
+    }
+    if (this.map.getSource('track-log')) {
+      this.map.removeSource('track-log');
+    }
 
     this.map.addSource('track-log', {
       type: 'geojson',
@@ -141,7 +154,7 @@ export class MapLibreMapComponent {
         properties: {},
         geometry: {
           type: 'LineString',
-          coordinates: event.route.map((point) => {
+          coordinates: route.map((point) => {
             return point.LngLat;
           }),
         },
