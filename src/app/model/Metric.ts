@@ -16,7 +16,9 @@ export enum MetricType {
     VERTICAL_SPEED = "VERTICAL_SPEED",
     WHEEL_ROTATIONS = "WHEEL_ROTATIONS",
     BEARING = "BEARING",
-    LAP_COUNTER = "LAP_COUNTER"
+    LAP_COUNTER = "LAP_COUNTER",
+    CURRENT_TIME = "CURRENT_TIME",
+    ELAPSED_TIME = "ELAPSED_TIME"
 }
 
 
@@ -179,7 +181,7 @@ export abstract class Metric {
         return this.values.filter((_, index) => this.timestamps[index] >= threshold);
     }
 
-    private displayValue(value: number | null, includeUnit: boolean = true): string {
+    protected displayValue(value: number | null, includeUnit: boolean = true): string {
         if (value === null) {
             return '---';
         }

@@ -21,6 +21,9 @@ import { SpeedSensorService } from './speed-sensor.service';
 import { WheelRotationsMetric } from '../model/WheelRotationsMetric';
 import { BearingMetric } from '../model/BearingMetric';
 import { LapCounterMetric } from '../model/LapCounterMetric';
+import { CurrentTimeMetric } from '../model/CurrentTimeMetric';
+import { ElapsedTimeMetric } from '../model/ElapsedTimeMetric';
+import { UnitToString } from '../util/unit-to-string';
 
 @Injectable({
   providedIn: 'root'
@@ -55,7 +58,9 @@ export class MetricService implements IMetricService {
       new PowerBalenceMetric(this),
       new WheelRotationsMetric(this),
       new BearingMetric(this),
-      new LapCounterMetric(this)
+      new LapCounterMetric(this),
+      new CurrentTimeMetric(this),
+      new ElapsedTimeMetric(this)
     );
   }
 
@@ -83,14 +88,8 @@ export class MetricService implements IMetricService {
     }
     const startTime = this.lapStartTimes[lapIndex];
     const endTime = lapIndex < this.lapStartTimes.length - 1 ? this.lapStartTimes[lapIndex + 1] : new Date();
-    const duration = endTime.getTime() - startTime.getTime();
-    const seconds = Math.floor((duration / 1000) % 60);
-    const minutes = Math.floor((duration / (1000 * 60)) % 60);
-    const hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
-    if (hours > 0) {
-      return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    }
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    const duration = (endTime.getTime() - startTime.getTime()) / 1000;
+    return UnitToString.secondsToTime(duration);
   }
 
   startLogging(): void {

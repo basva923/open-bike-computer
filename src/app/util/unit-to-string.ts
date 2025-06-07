@@ -22,6 +22,26 @@ export class UnitToString {
     );
   }
 
+
+  static secondsToTime(seconds: number): string {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    const days = Math.floor(hours / 24);
+    const remainingHours = hours % 24;
+
+    const pad = (num: number) => num.toString().padStart(2, '0');
+
+    return (
+      (days > 0 ? days + 'd ' : '') +
+      (remainingHours > 0 || days > 0 ? pad(remainingHours) + ':' : '') +
+      pad(remainingMinutes) +
+      ':' +
+      pad(remainingSeconds)
+    );
+  }
+
   static metersPerSecondToKnots(mps: number): string {
     return (mps * 1.94384449).toFixed(1) + 'kt';
   }
