@@ -47,6 +47,10 @@
 
 @if (showFooter) {
 <div [style.height]="footerHeight">
+  @if (trainingActive) {
   <app-workout></app-workout>
+  } @else {
+  <app-metrics tabName="footerData"></app-metrics>
+  }
 </div>
 }

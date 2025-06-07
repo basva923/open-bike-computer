@@ -30,6 +30,9 @@ export class MetricsComponent {
 
   constructor() {
     this.metricsService = ServiceFactory.getMetricService();
+  }
+
+  ngOnInit() {
     this.loadConfigFromLocalStorage();
   }
 
@@ -103,6 +106,20 @@ export class MetricsComponent {
     }
   }
 
+  onAddRowAbove(rowId: number) {
+    this.config.splice(rowId, 0, [MetricType.POWER]);
+  }
+
+  onAddRowBelow(rowId: number) {
+    this.config.splice(rowId + 1, 0, [MetricType.POWER]);
+  }
+
+  onRemoveRow(rowId: number) {
+    if (this.config.length > 1) {
+      this.config.splice(rowId, 1);
+    }
+  }
+
   protected scaleMetricValues() {
     document.querySelectorAll('.metric-value').forEach((metric) => {
       const factor = 0.8;
@@ -130,6 +147,7 @@ export class MetricsComponent {
   }
   protected loadConfigFromLocalStorage() {
     const config = localStorage.getItem('metricsConfig.' + this.tabName);
+    console.log('Loading metrics config for tab:', this.tabName, 'Config:', config);
     if (config) {
       this.config = JSON.parse(config);
     } else {

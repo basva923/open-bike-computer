@@ -4,9 +4,11 @@
 
 
         @for (row of config; track rowId; let rowId = $index) {
+
         @for (metricType of row; track colId; let colId = $index) {
         <mat-grid-tile [colspan]="getColumnSpan(row.length)" [rowspan]="getRowSpan(row.length)">
             @if (!editModeIsActive) {
+
             <div class="metric-col">
                 <div class="metric-name">
                     {{getNameForMetric(metricType)}} ({{getUnitForMetric(metricType)}})
@@ -19,15 +21,31 @@
             </div>
             } @else {
             <div class="metric-col">
-                <mat-select [(value)]="config[rowId][colId]" class="metric-select">
-                    @for (t of metricTypes; track t) {
-                    <mat-option [value]="t">{{t}}</mat-option>
+                <div class="metric-row-edit-layout">
+                    @if (colId === 0) {
+                    <div class="row-action-buttons">
+                        <button mat-mini-fab color="primary" (click)="onAddRowAbove(rowId)"
+                            aria-label="Insert row above"><mat-icon>add_row_above</mat-icon></button>
+                        <button mat-mini-fab color="warn" (click)="onRemoveRow(rowId)"
+                            aria-label="Delete row"><mat-icon>delete</mat-icon></button>
+                        <button mat-mini-fab color="primary" (click)="onAddRowBelow(rowId)"
+                            aria-label="Insert row below"><mat-icon>add_row_below</mat-icon></button>
+                    </div>
                     }
-                </mat-select>
-                <span>
-                    <button mat-icon-button (click)="onInsertMetric(rowId, colId)"><mat-icon>add</mat-icon></button>
-                    <button mat-icon-button (click)="onRemoveMetric(rowId, colId)"><mat-icon>remove</mat-icon></button>
-                </span>
+                    <div class="metric-edit-controls">
+                        <mat-select [(value)]="config[rowId][colId]" class="metric-select">
+                            @for (t of metricTypes; track t) {
+                            <mat-option [value]="t">{{t}}</mat-option>
+                            }
+                        </mat-select>
+                        <span>
+                            <button mat-mini-fab (click)="onInsertMetric(rowId, colId)" class="add-button"
+                                color="primary"><mat-icon>add</mat-icon></button>
+                            <button mat-mini-fab (click)="onRemoveMetric(rowId, colId)" class="remove-button"
+                                color="warn"><mat-icon>delete</mat-icon></button>
+                        </span>
+                    </div>
+                </div>
             </div>
             }
         </mat-grid-tile>

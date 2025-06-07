@@ -7,6 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { WorkoutComponent } from '../workout/workout.component';
 import { MatButtonModule } from '@angular/material/button';
 import { LapsComponent } from '../laps/laps.component';
+import { TrainingService } from '../services/training.service';
+import { ServiceFactory } from '../services/ServiceFactory';
 
 
 @Component({
@@ -19,6 +21,11 @@ import { LapsComponent } from '../laps/laps.component';
 export class HomeComponent {
   activeTab = 1;
   protected showFooter = false;
+  private trainingService: TrainingService;
+
+  constructor() {
+    this.trainingService = ServiceFactory.getTrainingService();
+  }
 
   toggleFooter() {
     this.showFooter = !this.showFooter;
@@ -47,5 +54,9 @@ export class HomeComponent {
 
   get toggleBottomMargin(): string {
     return `calc(${this.footerHeight} + 1vh)`;
+  }
+
+  get trainingActive(): boolean {
+    return this.trainingService.currentStep !== null;
   }
 }
