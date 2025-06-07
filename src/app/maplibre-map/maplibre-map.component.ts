@@ -132,7 +132,6 @@ export class MapLibreMapComponent {
 
   handleNewRoute(event: NewRouteEvent) {
     this.loadRoute(event.route);
-
   }
 
   protected loadRoute(route: RoutePoint[]) {
@@ -140,14 +139,14 @@ export class MapLibreMapComponent {
       return;
     }
 
-    if (this.map.getLayer('track-log')) {
-      this.map.removeLayer('track-log');
+    if (this.map.getLayer('route')) {
+      this.map.removeLayer('route');
     }
-    if (this.map.getSource('track-log')) {
-      this.map.removeSource('track-log');
+    if (this.map.getSource('route')) {
+      this.map.removeSource('route');
     }
 
-    this.map.addSource('track-log', {
+    this.map.addSource('route', {
       type: 'geojson',
       data: {
         type: 'Feature',
@@ -161,9 +160,9 @@ export class MapLibreMapComponent {
       }
     });
     this.map.addLayer({
-      id: 'track-log',
+      id: 'route',
       type: 'line',
-      source: 'track-log',
+      source: 'route',
       'layout': {
         'line-join': 'round',
         'line-cap': 'round'
@@ -173,6 +172,8 @@ export class MapLibreMapComponent {
         'line-width': 4
       }
     });
+
+    console.log('Loaded route:', this.map.getSource('track-log'), this.map.getLayer('track-log'));
   }
 
 

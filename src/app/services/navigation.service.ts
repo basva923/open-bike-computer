@@ -43,6 +43,7 @@ export class NavigationService {
       const ele = parseFloat(trkpts[i].getElementsByTagName("ele")[0].textContent!);
       this.route.push(new RoutePoint(lat, lon, ele));
     }
+    console.log("Loaded route:", this.routeName, this.route);
     this.newRouteTarget.dispatchEvent(new NewRouteEvent(this.route, this.routeName))
   }
 
