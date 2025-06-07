@@ -31,7 +31,7 @@ export class UnitToString {
     const days = Math.floor(hours / 24);
     const remainingHours = hours % 24;
 
-    const pad = (num: number) => num.toString().padStart(2, '0');
+    const pad = (num: number) => num.toFixed(0).padStart(2, '0');
 
     return (
       (days > 0 ? days + 'd ' : '') +
