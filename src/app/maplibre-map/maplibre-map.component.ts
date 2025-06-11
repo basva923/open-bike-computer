@@ -96,6 +96,9 @@ export class MapLibreMapComponent {
   }
 
   updateCurrentLocation(locationEvent: LocationServiceEvent) {
+    if (!this.map) {
+      return;
+    }
     if (!this.map?.getSource('current-location')) {
       this.addCurrentLocationMarker();
     }
