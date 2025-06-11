@@ -239,7 +239,7 @@ export class MapLibreMapComponent {
         source: 'current-location',
         layout: {
           'icon-image': 'arrow',
-          "icon-size": 0.25,
+          "icon-size": 0.4,
           "icon-rotate": 90
         }
       });
