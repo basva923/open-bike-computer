@@ -183,7 +183,7 @@ export abstract class Metric {
 
     protected displayValue(value: number | null, includeUnit: boolean = true): string {
         if (value === null) {
-            return '---';
+            return '00.00';
         }
         let valueConverted = value;
         if (this.siUnit !== this.preferredUnit) {

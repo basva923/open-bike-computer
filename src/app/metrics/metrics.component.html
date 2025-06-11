@@ -14,9 +14,8 @@
                     {{getNameForMetric(metricType)}} ({{getUnitForMetric(metricType)}})
                 </div>
                 <div class="metric-value-container">
-                    <div class="metric-value" (onLongPress)="toggleEditMode()">
-                        {{getLastValueForMetric(metricType)}}
-                    </div>
+                    <div class="metric-value" [style.font-size]="getValueTextSize(row.length)">
+                        {{getLastValueForMetric(metricType)}}</div>
                 </div>
             </div>
             } @else {

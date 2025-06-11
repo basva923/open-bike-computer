@@ -11,7 +11,7 @@ export class SpeedMetric extends Metric {
     private lastSpeedSensorDatas: SpeedSensorData[] = [];
 
     constructor(metricService: MetricService, private wheelCircumference: number = 2.1) {
-        super(MetricType.SPEED, 'Speed', 'm/s', metricService, 'km/h');
+        super(MetricType.SPEED, 'Speed', 'm/s', metricService, 'km/h', 1);
     }
 
     startLogging(): void {

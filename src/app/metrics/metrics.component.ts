@@ -44,7 +44,7 @@ export class MetricsComponent {
   }
 
   ngAfterContentChecked() {
-    this.scaleMetricValues();
+    // this.scaleMetricValues();
   }
 
   getNameForMetric(metricType: MetricType): string {
@@ -86,6 +86,19 @@ export class MetricsComponent {
         return 4;
       default:
         return 12 / metricCount;
+    }
+  }
+
+  getValueTextSize(metricCount: number): string {
+    switch (metricCount) {
+      case 1:
+        return 'var(--1-value-text-size)';
+      case 2:
+        return 'var(--2-value-text-size)';
+      case 3:
+        return 'var(--3-value-text-size)';
+      default:
+        return 'var(--3-value-text-size)';
     }
   }
 

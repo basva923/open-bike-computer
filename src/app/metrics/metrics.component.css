@@ -1,8 +1,10 @@
 .metric-name {
-    font-size: 0.7em;
+    font-size: 4vw;
     padding: 0;
     text-align: left;
     width: 100%;
+    text-wrap: nowrap;
+    overflow: hidden;
 }
 
 .metric-value {
@@ -11,9 +13,13 @@
     font-weight: bold;
     transform: scale(1);
     white-space: nowrap;
-    text-align: center;
+    text-align: right;
     display: inline-block;
     vertical-align: middle;
+    --1-value-text-size: 35vw;
+    --2-value-text-size: 16vw;
+    --3-value-text-size: 11vw;
+    --4-value-text-size: 7vw;
 }
 
 .metric-col {
@@ -28,7 +34,7 @@
 .metric-value-container {
     display: flex;
     /* Use flexbox for layout */
-    justify-content: center;
+    justify-content: right;
     /* Center horizontally */
     align-items: center;
     /* Center vertically */

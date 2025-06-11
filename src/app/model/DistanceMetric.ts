@@ -9,7 +9,7 @@ export class DistanceMetric extends Metric {
     private handler = this.locationEventHandler.bind(this);
 
     constructor(metricService: MetricService) {
-        super(MetricType.DISTANCE, 'Distance', 'm', metricService, 'km');
+        super(MetricType.DISTANCE, 'Distance', 'm', metricService, 'km', 2);
     }
     startLogging(): void {
         this.metricService.getLocationService().subscribeForLocation(this.handler);
