@@ -124,7 +124,7 @@ export class PowerMeterService implements IPowerMeterService {
     if (flags & 0x20) { // Crank Revolution Data Present
       powerData.cumulativeCrankRevolutions = value.getUint16(index, true);
       index += 2;
-      powerData.cadence = value.getUint16(index, true) / 1024; // Unit is 1/1024 second
+      powerData.lastCrankEventTimestamp = value.getUint16(index, true); // Unit is 1/1024 second
       index += 2;
     }
 

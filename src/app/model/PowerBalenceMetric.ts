@@ -19,8 +19,8 @@ export class PowerBalenceMetric extends Metric {
     }
 
     handlePowerMeterEvent(event: PowerMeterServiceEvent): void {
-        if (event.powermeterDate.balence) {
-            this.addValue(event.powermeterDate.balence, new Date(event.powermeterDate.timestamp));
+        if (event.powermeterData.balence) {
+            this.addValue(event.powermeterData.balence, new Date(event.powermeterData.timestamp));
         }
     }
 }
