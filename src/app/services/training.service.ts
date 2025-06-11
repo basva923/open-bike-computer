@@ -92,9 +92,11 @@ export class TrainingService {
     }
     if (this.remainingTime !== null && this.remainingTime <= 0) {
       this.moveToNextStep();
+      new Audio('assets/sounds/step-completed.mp3').play().catch(console.error);
     }
     if (this.remainingDistance !== null && this.remainingDistance <= 0) {
       this.moveToNextStep();
+      new Audio('assets/sounds/step-completed.mp3').play().catch(console.error);
     }
   }
 
