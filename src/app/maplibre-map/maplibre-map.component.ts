@@ -120,6 +120,19 @@ export class MapLibreMapComponent {
     }
   }
 
+  onClickOrientationButton() {
+    if (this.mapRotated) {
+      this.mapRotated = false;
+      if (this.northUp) {
+        this.map?.setBearing(0);
+      } else {
+        this.map?.setBearing(this.locationService.bearingForHorizontalPhone);
+      }
+    } else {
+      this.toggleNorth()
+    }
+  }
+
   toggleNorth() {
     this.mapRotated = false;
     this.northUp = !this.northUp;

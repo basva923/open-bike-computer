@@ -6,7 +6,7 @@
   <mgl-image id="arrow" url="assets/icons/arrow.png">
   </mgl-image>
   <mgl-control>
-    <button mat-mini-fab color="primary" (click)="toggleNorth()">
+    <button mat-mini-fab color="primary" (click)="onClickOrientationButton()">
       @if (mapRotated) {
       <mat-icon>rotate_right</mat-icon>
       } @else if (northUp) {
