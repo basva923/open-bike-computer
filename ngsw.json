@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1749667111317,
+  "timestamp": 1749838199234,
   "index": "/open-bike-computer/index.html",
   "assetGroups": [
     {
@@ -13,7 +13,7 @@
       "urls": [
         "/open-bike-computer/favicon.ico",
         "/open-bike-computer/index.html",
-        "/open-bike-computer/main-6MP3SSYK.js",
+        "/open-bike-computer/main-RE7VBA5W.js",
         "/open-bike-computer/manifest.webmanifest",
         "/open-bike-computer/polyfills-FFHMD2TL.js",
         "/open-bike-computer/scripts-CKQW3HVH.js",
@@ -54,8 +54,8 @@
     "/open-bike-computer/assets/icons/icon-92x92.png": "c5b9a81234d2f2a545e2afa47557e0c47bbfe218",
     "/open-bike-computer/assets/sounds/step-completed.mp3": "f13f2408fd78efe370d1c4c09eb08517d73749d3",
     "/open-bike-computer/favicon.ico": "693e2b63bf422e3fb3749899e080a86f937e991e",
-    "/open-bike-computer/index.html": "7d5bcea49dbb9216cf8ff60d1b8b3557373543df",
-    "/open-bike-computer/main-6MP3SSYK.js": "de3b4e37939f12bc43579d69be0df81f05e167b3",
+    "/open-bike-computer/index.html": "a6a011210e4bcd7d9694e3286934283d2f2788c3",
+    "/open-bike-computer/main-RE7VBA5W.js": "8f09e85688f0263ff311e608da541ab40e2afe8f",
     "/open-bike-computer/manifest.webmanifest": "0c2921dd7a28b9bc209f71ec951942803c0ad01e",
     "/open-bike-computer/polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
     "/open-bike-computer/scripts-CKQW3HVH.js": "b8370fff9853f1057b69f43e87a904a1b4a4d45a",
