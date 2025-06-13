@@ -19,11 +19,7 @@ export class PowerMetric extends Metric {
     }
 
     handlePowerMeterEvent(event: PowerMeterServiceEvent): void {
-        let power = event.powermeterData.power;
-        if (event.powermeterData.balence === null) {
-            // If balence is null, we assume the power is from the left side only
-            power = power * 2; // Double the power to account for both sides
-        }
+        let power = event.powermeterData.getTotalPower();
         this.addValue(power, new Date(event.powermeterData.timestamp));
     }
 }

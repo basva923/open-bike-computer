@@ -105,7 +105,10 @@ export class PowerMeterService implements IPowerMeterService {
     let index = 4;
 
     if (flags & 0x01) { // Pedal Power Balance Present
-      powerData.balence = value.getUint8(index) / 2; // Unit is 1/2 percent
+      // percentage, resolution 1/2,
+      // If the sensor provides the power balance referenced to the left pedal,
+      // the power balance is calculated as [LeftPower/(LeftPower + RightPower)]*100 in units of percent
+      powerData.balance = value.getUint8(index) / 2; // Unit is 1/2 percent
       index += 1;
     }
 

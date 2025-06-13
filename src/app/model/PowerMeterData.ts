@@ -2,7 +2,10 @@ export class PowerMeterData {
     constructor(
         public timestamp: Date,
         public power: number,
-        public balence?: number,
+
+        // If the sensor provides the power balance referenced to the left pedal, 
+        // the power balance is calculated as [LeftPower/(LeftPower + RightPower)]*100 in units of percent
+        public balance?: number,
         public accumulatedTorque?: number,
         public cumulativeCrankRevolutions?: number,
         public lastCrankEventTimestamp?: number  // Last crank event time Uint16 in 1/1024 second
@@ -19,6 +22,14 @@ export class PowerMeterData {
             return null;
         }
         return diff / 1024;
+    }
+
+    public getTotalPower(): number {
+        if (this.balance == undefined || this.balance === null) {
+            return this.power;
+        }
+        const balence = this.balance / 100;
+        return this.power * (1 / balence);
     }
 
     private diff(biggest: number | undefined, smallest: number | undefined, maxValue: number): number | null {
