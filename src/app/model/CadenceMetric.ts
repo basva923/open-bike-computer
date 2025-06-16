@@ -8,7 +8,7 @@ export class CadenceMetric extends Metric {
     private lastPowerMeterDatas: PowerMeterData[] = [];
 
     constructor(metricService: MetricService) {
-        super(MetricType.CADENCE, 'Cadence', 'rpm', metricService);
+        super(MetricType.CADENCE, 'Cadence', 'rps', metricService, "rpm");
     }
 
 
@@ -32,9 +32,9 @@ export class CadenceMetric extends Metric {
         } else {
             const diffRotations = event.powermeterData.diffCrankRotations(lastDataWithLessCrankRevolutions) || 0;
             const timediff = event.powermeterData.diffCrankTimeInSeconds(lastDataWithLessCrankRevolutions) || 1;
-            const speed = diffRotations / timediff; // in m/s
+            const cadence = diffRotations / timediff; // in m/s
 
-            this.addValue(speed, event.powermeterData.timestamp);
+            this.addValue(cadence, event.powermeterData.timestamp);
         }
         this.lastPowerMeterDatas.push(event.powermeterData);
         if (this.lastPowerMeterDatas.length > 10) {

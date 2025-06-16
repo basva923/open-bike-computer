@@ -15,11 +15,8 @@ export class SpeedMetric extends Metric {
     }
 
     startLogging(): void {
-        if (this.metricService.getSpeedSensorService().deviceSelected) {
-            this.metricService.getSpeedSensorService().subscribeForSpeedData(this.speedSensorHandler);
-        } else {
-            this.metricService.getLocationService().subscribeForLocation(this.locationHandler);
-        }
+        this.metricService.getSpeedSensorService().subscribeForSpeedData(this.speedSensorHandler);
+        this.metricService.getLocationService().subscribeForLocation(this.locationHandler);
     }
 
     stopLogging(): void {
@@ -28,12 +25,14 @@ export class SpeedMetric extends Metric {
     }
 
     locationEventHandler(event: LocationServiceEvent): void {
-        const speed = event.location.coords.speed;
-        if (speed !== null) {
-            this.addValue(speed, new Date(event.location.timestamp));
-        } else {
-            // If speed is null, we can set it to 0 or handle it as needed
-            this.addValue(0, new Date(event.location.timestamp));
+        if (!this.metricService.getSpeedSensorService().deviceSelected) {
+            const speed = event.location.coords.speed;
+            if (speed !== null) {
+                this.addValue(speed, new Date(event.location.timestamp));
+            } else {
+                // If speed is null, we can set it to 0 or handle it as needed
+                this.addValue(0, new Date(event.location.timestamp));
+            }
         }
     }
 

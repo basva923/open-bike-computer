@@ -25,11 +25,10 @@ export class PowerMeterData {
     }
 
     public getTotalPower(): number {
-        if (this.balance == undefined || this.balance === null) {
-            return this.power;
+        if (!this.balance) {
+            return this.power * 2;
         }
-        const balence = this.balance / 100;
-        return this.power * (1 / balence);
+        return this.power;
     }
 
     private diff(biggest: number | undefined, smallest: number | undefined, maxValue: number): number | null {

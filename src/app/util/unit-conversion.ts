@@ -13,6 +13,12 @@ export class UnitConversion {
             }
         }
 
+        if (fromUnit === "rps") {
+            if (toUnit === "rpm") {
+                return value * 60; // rps to rpm
+            }
+        }
+
         return convert(value, fromUnit as Unit).to(toUnit as any) as any;
     }
 }
