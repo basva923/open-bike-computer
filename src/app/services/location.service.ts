@@ -21,6 +21,8 @@ export class LocationService implements ILocationService {
   private static readonly HEADING_THRESHOLD_DEG = 5; // degrees of heading change to trigger update
   private static readonly MAX_SKIP_INTERVAL_MS = 5000; // force update at least every 5 seconds
   private static readonly MAX_LOCATIONS = 10000; // cap stored locations to limit memory
+  private static readonly LOCATIONS_TRIM_THRESHOLD = 11000; // only trim when exceeding this to avoid frequent reallocations
+  private static readonly MIN_LOCATIONS_FOR_BASELINE = 3; // minimum locations needed before heading-based throttling
 
   constructor() {
     this.startListeningForLocation();
@@ -34,7 +36,8 @@ export class LocationService implements ILocationService {
         if (self.shouldDispatchUpdate(position)) {
           self.locations.push(position);
           // Cap stored locations to prevent unbounded memory growth
-          if (self.locations.length > LocationService.MAX_LOCATIONS) {
+          // Only trim when significantly over the limit to avoid frequent array copies
+          if (self.locations.length > LocationService.LOCATIONS_TRIM_THRESHOLD) {
             self.locations = self.locations.slice(-LocationService.MAX_LOCATIONS);
           }
           self.currentLocationEvent.dispatchEvent(new LocationServiceEvent(position));
@@ -67,7 +70,7 @@ export class LocationService implements ILocationService {
     const now = Date.now();
 
     // Always dispatch the first few locations to establish baseline
-    if (this.locations.length < 3) {
+    if (this.locations.length < LocationService.MIN_LOCATIONS_FOR_BASELINE) {
       return true;
     }
 
