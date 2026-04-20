@@ -19,7 +19,7 @@ export class GradeMetric extends Metric {
             const phoneGrade = this.metricService.getLocationService().gradeForHorizontalPhone;
 
             this.addValue(phoneGrade - this.neutralGrade, new Date(now));
-        }, 500); // Log every half second
+        }, 1000); // Log every second
     }
 
     stopLogging(): void {

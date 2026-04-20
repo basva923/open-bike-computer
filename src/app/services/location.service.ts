@@ -15,6 +15,13 @@ export class LocationService implements ILocationService {
 
   private reversedPhone = false;
 
+  // Straight-line detection: skip GPS updates when heading is stable
+  private lastDispatchedHeading: number | null = null;
+  private lastDispatchedTime: number = 0;
+  private static readonly HEADING_THRESHOLD_DEG = 5; // degrees of heading change to trigger update
+  private static readonly MAX_SKIP_INTERVAL_MS = 5000; // force update at least every 5 seconds
+  private static readonly MAX_LOCATIONS = 10000; // cap stored locations to limit memory
+
   constructor() {
     this.startListeningForLocation();
   }
@@ -24,8 +31,16 @@ export class LocationService implements ILocationService {
     const self = this;
     navigator.geolocation.watchPosition(
       (position) => {
-        self.locations.push(position);
-        self.currentLocationEvent.dispatchEvent(new LocationServiceEvent(position));
+        if (self.shouldDispatchUpdate(position)) {
+          self.locations.push(position);
+          // Cap stored locations to prevent unbounded memory growth
+          if (self.locations.length > LocationService.MAX_LOCATIONS) {
+            self.locations = self.locations.slice(-LocationService.MAX_LOCATIONS);
+          }
+          self.currentLocationEvent.dispatchEvent(new LocationServiceEvent(position));
+          self.lastDispatchedHeading = position.coords.heading;
+          self.lastDispatchedTime = Date.now();
+        }
       },
       (error) => {
         console.error(error);
@@ -38,6 +53,41 @@ export class LocationService implements ILocationService {
       (e) => self.handleOrientationChange(e),
       true
     );
+  }
+
+  /**
+   * Determines whether a GPS update should be dispatched based on heading change.
+   * When riding in a straight line (stable heading), updates are skipped to save battery.
+   * Updates are always dispatched if:
+   * - It's the first location
+   * - The heading has changed beyond the threshold
+   * - The max skip interval has been exceeded
+   */
+  private shouldDispatchUpdate(position: GeolocationPosition): boolean {
+    const now = Date.now();
+
+    // Always dispatch the first few locations to establish baseline
+    if (this.locations.length < 3) {
+      return true;
+    }
+
+    // Always dispatch if max interval exceeded
+    if (now - this.lastDispatchedTime >= LocationService.MAX_SKIP_INTERVAL_MS) {
+      return true;
+    }
+
+    // If heading is available, check if direction changed significantly
+    const currentHeading = position.coords.heading;
+    if (currentHeading !== null && this.lastDispatchedHeading !== null) {
+      const headingDiff = Math.abs(currentHeading - this.lastDispatchedHeading);
+      // Normalize for 360° wraparound
+      const normalizedDiff = headingDiff > 180 ? 360 - headingDiff : headingDiff;
+      if (normalizedDiff < LocationService.HEADING_THRESHOLD_DEG) {
+        return false; // Heading stable, skip this update
+      }
+    }
+
+    return true;
   }
 
   handleOrientationChange(event: DeviceOrientationEvent) {

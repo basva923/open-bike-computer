@@ -60,6 +60,10 @@ export class MapLibreMapComponent {
 
   moved: boolean = false;
 
+  // Throttle map updates to reduce battery drain
+  private lastTrackUpdateTime: number = 0;
+  private static readonly TRACK_UPDATE_INTERVAL_MS = 3000; // Update track at most every 3 seconds
+
   constructor() {
     this.locationService = ServiceFactory.getLocationService();
     this.navigationService = ServiceFactory.getNavigationService();
@@ -79,12 +83,24 @@ export class MapLibreMapComponent {
         this.updateBearing(locationEvent);
         this.updateCurrentLocation(locationEvent);
         this.updateCenter(locationEvent);
-        this.updateTrack(locationEvent);
+        this.throttledUpdateTrack(locationEvent);
       });
       if (this.navigationService.hasRoute()) {
         this.loadRoute(this.navigationService.getRoute());
       }
       this.navigationService.addNewRouteListener(this.newRouteHandler);
+    }
+  }
+
+  /**
+   * Throttle track layer updates to reduce GPU/CPU usage and save battery.
+   * The full track polyline rebuild is expensive; limit to once every few seconds.
+   */
+  throttledUpdateTrack(locationEvent: LocationServiceEvent) {
+    const now = Date.now();
+    if (now - this.lastTrackUpdateTime >= MapLibreMapComponent.TRACK_UPDATE_INTERVAL_MS) {
+      this.updateTrack(locationEvent);
+      this.lastTrackUpdateTime = now;
     }
   }
 
