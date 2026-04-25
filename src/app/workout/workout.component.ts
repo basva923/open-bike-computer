@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { TrainingService } from '../services/training.service';
 import { ServiceFactory } from '../services/ServiceFactory';
 import { MetricService } from '../services/metric.service';
@@ -17,7 +17,7 @@ import { MetricType } from '../model/Metric';
   templateUrl: './workout.component.html',
   styleUrl: './workout.component.css'
 })
-export class WorkoutComponent {
+export class WorkoutComponent implements OnInit, OnDestroy {
 
   protected trainingService: TrainingService;
   protected metricService: MetricService;
@@ -26,18 +26,27 @@ export class WorkoutComponent {
   protected currentHeartRate: string = '---';
   protected currentPower: string = '---';
 
-
+  private updateIntervalId: any = null;
 
   constructor(private cdr: ChangeDetectorRef) {
     this.trainingService = ServiceFactory.getTrainingService();
     this.metricService = ServiceFactory.getMetricService();
+  }
 
-    setInterval(() => {
+  ngOnInit(): void {
+    this.updateIntervalId = setInterval(() => {
       this.updateRemainingString();
       this.updateCurrentHeartRate();
       this.updateCurrentPower();
-      this.cdr.detectChanges(); // Trigger change detection to update the view
-    }, 500); // Update every second
+      this.cdr.detectChanges();
+    }, 500);
+  }
+
+  ngOnDestroy(): void {
+    if (this.updateIntervalId) {
+      clearInterval(this.updateIntervalId);
+      this.updateIntervalId = null;
+    }
   }
 
   moveToNextStep() {

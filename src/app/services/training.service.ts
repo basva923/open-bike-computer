@@ -24,15 +24,12 @@ export class TrainingService {
   private currentStepIndex: number = -1;
   private currentStepStartTime: number = 0;
   private currentStepStartDistance: number = 0;
+  private checkIntervalId: any = null;
 
   private metricService: MetricService;
 
   constructor() {
     this.metricService = ServiceFactory.getMetricService();
-    setInterval(() => {
-      this.checkWorkoutUpdate();
-    }
-      , 500);
   }
 
   loadFitFile(fileContent: ArrayBuffer, powerThreshold: number, heartRateThreshold: number): void {
@@ -72,14 +69,30 @@ export class TrainingService {
     if (this.currentStepIndex !== -1) {
       throw new Error("Workout already started");
     }
+    this.startCheckInterval();
     this.moveToNextStep();
   }
 
   stopWorkout(): void {
+    this.stopCheckInterval();
     this.workout = null;
     this.currentStepIndex = -1;
     this.currentStepStartTime = 0;
     this.currentStepStartDistance = 0;
+  }
+
+  private startCheckInterval(): void {
+    if (this.checkIntervalId) return;
+    this.checkIntervalId = setInterval(() => {
+      this.checkWorkoutUpdate();
+    }, 500);
+  }
+
+  private stopCheckInterval(): void {
+    if (this.checkIntervalId) {
+      clearInterval(this.checkIntervalId);
+      this.checkIntervalId = null;
+    }
   }
 
   protected checkWorkoutUpdate(): void {
