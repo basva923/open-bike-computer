@@ -42,14 +42,16 @@ export class HomeComponent {
 
   get fullTabsHeight(): string {
     if (this.showFooter) {
-      return '83vh';
-    } else {
-      return '100vh';
+      return `calc(100vh - ${this.footerHeight})`;
     }
+    return '100vh';
   }
 
   get footerHeight(): string {
-    return this.showFooter ? '17vh' : '0vh';
+    if (!this.showFooter) {
+      return '0px';
+    }
+    return this.trainingActive ? 'clamp(90px, 22vh, 220px)' : '17vh';
   }
 
   get toggleBottomMargin(): string {
