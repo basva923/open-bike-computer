@@ -1,0 +1,51 @@
+<mat-tab-group mat-stretch-tabs="false" [style.height]="fullTabsHeight">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>settings</mat-icon>
+    </ng-template>
+    <app-settings></app-settings>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>map</mat-icon>
+    </ng-template>
+    <app-maplibre-map [height]="contentHeight"></app-maplibre-map>
+  </mat-tab>
+  <mat-tab label="Data1">
+    <ng-template mat-tab-label>
+      <mat-icon>dashboard</mat-icon>
+    </ng-template>
+    <app-metrics tabName="data1"></app-metrics>
+  </mat-tab>
+  <mat-tab label="Data2">
+    <ng-template mat-tab-label>
+      <mat-icon>dashboard</mat-icon>
+    </ng-template>
+    <app-metrics tabName="data2"></app-metrics>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>replay</mat-icon>
+    </ng-template>
+    <app-laps></app-laps>
+  </mat-tab>
+  <!-- <mat-tab label="Map">
+    <app-leaflet-map></app-leaflet-map>
+  </mat-tab> -->
+</mat-tab-group>
+
+<div class="footer-toggle" [style.bottom]="toggleBottomMargin">
+  <button mat-mini-fab color="primary" (click)="toggleFooter()" [attr.aria-label]="toggleFooterLabel">
+    <mat-icon>{{ toggleFooterIcon }}</mat-icon>
+  </button>
+</div>
+
+@if (showFooter) {
+<div class="footer-popup" [style.height]="footerHeight">
+  @if (trainingActive) {
+  <app-workout></app-workout>
+  } @else {
+  <app-metrics tabName="footerData"></app-metrics>
+  }
+</div>
+}
