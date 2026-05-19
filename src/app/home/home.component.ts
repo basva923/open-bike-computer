@@ -21,6 +21,8 @@ import { ServiceFactory } from '../services/ServiceFactory';
 export class HomeComponent {
   activeTab = 1;
   protected showFooter = false;
+  private readonly expandedFooterHeight = '30vh';
+  private readonly footerToggleSpacing = '1rem';
   private trainingService: TrainingService;
 
   constructor() {
@@ -46,18 +48,18 @@ export class HomeComponent {
 
   get fullTabsHeight(): string {
     if (this.showFooter) {
-      return '83vh';
+      return `calc(100vh - ${this.footerHeight})`;
     } else {
       return '100vh';
     }
   }
 
   get footerHeight(): string {
-    return this.showFooter ? '17vh' : '0vh';
+    return this.showFooter ? this.expandedFooterHeight : '0vh';
   }
 
   get toggleBottomMargin(): string {
-    return `calc(${this.footerHeight} + 1vh)`;
+    return `calc(${this.footerHeight} + env(safe-area-inset-bottom) + ${this.footerToggleSpacing})`;
   }
 
   get trainingActive(): boolean {

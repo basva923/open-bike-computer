@@ -1,10 +1,18 @@
+:host {
+    display: block;
+    background-color: #000000;
+    color: #ffffff;
+    --tab-content-bottom-spacing: 5rem;
+    --tab-content-bottom-padding: calc(env(safe-area-inset-bottom) + var(--tab-content-bottom-spacing));
+}
+
 map-tab-header {
     height: 5vh;
 }
 
 .footer-toggle {
     position: fixed;
-    right: 24px;
+    right: calc(env(safe-area-inset-right) + 24px);
     z-index: 1100;
     transition: bottom 0.2s;
 }
@@ -15,11 +23,32 @@ map-tab-header {
     left: 0;
     right: 0;
     z-index: 1000;
-    overflow: auto;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     background-color: #000000;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.6);
+    padding-bottom: calc(env(safe-area-inset-bottom) + 1rem);
+}
+
+.footer-popup app-metrics,
+.footer-popup app-workout {
+    display: block;
 }
 
 ::ng-deep .mat-mdc-tab.mdc-tab {
     min-width: 0;
     padding: 0 16px;
+}
+
+::ng-deep .mat-mdc-tab-header,
+::ng-deep .mat-mdc-tab-body-content,
+::ng-deep .mat-mdc-tab-body-wrapper {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+::ng-deep .mat-mdc-tab-body-content {
+    box-sizing: border-box;
+    padding-bottom: var(--tab-content-bottom-padding);
 }

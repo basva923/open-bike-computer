@@ -2,11 +2,82 @@
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 @import 'material-icons/iconfont/filled.css';
 
+:root {
+    color-scheme: dark;
+}
+
 html,
 body {
     height: 100%;
     font-family: Roboto, "Helvetica Neue", sans-serif;
     margin: 0;
-    background-color: #000000;
+    background-color: #000000 !important;
     color: #ffffff;
+}
+
+body,
+button,
+input,
+select,
+textarea,
+table,
+th,
+td {
+    color: inherit;
+}
+
+app-root,
+.mat-app-background,
+.mat-mdc-tab-header,
+.mat-mdc-tab-body-wrapper,
+.mat-mdc-tab-body-content {
+    background-color: #000000 !important;
+    color: inherit;
+}
+
+.mat-mdc-tab .mdc-tab__text-label,
+.mat-mdc-tab .mat-icon {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.mat-mdc-tab.mdc-tab--active .mdc-tab__text-label,
+.mat-mdc-tab.mdc-tab--active .mat-icon {
+    color: #90caf9;
+}
+
+.mat-mdc-tab-header-pagination-chevron {
+    border-color: rgba(255, 255, 255, 0.72);
+}
+
+.mat-mdc-form-field {
+    color: #ffffff;
+}
+
+.mat-mdc-form-field .mdc-floating-label,
+.mat-mdc-form-field .mat-mdc-select-value-text,
+.mat-mdc-form-field .mat-mdc-select-arrow,
+.mat-mdc-input-element {
+    color: #ffffff !important;
+}
+
+.mat-mdc-text-field-wrapper {
+    background-color: #000000 !important;
+}
+
+.mat-mdc-form-field .mdc-notched-outline__leading,
+.mat-mdc-form-field .mdc-notched-outline__notch,
+.mat-mdc-form-field .mdc-notched-outline__trailing {
+    border-color: rgba(255, 255, 255, 0.32) !important;
+}
+
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+    border-color: #90caf9 !important;
+}
+
+.mat-mdc-select-panel,
+.mat-mdc-option.mdc-list-item {
+    background-color: #111111 !important;
+    color: #ffffff !important;
 }
