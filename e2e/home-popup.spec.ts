@@ -1,19 +1,19 @@
 import { expect, test } from '@playwright/test';
 
+test.use({ viewport: { width: 390, height: 844 } });
+
 test.describe('home footer popup', () => {
   test.beforeEach(async ({ page }) => {
-    await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/');
   });
 
-  test('uses a dark AMOLED-friendly home screen', async ({ page }, testInfo) => {
+  test('uses a dark AMOLED-friendly home screen', async ({ page }) => {
     await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(0, 0, 0)');
     await expect(page.locator('body')).toHaveCSS('color', 'rgb(255, 255, 255)');
     await expect(page.locator('.mat-mdc-tab-header')).toHaveCSS('background-color', 'rgb(0, 0, 0)');
-
-    await page.screenshot({
-      path: testInfo.outputPath('home-screen-dark.png'),
+    await expect(page).toHaveScreenshot('home-screen-dark.png', {
       fullPage: true,
+      animations: 'disabled',
     });
   });
 
@@ -34,7 +34,7 @@ test.describe('home footer popup', () => {
     await expect(page.getByRole('button', { name: 'Open footer popup' })).toBeVisible();
   });
 
-  test('keeps popup controls interactive after opening', async ({ page }, testInfo) => {
+  test('keeps popup controls interactive after opening', async ({ page }) => {
     await page.getByRole('button', { name: 'Open footer popup' }).click();
 
     const popup = page.locator('.footer-popup');
@@ -50,10 +50,9 @@ test.describe('home footer popup', () => {
     await expect(popup.getByRole('button', { name: 'Done' })).toBeVisible();
     await expect(popup.getByRole('button', { name: 'Cancel' })).toBeVisible();
     await expect(popup.getByRole('button', { name: 'Reset' })).toBeVisible();
-
-    await page.screenshot({
-      path: testInfo.outputPath('footer-popup-open.png'),
+    await expect(page).toHaveScreenshot('footer-popup-open.png', {
       fullPage: true,
+      animations: 'disabled',
     });
 
     await popup.getByRole('button', { name: 'Reset' }).click();

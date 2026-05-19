@@ -45,3 +45,8 @@ map-tab-header {
     background-color: #000000;
     color: #ffffff;
 }
+
+::ng-deep .mat-mdc-tab-body-content {
+    box-sizing: border-box;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 5rem);
+}
