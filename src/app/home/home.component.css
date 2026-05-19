@@ -2,7 +2,8 @@
     display: block;
     background-color: #000000;
     color: #ffffff;
-    --tab-content-bottom-padding: calc(env(safe-area-inset-bottom) + 5rem);
+    --tab-content-bottom-spacing: 5rem;
+    --tab-content-bottom-padding: calc(env(safe-area-inset-bottom) + var(--tab-content-bottom-spacing));
 }
 
 map-tab-header {
