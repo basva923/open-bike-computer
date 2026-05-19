@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 
+// 390x844 matches a common modern phone viewport (for example iPhone 12/13/14).
 test.use({ viewport: { width: 390, height: 844 } });
 
 test.describe('home footer popup', () => {

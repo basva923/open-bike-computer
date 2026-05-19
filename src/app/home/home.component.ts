@@ -54,7 +54,7 @@ export class HomeComponent {
   }
 
   get footerHeight(): string {
-    return this.showFooter ? this.expandedFooterHeight : '0px';
+    return this.showFooter ? this.expandedFooterHeight : '0vh';
   }
 
   get toggleBottomMargin(): string {
