@@ -23,6 +23,11 @@ export class LocationService implements ILocationService {
   private static readonly MAX_LOCATIONS = 10000; // cap stored locations to limit memory
   private static readonly LOCATIONS_TRIM_THRESHOLD = 11000; // only trim when exceeding this to avoid frequent reallocations
   private static readonly MIN_LOCATIONS_FOR_BASELINE = 3; // minimum locations needed before heading-based throttling
+  private static readonly WATCH_OPTIONS: PositionOptions = {
+    enableHighAccuracy: false,
+    maximumAge: 5000,
+    timeout: 10000,
+  };
 
   constructor() {
     this.startListeningForLocation();
@@ -30,31 +35,30 @@ export class LocationService implements ILocationService {
 
   protected startListeningForLocation() {
     // start gps watch
-    const self = this;
     navigator.geolocation.watchPosition(
       (position) => {
-        if (self.shouldDispatchUpdate(position)) {
-          self.locations.push(position);
+        if (this.shouldDispatchUpdate(position)) {
+          this.locations.push(position);
           // Cap stored locations to prevent unbounded memory growth
           // Only trim when significantly over the limit to avoid frequent array copies
-          if (self.locations.length > LocationService.LOCATIONS_TRIM_THRESHOLD) {
-            self.locations = self.locations.slice(-LocationService.MAX_LOCATIONS);
+          if (this.locations.length > LocationService.LOCATIONS_TRIM_THRESHOLD) {
+            this.locations = this.locations.slice(-LocationService.MAX_LOCATIONS);
           }
-          self.currentLocationEvent.dispatchEvent(new LocationServiceEvent(position));
-          self.lastDispatchedHeading = position.coords.heading;
-          self.lastDispatchedTime = Date.now();
+          this.currentLocationEvent.dispatchEvent(new LocationServiceEvent(position));
+          this.lastDispatchedHeading = position.coords.heading;
+          this.lastDispatchedTime = Date.now();
         }
       },
       (error) => {
         console.error(error);
       },
-      { enableHighAccuracy: true }
+      LocationService.WATCH_OPTIONS
     );
 
     window.addEventListener(
       'deviceorientationabsolute',
-      (e) => self.handleOrientationChange(e),
-      true
+      (e) => this.handleOrientationChange(e),
+      { capture: true, passive: true }
     );
   }
 

@@ -18,6 +18,7 @@ class NewWorkoutEvent extends Event {
   providedIn: 'root'
 })
 export class TrainingService {
+  private static readonly CHECK_INTERVAL_MS = 1000;
   private workout: Workout | null = null;
   private eventTarget: EventTarget = new EventTarget();
 
@@ -42,7 +43,6 @@ export class TrainingService {
     if (errors.length > 0) {
       console.error("Errors while reading FIT file:", errors);
     }
-    console.log(JSON.stringify(messages, null, 2));
     this.workout = Workout.fromGarminFitFile(messages, powerThreshold, heartRateThreshold);
     this.eventTarget.dispatchEvent(new NewWorkoutEvent(this.workout));
   }
@@ -85,7 +85,7 @@ export class TrainingService {
     if (this.checkIntervalId) return;
     this.checkIntervalId = setInterval(() => {
       this.checkWorkoutUpdate();
-    }, 500);
+    }, TrainingService.CHECK_INTERVAL_MS);
   }
 
   private stopCheckInterval(): void {
