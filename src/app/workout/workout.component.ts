@@ -18,6 +18,7 @@ import { MetricType } from '../model/Metric';
   styleUrl: './workout.component.css'
 })
 export class WorkoutComponent implements OnInit, OnDestroy {
+  private static readonly UPDATE_INTERVAL_MS = 1000;
 
   protected trainingService: TrainingService;
   protected metricService: MetricService;
@@ -27,6 +28,12 @@ export class WorkoutComponent implements OnInit, OnDestroy {
   protected currentPower: string = '---';
 
   private updateIntervalId: any = null;
+  private readonly updateHandler = () => this.refreshWorkoutDisplay();
+  private readonly visibilityChangeHandler = () => {
+    if (!document.hidden) {
+      this.refreshWorkoutDisplay();
+    }
+  };
 
   constructor(private cdr: ChangeDetectorRef) {
     this.trainingService = ServiceFactory.getTrainingService();
@@ -34,12 +41,9 @@ export class WorkoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.updateIntervalId = setInterval(() => {
-      this.updateRemainingString();
-      this.updateCurrentHeartRate();
-      this.updateCurrentPower();
-      this.cdr.detectChanges();
-    }, 500);
+    this.updateIntervalId = setInterval(this.updateHandler, WorkoutComponent.UPDATE_INTERVAL_MS);
+    document.addEventListener('visibilitychange', this.visibilityChangeHandler);
+    this.refreshWorkoutDisplay();
   }
 
   ngOnDestroy(): void {
@@ -47,6 +51,7 @@ export class WorkoutComponent implements OnInit, OnDestroy {
       clearInterval(this.updateIntervalId);
       this.updateIntervalId = null;
     }
+    document.removeEventListener('visibilitychange', this.visibilityChangeHandler);
   }
 
   moveToNextStep() {
@@ -165,6 +170,16 @@ export class WorkoutComponent implements OnInit, OnDestroy {
   private updateCurrentPower() {
     const value = this.metricService.getByMetricType(MetricType.POWER)?.getLastValue() || 0;
     this.currentPower = value > 0 ? `${value}` : '---';
+  }
+
+  private refreshWorkoutDisplay() {
+    if (document.hidden) {
+      return;
+    }
+    this.updateRemainingString();
+    this.updateCurrentHeartRate();
+    this.updateCurrentPower();
+    this.cdr.detectChanges();
   }
 
 

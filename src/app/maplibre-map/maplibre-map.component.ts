@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { LngLatLike, Map, MapMouseEvent, MapTouchEvent, NavigationControl } from 'maplibre-gl';
 import { LocationService } from '../services/location.service';
 import { ServiceFactory } from '../services/ServiceFactory';
@@ -42,7 +42,7 @@ import { NavigationService, NewRouteEvent, RoutePoint } from '../services/naviga
   templateUrl: './maplibre-map.component.html',
   styleUrl: './maplibre-map.component.css'
 })
-export class MapLibreMapComponent {
+export class MapLibreMapComponent implements OnDestroy {
   @Input() set height(value: string) {
     this._height = value;
   }
@@ -62,7 +62,10 @@ export class MapLibreMapComponent {
 
   // Throttle map updates to reduce battery drain
   private lastTrackUpdateTime: number = 0;
+  private lastLiveMapUpdateTime: number = Number.NEGATIVE_INFINITY;
   private static readonly TRACK_UPDATE_INTERVAL_MS = 3000; // Update track at most every 3 seconds
+  private static readonly LIVE_MAP_UPDATE_INTERVAL_MS = 1000; // Update marker/center/bearing at most once per second
+  private readonly locationHandler = (locationEvent: LocationServiceEvent) => this.handleLocationUpdate(locationEvent);
 
   constructor() {
     this.locationService = ServiceFactory.getLocationService();
@@ -79,17 +82,29 @@ export class MapLibreMapComponent {
     console.log('Map created');
     this.map = map;
     if (this.map) {
-      this.locationService.subscribeForLocation((locationEvent: LocationServiceEvent) => {
-        this.updateBearing(locationEvent);
-        this.updateCurrentLocation(locationEvent);
-        this.updateCenter(locationEvent);
-        this.throttledUpdateTrack(locationEvent);
-      });
+      this.locationService.subscribeForLocation(this.locationHandler);
       if (this.navigationService.hasRoute()) {
         this.loadRoute(this.navigationService.getRoute());
       }
       this.navigationService.addNewRouteListener(this.newRouteHandler);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.locationService.unsubscribeForLocation(this.locationHandler);
+    this.navigationService.removeNewRouteListener(this.newRouteHandler);
+  }
+
+  private handleLocationUpdate(locationEvent: LocationServiceEvent) {
+    this.throttledUpdateTrack(locationEvent);
+    const now = Date.now();
+    if (now - this.lastLiveMapUpdateTime < MapLibreMapComponent.LIVE_MAP_UPDATE_INTERVAL_MS) {
+      return;
+    }
+    this.updateBearing(locationEvent);
+    this.updateCurrentLocation(locationEvent);
+    this.updateCenter(locationEvent);
+    this.lastLiveMapUpdateTime = now;
   }
 
   /**

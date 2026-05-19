@@ -60,8 +60,7 @@ export class MetricService implements IMetricService {
       new BearingMetric(this),
       new LapCounterMetric(this),
       new CurrentTimeMetric(this),
-      new ElapsedTimeMetric(this),
-      new PowerBalenceMetric(this)
+      new ElapsedTimeMetric(this)
     );
   }
 
