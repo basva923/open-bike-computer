@@ -2,6 +2,7 @@
     display: block;
     background-color: #000000;
     color: #ffffff;
+    --tab-content-bottom-padding: calc(env(safe-area-inset-bottom) + 5rem);
 }
 
 map-tab-header {
@@ -48,5 +49,5 @@ map-tab-header {
 
 ::ng-deep .mat-mdc-tab-body-content {
     box-sizing: border-box;
-    padding-bottom: calc(env(safe-area-inset-bottom) + 5rem);
+    padding-bottom: var(--tab-content-bottom-padding);
 }
