@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1779210270401,
+  "timestamp": 1779212748528,
   "index": "/open-bike-computer/index.html",
   "assetGroups": [
     {
@@ -13,11 +13,11 @@
       "urls": [
         "/open-bike-computer/favicon.ico",
         "/open-bike-computer/index.html",
-        "/open-bike-computer/main-CERWLTDG.js",
+        "/open-bike-computer/main-JN7RTRUC.js",
         "/open-bike-computer/manifest.webmanifest",
         "/open-bike-computer/polyfills-FFHMD2TL.js",
         "/open-bike-computer/scripts-CKQW3HVH.js",
-        "/open-bike-computer/styles-KTUOYEBS.css"
+        "/open-bike-computer/styles-WEXTATPC.css"
       ],
       "patterns": []
     },
@@ -56,14 +56,14 @@
     "/open-bike-computer/assets/icons/icon-92x92.png": "c5b9a81234d2f2a545e2afa47557e0c47bbfe218",
     "/open-bike-computer/assets/sounds/step-completed.mp3": "f13f2408fd78efe370d1c4c09eb08517d73749d3",
     "/open-bike-computer/favicon.ico": "693e2b63bf422e3fb3749899e080a86f937e991e",
-    "/open-bike-computer/index.html": "a0a43f2ee47c258ac858a5105a25ed42bff8c576",
-    "/open-bike-computer/main-CERWLTDG.js": "15abb829f5c08763a83bdadfbbeeff51c527ffb7",
+    "/open-bike-computer/index.html": "1000be681d2e716e20bedf2df2d4ebf9f6d0f850",
+    "/open-bike-computer/main-JN7RTRUC.js": "301116bcca162a4b5bcf512dbb8f36d3619b516a",
     "/open-bike-computer/manifest.webmanifest": "0c2921dd7a28b9bc209f71ec951942803c0ad01e",
     "/open-bike-computer/media/material-icons-JLIDJUWE.woff": "e4bb7c1e40d3febee58df963db276b2bf68c117b",
     "/open-bike-computer/media/material-icons-LEZCGFVT.woff2": "0bc0c675480d94ec7e8609dda6227f88c5d08d2c",
     "/open-bike-computer/polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
     "/open-bike-computer/scripts-CKQW3HVH.js": "b8370fff9853f1057b69f43e87a904a1b4a4d45a",
-    "/open-bike-computer/styles-KTUOYEBS.css": "9a034132397a1315148466c3106dcbc790bfcf52"
+    "/open-bike-computer/styles-WEXTATPC.css": "e36d399df7349631b8875d62675576a8f4edf5ff"
   },
   "navigationUrls": [
     {
