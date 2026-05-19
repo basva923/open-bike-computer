@@ -2,6 +2,23 @@ map-tab-header {
     height: 5vh;
 }
 
+.footer-toggle {
+    position: fixed;
+    right: 24px;
+    z-index: 1100;
+    transition: bottom 0.2s;
+}
+
+.footer-popup {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    overflow: auto;
+    background-color: #000000;
+}
+
 ::ng-deep .mat-mdc-tab.mdc-tab {
     min-width: 0;
     padding: 0 16px;
