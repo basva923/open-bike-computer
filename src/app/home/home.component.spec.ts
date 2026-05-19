@@ -20,4 +20,23 @@ describe('HomeComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should toggle the footer popup from the button', () => {
+    const button: HTMLButtonElement = fixture.nativeElement.querySelector('.footer-toggle button');
+
+    expect(fixture.nativeElement.querySelector('.footer-popup')).toBeNull();
+    expect(button.getAttribute('aria-label')).toBe('Open footer popup');
+
+    button.click();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.footer-popup')).not.toBeNull();
+    expect(button.getAttribute('aria-label')).toBe('Close footer popup');
+
+    button.click();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.footer-popup')).toBeNull();
+    expect(button.getAttribute('aria-label')).toBe('Open footer popup');
+  });
 });

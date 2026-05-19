@@ -35,6 +35,10 @@ export class HomeComponent {
     return this.showFooter ? 'keyboard_arrow_down' : 'keyboard_arrow_up';
   }
 
+  get toggleFooterLabel(): string {
+    return this.showFooter ? 'Close footer popup' : 'Open footer popup';
+  }
+
   get contentHeight(): string {
     // full tabs height - 7vh
     return `calc(${this.fullTabsHeight} - 7vh)`;
