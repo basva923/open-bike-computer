@@ -34,7 +34,8 @@ test.describe('home footer popup', () => {
     await expect(popup.getByRole('button', { name: 'Cancel' })).toBeVisible();
     await expect(popup.getByRole('button', { name: 'Reset' })).toBeVisible();
 
-    await popup.getByRole('button', { name: 'Cancel' }).click();
+    await popup.getByRole('button', { name: 'Reset' }).click();
+    await popup.getByRole('button', { name: 'Done' }).click();
 
     await expect(popup.getByRole('button', { name: 'Done' })).toHaveCount(0);
   });

@@ -62,8 +62,8 @@ describe('Workout.fromGarminFitFile', () => {
         expect(workout.steps[0].durationType).toBe(DurationType.DISTANCE);
         expect(workout.steps[0].durationValue).toBe(500);
         expect(workout.steps[0].targetType).toBe(TargetType.POWER);
-        expect(workout.steps[0].targetLow).toBe(1173);
-        expect(workout.steps[0].targetHigh).toBe(1269);
+        expect(workout.steps[0].targetLow).toBe(173);
+        expect(workout.steps[0].targetHigh).toBe(269);
         expect(workout.steps[0].name).toBe("Text to display");
 
         // Step 1
@@ -78,8 +78,8 @@ describe('Workout.fromGarminFitFile', () => {
         expect(workout.steps[2].durationType).toBe(DurationType.TIME);
         expect(workout.steps[2].durationValue).toBe(20);
         expect(workout.steps[2].targetType).toBe(TargetType.POWER);
-        expect(workout.steps[2].targetLow).toBe(1468);
-        expect(workout.steps[2].targetHigh).toBe(4096);
+        expect(workout.steps[2].targetLow).toBe(468);
+        expect(workout.steps[2].targetHigh).toBe(3096);
         expect(workout.steps[2].name).toBe("Max effort please");
     });
 

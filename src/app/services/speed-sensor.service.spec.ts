@@ -19,8 +19,8 @@ describe('SpeedSensorService', () => {
         const result: SpeedSensorData = service['parseCSCData'](dataView, timeStamp);
 
         expect(result.cumulativeWheelRevolutions).toBe(12); // 0x0C
-        expect(result.lastWheelEventTime).toBeInstanceOf(Date);
-        expect(result.cumulativeCrankRevolutions).toBe(676); // 0x02A4
-        expect(result.lastCrankEventTime).toBeInstanceOf(Date);
+        expect(result.lastWheelEventTime).toBe(6724); // 0x1A44
+        expect(result.cumulativeCrankRevolutions).toBe(2); // 0x0002
+        expect(result.lastCrankEventTime).toBe(7577); // 0x1D99
     });
 });
