@@ -1,0 +1,37 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.openbikecomputer'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.openbikecomputer'
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName '0.0.0'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    // The UI is built entirely in Java (no AndroidX), so no view-binding or
+    // resource-heavy features are required.
+}
+
+dependencies {
+    // Intentionally no AndroidX / third-party dependencies: the app is built
+    // against the Android framework only so it can be compiled in restricted
+    // environments. See android/README.md for details.
+}
